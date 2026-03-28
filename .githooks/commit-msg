@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# commit-msg hook — Enforce conventional commits + auto version bump.
+#
+# 1. Validates commit message matches conventional format
+# 2. Determines bump type from commit type
+# 3. Bumps version in all 5 manifest files
+# 4. Stages version changes
+#
+# Setup: git config core.hooksPath .githooks
+
+set -euo pipefail
+
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(head -1 "$COMMIT_MSG_FILE")
+
+# Skip merge commits, amend, rebase
+if echo "$COMMIT_MSG" | grep -qE "^(Merge|Revert|fixup!|squash!)"; then
+  exit 0
+fi
+
+# ── Step 1: Validate conventional commit format ──────────────────────────────
+
+VALID_TYPES="feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert"
+PATTERN="^($VALID_TYPES)(\(.+\))?!?: .+"
+
+if ! echo "$COMMIT_MSG" | grep -qE "$PATTERN"; then
+  echo ""
+  echo "[commit-msg] ERROR: Commit message does not follow conventional format."
+  echo ""
+  echo "  Expected: <type>: <description>"
+  echo "  Got:      $COMMIT_MSG"
+  echo ""
+  echo "  Allowed types: feat, fix, docs, style, refactor, perf, test, chore, ci, build, revert"
+  echo "  Examples:"
+  echo "    feat: add new sf-admin agent"
+  echo "    fix: resolve hook path issue"
+  echo "    docs: update README installation steps"
+  echo "    chore: bump dependencies"
+  echo ""
+  exit 1
+fi
+
+# Check header length (max 100 chars)
+if [ ${#COMMIT_MSG} -gt 100 ]; then
+  echo ""
+  echo "[commit-msg] ERROR: Commit header too long (${#COMMIT_MSG} chars, max 100)."
+  echo ""
+  exit 1
+fi
+
+# ── Step 2: Determine bump type ──────────────────────────────────────────────
+
+BUMP_TYPE="patch"
+
+# Check for breaking change
+if echo "$COMMIT_MSG" | grep -qE "^($VALID_TYPES)(\(.+\))?!:"; then
+  BUMP_TYPE="major"
+elif grep -q "BREAKING CHANGE" "$COMMIT_MSG_FILE" 2>/dev/null; then
+  BUMP_TYPE="major"
+elif echo "$COMMIT_MSG" | grep -qE "^feat(\(.+\))?: "; then
+  BUMP_TYPE="minor"
+fi
+
+# ── Step 3: Bump version ────────────────────────────────────────────────────
+
+SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+NEW_VERSION=$(node "$SCRIPT_DIR/scripts/dev/bump-version.js" "$BUMP_TYPE" 2>/dev/null | tail -1)
+
+if [ -n "$NEW_VERSION" ]; then
+  echo "[commit-msg] Version bump: $BUMP_TYPE → $NEW_VERSION"
+
+  # Stage version files
+  git add package.json .claude-plugin/plugin.json .claude-plugin/marketplace.json .cursor-plugin/plugin.json .cursor-plugin/marketplace.json 2>/dev/null || true
+fi

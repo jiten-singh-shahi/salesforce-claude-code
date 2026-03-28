@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# pre-commit hook — rebuild all derived content, fail if unstaged changes detected.
+#
+# Ensures .cursor/skills/, .cursor/agents/, and .cursor/rules/
+# are always in sync with their sources before any commit.
+#
+# Setup: git config core.hooksPath .githooks
+
+set -euo pipefail
+
+echo "[pre-commit] Running build..."
+npm run build --silent 2>/dev/null
+
+# Check if build produced any unstaged changes to generated files
+CHANGED=$(git diff --name-only .cursor/ 2>/dev/null || true)
+
+if [ -n "$CHANGED" ]; then
+  echo ""
+  echo "[pre-commit] Generated files are out of sync with source:"
+  echo ""
+  echo "$CHANGED" | sed 's/^/  /'
+  echo ""
+  echo "Stage these files and commit again:"
+  echo "  git add .cursor/"
+  echo ""
+  exit 1
+fi
+
+echo "[pre-commit] Build verified — all generated files in sync."

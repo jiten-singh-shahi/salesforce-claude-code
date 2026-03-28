@@ -1,6 +1,6 @@
 {
   "name": "salesforce-claude-code",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Production-ready AI agents, skills, and hooks for Salesforce development",
   "author": {
     "name": "Jiten Singh",

@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (Cursor adapters + MCP copies)
+        run: npm run build
+
+      - name: Lint (ESLint + markdownlint)
+        run: npm run lint
+
+      - name: Validate content (agents, skills, hooks, manifests)
+        run: node scripts/ci/validate-agents.js && node scripts/ci/validate-commands.js && node scripts/ci/validate-skills.js && node scripts/ci/validate-hooks.js && node scripts/ci/validate-install-manifests.js && node scripts/ci/validate-no-personal-paths.js
+
+      - name: Run tests
+        run: node tests/run-all.js
+
+      - name: Run coverage
+        run: npm run coverage
+
+      - name: Harness audit
+        run: node scripts/dev/harness-audit.js
+
+      - name: Skills health check
+        run: node scripts/dev/skills-health.js
