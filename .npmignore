@@ -1,0 +1,9 @@
+tests/
+scripts/ci/
+.github/
+node_modules/
+coverage/
+*.lcov
+.nyc_output/
+.sfdx/
+.sf/

@@ -1,0 +1,26 @@
+{
+  "name": "salesforce-claude-code",
+  "version": "1.0.1",
+  "description": "Production-ready AI agents, skills, hooks, and rules for Salesforce development",
+  "author": {
+    "name": "Jiten Singh"
+  },
+  "homepage": "https://github.com/jiten-singh-shahi/salesforce-claude-code",
+  "repository": "https://github.com/jiten-singh-shahi/salesforce-claude-code",
+  "license": "MIT",
+  "keywords": [
+    "salesforce",
+    "apex",
+    "lwc",
+    "soql",
+    "agentforce",
+    "sf-cli",
+    "devops"
+  ],
+  "logo": "assets/logo.svg",
+  "skills": ".cursor/skills/",
+  "agents": ".cursor/agents/",
+  "rules": ".cursor/rules/",
+  "hooks": ".cursor/hooks.json",
+  "mcpServers": ".cursor/mcp.json"
+}
