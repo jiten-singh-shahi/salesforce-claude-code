@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://scc-universal/schemas/plugin.schema.json",
+  "title": "SCC Plugin Manifest",
+  "description": "JSON Schema for .claude-plugin/plugin.json — describes the SCC plugin for the Claude Code marketplace",
+  "type": "object",
+  "required": ["name", "version", "displayName", "description", "license", "engines", "main"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Schema reference URI"
+    },
+    "name": {
+      "type": "string",
+      "description": "Package/plugin name (kebab-case)",
+      "pattern": "^[a-z0-9-]+$",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9.]+)?(\\+[a-zA-Z0-9.]+)?$"
+    },
+    "displayName": {
+      "type": "string",
+      "description": "Human-readable display name for the plugin",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "description": {
+      "type": "string",
+      "description": "Short plugin description shown in the marketplace",
+      "minLength": 10,
+      "maxLength": 300
+    },
+    "author": {
+      "type": "string",
+      "description": "Plugin author name or organization"
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier",
+      "enum": ["MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "GPL-3.0", "LGPL-3.0", "MPL-2.0"]
+    },
+    "keywords": {
+      "type": "array",
+      "description": "Searchable keywords for marketplace discovery",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "maxItems": 20
+    },
+    "engines": {
+      "type": "object",
+      "description": "Required harness versions",
+      "additionalProperties": false,
+      "properties": {
+        "claude-code": {
+          "type": "string",
+          "description": "Required Claude Code version (semver range)",
+          "pattern": "^[>=^~]?\\d+\\.\\d+\\.\\d+.*$"
+        },
+        "node": {
+          "type": "string",
+          "description": "Required Node.js version (semver range)"
+        }
+      }
+    },
+    "main": {
+      "type": "string",
+      "description": "Relative path to the primary plugin entry file (hooks.json)",
+      "minLength": 1
+    },
+    "agents": {
+      "type": "string",
+      "description": "Relative path to agents directory"
+    },
+    "skills": {
+      "type": "string",
+      "description": "Relative path to skills directory"
+    },
+    "commands": {
+      "type": "string",
+      "description": "Relative path to commands directory"
+    },
+    "rules": {
+      "type": "string",
+      "description": "Relative path to rules directory"
+    },
+    "repository": {
+      "type": "object",
+      "description": "Source repository information",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["git", "svn"]
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "homepage": {
+      "type": "string",
+      "description": "Plugin homepage or documentation URL",
+      "format": "uri"
+    }
+  }
+}

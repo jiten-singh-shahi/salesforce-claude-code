@@ -12,7 +12,7 @@
       "name": "salesforce-claude-code",
       "source": "./",
       "description": "27 specialized agents, 58 domain skills, and 28 hooks for Salesforce development — Apex, LWC, SOQL, Flows, Visualforce, Aura, Agentforce, DevOps, and Security",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "author": {
         "name": "Jiten Singh"
       },

@@ -1,0 +1,237 @@
+{
+  "version": 2,
+  "modules": [
+    {
+      "id": "core",
+      "kind": "bundle",
+      "description": "Core baseline — essential agents, core skills, lifecycle hooks, platform configs",
+      "pathGroups": [
+        {
+          "paths": [
+            "agents/sf-planner.md",
+            "agents/sf-code-reviewer.md",
+            "agents/sf-tdd-guide.md"
+          ],
+          "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
+        },
+        {
+          "paths": [
+            "skills/sf-help/",
+            "skills/sf-quickstart/",
+            "skills/model-route/"
+          ],
+          "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
+        },
+        {
+          "paths": ["hooks/hooks.json", "scripts/hooks/"],
+          "targets": { "claude": ".claude/hooks/", "cursor": null }
+        }
+      ],
+      "dependencies": [],
+      "defaultInstall": true,
+      "cost": "medium",
+      "stability": "stable"
+    },
+    {
+      "id": "apex",
+      "kind": "bundle",
+      "description": "Apex development — agents, skills, SOQL optimization",
+      "pathGroups": [
+        {
+          "paths": [
+            "agents/sf-apex-reviewer.md",
+            "agents/sf-trigger-architect.md",
+            "agents/sf-soql-optimizer.md",
+            "agents/sf-performance-optimizer.md"
+          ],
+          "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
+        },
+        {
+          "paths": [
+            "skills/sf-trigger-frameworks/",
+            "skills/sf-apex-async-patterns/",
+            "skills/sf-apex-testing/",
+            "skills/sf-apex-best-practices/"
+          ],
+          "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
+        }
+      ],
+      "dependencies": ["core"],
+      "defaultInstall": false,
+      "cost": "medium",
+      "stability": "stable"
+    },
+    {
+      "id": "lwc",
+      "kind": "bundle",
+      "description": "Lightning Web Components — agent, skills",
+      "pathGroups": [
+        {
+          "paths": ["agents/sf-lwc-reviewer.md"],
+          "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
+        },
+        {
+          "paths": [
+            "skills/sf-lwc-development/",
+            "skills/sf-lwc-testing/"
+          ],
+          "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
+        }
+      ],
+      "dependencies": ["core"],
+      "defaultInstall": false,
+      "cost": "medium",
+      "stability": "stable"
+    },
+    {
+      "id": "platform",
+      "kind": "bundle",
+      "description": "Cross-domain platform agents, universal skills, and Salesforce platform skills",
+      "pathGroups": [
+        {
+          "paths": [
+            "agents/sf-chief-of-staff.md",
+            "agents/sf-data-architect.md",
+            "agents/doc-updater.md",
+            "agents/sf-e2e-runner.md",
+            "agents/sf-harness-optimizer.md",
+            "agents/sf-integration-architect.md",
+            "agents/loop-operator.md",
+            "agents/refactor-cleaner.md",
+            "agents/sf-architect.md",
+            "agents/sf-build-resolver.md",
+            "agents/sf-docs-lookup.md"
+          ],
+          "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
+        },
+        {
+          "paths": [
+            "skills/sf-apex-cursor/",
+            "skills/sf-apex-enterprise-patterns/",
+            "skills/sf-metadata-management/",
+            "skills/sf-package-development/",
+            "skills/sf-data-modeling/",
+            "skills/sf-debugging/",
+            "skills/sf-integration/",
+            "skills/sf-docker-patterns/",
+            "skills/sf-e2e-testing/",
+            "skills/sf-metadata-migrations/",
+            "skills/sf-tdd-workflow/",
+            "skills/blueprint/",
+            "skills/configure-scc/",
+            "skills/continuous-agent-loop/",
+            "skills/continuous-learning-v2/",
+            "skills/deep-research/",
+            "skills/eval-harness/",
+            "skills/mcp-server-patterns/",
+            "skills/prompt-optimizer/",
+            "skills/search-first/",
+            "skills/security-scan/",
+            "skills/skill-stocktake/",
+            "skills/strategic-compact/",
+            "skills/verification-loop/",
+            "skills/aside/",
+            "skills/sf-build-fix/",
+            "skills/checkpoint/",
+            "skills/sf-docs-lookup/",
+            "skills/sf-harness-audit/",
+            "skills/refactor-clean/",
+            "skills/resume-session/",
+            "skills/save-session/",
+            "skills/sessions/",
+            "skills/update-docs/"
+          ],
+          "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
+        }
+      ],
+      "dependencies": ["core"],
+      "defaultInstall": false,
+      "cost": "heavy",
+      "stability": "stable"
+    },
+    {
+      "id": "devops",
+      "kind": "bundle",
+      "description": "Salesforce DevOps — agents, skills for CI/CD, deployments, scratch orgs",
+      "pathGroups": [
+        {
+          "paths": [
+            "agents/sf-devops-guide.md",
+            "agents/sf-deployment-guide.md"
+          ],
+          "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
+        },
+        {
+          "paths": [
+            "skills/sf-scratch-org-workflow/",
+            "skills/sf-devops-ci-cd/",
+            "skills/sf-deployment/"
+          ],
+          "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
+        }
+      ],
+      "dependencies": ["core"],
+      "defaultInstall": false,
+      "cost": "medium",
+      "stability": "stable"
+    },
+    {
+      "id": "security",
+      "kind": "bundle",
+      "description": "Security — agent, skills for CRUD/FLS, sharing, injection prevention, governor limits",
+      "pathGroups": [
+        {
+          "paths": ["agents/sf-security-reviewer.md"],
+          "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
+        },
+        {
+          "paths": [
+            "skills/sf-security/",
+            "skills/sf-governor-limits/",
+            "skills/sf-soql-optimization/"
+          ],
+          "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
+        }
+      ],
+      "dependencies": ["core"],
+      "defaultInstall": false,
+      "cost": "medium",
+      "stability": "stable"
+    },
+    {
+      "id": "extended",
+      "kind": "bundle",
+      "description": "Extended domains — Flow, Visualforce, Aura, Agentforce, Admin, Events, API design",
+      "pathGroups": [
+        {
+          "paths": [
+            "agents/sf-agentforce-builder.md",
+            "agents/sf-flow-reviewer.md",
+            "agents/sf-visualforce-reviewer.md",
+            "agents/sf-aura-reviewer.md",
+            "agents/sf-admin.md"
+          ],
+          "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
+        },
+        {
+          "paths": [
+            "skills/sf-flow-development/",
+            "skills/sf-agentforce-development/",
+            "skills/sf-api-design/",
+            "skills/sf-visualforce-development/",
+            "skills/sf-aura-development/",
+            "skills/sf-platform-events-cdc/",
+            "skills/sf-approval-processes/",
+            "skills/sf-experience-cloud/",
+            "skills/sf-reporting-dashboards/"
+          ],
+          "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
+        }
+      ],
+      "dependencies": ["core"],
+      "defaultInstall": false,
+      "cost": "heavy",
+      "stability": "stable"
+    }
+  ]
+}

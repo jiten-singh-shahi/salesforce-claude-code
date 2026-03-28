@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "salesforce-dx": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@salesforce/mcp",
+        "--orgs", "DEFAULT_TARGET_ORG",
+        "--toolsets", "orgs,metadata,data,users,testing,code-analysis,lwc-experts,devops",
+        "--allow-non-ga-tools"
+      ],
+      "description": "Official Salesforce DX MCP Server — org management, metadata, data, testing, code analysis, LWC, DevOps"
+    },
+    "salesforce-cli": {
+      "command": "sf",
+      "description": "Salesforce CLI v2 — direct CLI access for commands not covered by MCP toolsets"
+    }
+  }
+}

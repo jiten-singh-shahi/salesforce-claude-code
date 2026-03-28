@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "profiles": {
+    "apex": {
+      "description": "Apex development — includes core, Apex, platform, DevOps, security bundles",
+      "modules": ["core", "apex", "platform", "devops", "security"]
+    },
+    "lwc": {
+      "description": "LWC development — includes core, LWC, platform, DevOps, security bundles",
+      "modules": ["core", "lwc", "platform", "devops", "security"]
+    },
+    "full": {
+      "description": "Complete SCC suite — all 7 bundles",
+      "modules": ["core", "apex", "lwc", "platform", "devops", "security", "extended"]
+    }
+  }
+}
