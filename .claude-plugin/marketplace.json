@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "salesforce-claude-code",
-  "description": "Production-ready AI agent harness for Salesforce development — 27 agents, 58 skills, 28 rules, and 28 hooks for Apex, LWC, SOQL, Flows, Visualforce, Aura, and DevOps",
+  "description": "Production-ready AI agent harness for Salesforce development — 27 agents, 58 skills, and 28 hooks for Apex, LWC, SOQL, Flows, Visualforce, Aura, and DevOps",
   "owner": {
     "name": "Jiten Singh",
     "email": "jitencseng@gmail.com"
@@ -13,7 +13,7 @@
     {
       "name": "salesforce-claude-code",
       "source": "./",
-      "description": "27 specialized agents, 58 domain skills, 28 rules, and 28 hooks for Salesforce development — Apex, LWC, SOQL, Flows, Visualforce, Aura, Agentforce, DevOps, and Security",
+      "description": "27 specialized agents, 58 domain skills, and 28 hooks for Salesforce development — Apex, LWC, SOQL, Flows, Visualforce, Aura, Agentforce, DevOps, and Security",
       "version": "1.0.1",
       "author": {
         "name": "Jiten Singh",

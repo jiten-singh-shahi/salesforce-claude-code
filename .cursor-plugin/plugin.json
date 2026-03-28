@@ -1,7 +1,7 @@
 {
   "name": "salesforce-claude-code",
   "version": "1.0.1",
-  "description": "Production-ready AI agents, skills, hooks, and rules for Salesforce development",
+  "description": "Production-ready AI agents, skills, and hooks for Salesforce development",
   "author": {
     "name": "Jiten Singh"
   },
@@ -20,7 +20,6 @@
   "logo": "assets/logo.svg",
   "skills": ".cursor/skills/",
   "agents": ".cursor/agents/",
-  "rules": ".cursor/rules/",
   "hooks": ".cursor/hooks.json",
-  "mcpServers": ".cursor/mcp.json"
+  "mcpServers": "./mcp-configs/mcp-servers.json"
 }
