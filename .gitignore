@@ -15,5 +15,5 @@ npm-debug.log*
 .idea/
 .vscode/settings.json
 .claude/
+workspace/
 skills*/
-validate-skills.js
