@@ -70,6 +70,8 @@
     "harness:audit": "node scripts/dev/harness-audit.js",
     "orchestrate:status": "node scripts/dev/orchestration-status.js",
     "orchestrate:tmux": "node scripts/dev/orchestrate-worktrees.js",
+    "version:bump": "node scripts/dev/bump-version.js",
+    "version:sync": "node scripts/dev/bump-version.js --set",
     "postinstall": "node -e \"console.log('\\n\\x1b[36m╔══════════════════════════════════════════╗\\x1b[0m'); console.log('\\x1b[36m║  Salesforce Claude Code (SCC) installed  ║\\x1b[0m'); console.log('\\x1b[36m╚══════════════════════════════════════════╝\\x1b[0m'); console.log('\\nRun: npx scc install apex  (or lwc, all)\\n');\""
   },
   "dependencies": {},
