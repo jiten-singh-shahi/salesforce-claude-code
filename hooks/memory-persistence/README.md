@@ -43,7 +43,7 @@ Runs at `Stop` after `session-end.js`. Reads the session summary and scores it f
 
 - Detects repeated workflows (e.g., always runs tests after deploy)
 - Flags anti-patterns corrected during session
-- Feeds signal to continuous-learning-v2 observer if enabled
+- Feeds signal to learning-engine observer if enabled
 
 ## Storage Layout
 

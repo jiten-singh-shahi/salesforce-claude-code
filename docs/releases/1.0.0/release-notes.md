@@ -16,7 +16,7 @@ Initial release of Salesforce Claude Code (SCC) — a production-ready AI agent 
 ### Skills (58 total — 39 user-invocable, 19 auto-activating)
 
 - **23 Salesforce-specific** (user-invocable): `/sf-agentforce-development`, `/sf-apex-best-practices`, `/sf-apex-testing`, `/sf-aura-development`, `/sf-build-fix`, `/sf-data-modeling`, `/sf-debugging`, `/sf-deployment`, `/sf-docs-lookup`, `/sf-e2e-testing`, `/sf-flow-development`, `/sf-governor-limits`, `/sf-harness-audit`, `/sf-help`, `/sf-lwc-development`, `/sf-platform-events-cdc`, `/sf-quickstart`, `/sf-scratch-org-workflow`, `/sf-security`, `/sf-soql-optimization`, `/sf-tdd-workflow`, `/sf-trigger-frameworks`, `/sf-visualforce-development`
-- **16 platform** (user-invocable): `/aside`, `/blueprint`, `/checkpoint`, `/continuous-agent-loop`, `/continuous-learning-v2`, `/deep-research`, `/eval-harness`, `/model-route`, `/prompt-optimizer`, `/refactor-clean`, `/resume-session`, `/save-session`, `/sessions`, `/skill-stocktake`, `/update-docs`, `/verification-loop`
+- **10 platform** (user-invocable): `/aside`, `/checkpoint`, `/continuous-agent-loop`, `/model-route`, `/prompt-optimizer`, `/refactor-clean`, `/resume-session`, `/save-session`, `/sessions`, `/update-docs`
 - **19 auto-activating context skills**: configure-scc, mcp-server-patterns, search-first, security-scan, strategic-compact, sf-apex-async-patterns, sf-apex-cursor, sf-apex-enterprise-patterns, sf-api-design, sf-approval-processes, sf-devops-ci-cd, sf-docker-patterns, sf-experience-cloud, sf-integration, sf-lwc-testing, sf-metadata-management, sf-metadata-migrations, sf-package-development, sf-reporting-dashboards
 
 ### Rules (28)

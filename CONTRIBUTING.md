@@ -52,7 +52,7 @@ Skills with `user-invocable: true` that users invoke via `/skill-name`:
 - Deployment skills (`/sf-deployment`, `/sf-scratch-org-workflow`)
 - Testing skills (`/sf-tdd-workflow`, `/sf-apex-testing`, `/sf-e2e-testing`)
 - Security skills (`/sf-security`, `/sf-governor-limits`)
-- Platform skills (`/blueprint`, `/verification-loop`, `/continuous-agent-loop`)
+- Platform skills (`/continuous-agent-loop`, `/prompt-optimizer`, `/strategic-compact`)
 
 ---
 

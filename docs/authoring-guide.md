@@ -5,7 +5,7 @@ This guide covers how to create new agents, skills, and rules for Salesforce Cla
 ## General Conventions
 
 - **File naming**: Use lowercase with hyphens (kebab-case). Example: `sf-apex-reviewer.md`, `sf-tdd-workflow`.
-- **Salesforce-specific prefix**: All Salesforce-specific content uses the `sf-` prefix. Platform-agnostic content omits the prefix (e.g., `verification-loop`, `strategic-compact`).
+- **Salesforce-specific prefix**: All Salesforce-specific content uses the `sf-` prefix. Platform-agnostic content omits the prefix (e.g., `strategic-compact`, `continuous-agent-loop`).
 - **CommonJS throughout**: All Node.js scripts use `require()` and `module.exports`.
 - **Origin tag**: All SCC content uses `origin: SCC` in frontmatter to distinguish from upstream ECC content.
 
@@ -188,7 +188,7 @@ public with sharing class ExampleService {
 SCC includes two categories of skills:
 
 - **Salesforce-specific** (32 skills, `sf-` prefix): `sf-apex-testing`, `sf-governor-limits`, `sf-lwc-development`, `sf-security`, `sf-trigger-frameworks`, etc.
-- **Platform skills** (13 skills, no prefix): `blueprint`, `configure-scc`, `continuous-agent-loop`, `continuous-learning-v2`, `deep-research`, etc.
+- **Platform skills** (7 skills, no prefix): `configure-scc`, `continuous-agent-loop`, `mcp-server-patterns`, `prompt-optimizer`, `search-first`, `security-scan`, `strategic-compact`.
 
 Platform skills are Salesforce-adapted patterns for AI-assisted development workflows (loops, research, verification, evaluation).
 
@@ -278,7 +278,7 @@ sf apex run test --class-names MyTest --target-org <alias>
 
 - Skills use descriptive names like `sf-apex-best-practices`, `sf-security`, `sf-deployment`.
 - Salesforce-specific skills use the `sf-` prefix: `sf-tdd-workflow`, `sf-deployment`, `sf-security`.
-- Platform skills omit the prefix: `checkpoint`, `verification-loop`, `save-session`.
+- Platform skills omit the prefix: `checkpoint`, `strategic-compact`, `save-session`.
 - Users invoke them via `/skill-name` (e.g., `/sf-tdd-workflow`, `/sf-security`, `/checkpoint`).
 
 ## CI Validation

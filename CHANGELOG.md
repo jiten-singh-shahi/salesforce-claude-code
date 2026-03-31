@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- Migrated 6 orchestration skills to agents per Law 4 ("Agents sequence, skills teach"):
+  - `verification-loop` → `sf-verification-runner` agent
+  - `blueprint` → `sf-blueprint-planner` agent
+  - `deep-research` → `deep-researcher` agent
+  - `eval-harness` → `eval-runner` agent
+  - `continuous-learning-v2` → `learning-engine` agent
+  - `skill-stocktake` → merged into `sf-harness-optimizer` agent
+- Hook path `skills/continuous-learning-v2/hooks/observe.sh` → `scripts/hooks/learning-observe.sh`
+- Skills count: 65 → 59, Agents count: 27 → 32
+
 ## [0.0.0] - 2026-03-26
 
 ### Highlights
@@ -27,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Skills (58)
 
 - 32 Salesforce-specific: sf-apex-best-practices, sf-apex-async-patterns, sf-apex-enterprise-patterns, sf-apex-testing, sf-apex-cursor, sf-lwc-development, sf-lwc-testing, sf-trigger-frameworks, sf-governor-limits, sf-soql-optimization, sf-integration, sf-deployment, sf-data-modeling, sf-debugging, sf-security, sf-devops-ci-cd, sf-scratch-org-workflow, sf-flow-development, sf-metadata-management, sf-metadata-migrations, sf-package-development, sf-agentforce-development, sf-api-design, sf-visualforce-development, sf-aura-development, sf-platform-events-cdc, sf-approval-processes, sf-experience-cloud, sf-reporting-dashboards, sf-docker-patterns, sf-e2e-testing, sf-tdd-workflow
-- 13 platform skills: blueprint, configure-scc, continuous-agent-loop, continuous-learning-v2, deep-research, eval-harness, mcp-server-patterns, prompt-optimizer, search-first, security-scan, skill-stocktake, strategic-compact, verification-loop
+- 7 platform skills: configure-scc, continuous-agent-loop, mcp-server-patterns, prompt-optimizer, search-first, security-scan, strategic-compact
 - 13 workflow skills: sf-help, sf-quickstart, sf-build-fix, sf-harness-audit, checkpoint, sf-docs-lookup, refactor-clean, save-session, resume-session, sessions, update-docs, aside, model-route
 
 ### Rules (28)

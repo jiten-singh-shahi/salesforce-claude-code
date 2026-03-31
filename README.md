@@ -17,8 +17,8 @@ SCC is a unified system where each layer serves a distinct role:
 | Layer | What It Does | Examples |
 |-------|-------------|----------|
 | **@salesforce/mcp** | Platform capabilities — query orgs, deploy metadata, run tests, analyze code | Org management, SOQL queries, Apex test execution |
-| **27 Agents** | Expert routing — each agent specializes in one Salesforce domain | `sf-apex-reviewer`, `sf-soql-optimizer`, `sf-trigger-architect`, `sf-security-reviewer` |
-| **58 Skills** | Institutional knowledge + workflows — 39 user-invocable via `/skill-name`, 19 auto-activating | `/sf-apex-best-practices`, `/sf-deployment`, `/sf-soql-optimization`, `/sf-security` |
+| **32 Agents** | Expert routing — each agent specializes in one Salesforce domain | `sf-apex-reviewer`, `sf-soql-optimizer`, `sf-trigger-architect`, `sf-security-reviewer` |
+| **52 Skills** | Institutional knowledge + workflows — 33 user-invocable via `/skill-name`, 19 auto-activating | `/sf-apex-best-practices`, `/sf-deployment`, `/sf-soql-optimization`, `/sf-security` |
 | **28 Rules** | Always-on governance — enforced on every interaction | `with sharing` mandatory, `WITH USER_MODE` for SOQL, naming conventions |
 | **28 Hooks** | Automated enforcement — quality gates run on every code change | SOQL-in-loop detection, PMD via sf scanner, privilege escalation checks |
 
@@ -30,8 +30,8 @@ SCC is a unified system where each layer serves a distinct role:
 
 | Category | Count | Description |
 |---|---|---|
-| Agents | 27 | Specialized Salesforce subagents |
-| Skills | 58 | Domain knowledge + workflow modules (39 user-invocable, 19 auto-activating) |
+| Agents | 32 | Specialized Salesforce subagents |
+| Skills | 52 | Domain knowledge + workflow modules (33 user-invocable, 19 auto-activating) |
 | Rules | 28 | Always-on guidelines (Apex / LWC / SOQL / Flow / Visualforce / Aura / common) |
 | Hooks | 28 | Lifecycle hooks (SessionStart, PreToolUse, PostToolUse, PostToolUseFailure, PreCompact, Stop, SessionEnd) |
 | Harnesses | 2 | Claude Code, Cursor |
@@ -41,7 +41,7 @@ SCC is a unified system where each layer serves a distinct role:
 ## Requirements
 
 - **Node.js >= 20** — required to run the `npx scc` CLI
-- **Python 3.x** — required for continuous-learning / instinct skills (`/continuous-learning-v2`)
+- **Python 3.x** — required for learning-engine agent (instinct CLI)
 
 ---
 
@@ -228,16 +228,10 @@ All content is structured for use across multiple AI harnesses:
 | `sf-soql-optimization` | Index strategies, selective queries, bulkification |
 | `strategic-compact` | Strategic context compaction patterns |
 | `sf-trigger-frameworks` | FFLIB and pragmatic trigger handler patterns |
-| `verification-loop` | Verification and validation workflows |
-| `continuous-learning-v2` | Continuous learning and skill evolution |
-| `deep-research` | Deep research methodology and patterns |
-| `eval-harness` | Evaluation harness design and execution |
 | `mcp-server-patterns` | MCP server design and integration patterns |
 | `search-first` | Search-first development methodology |
 | `security-scan` | Security scanning patterns and automation |
-| `skill-stocktake` | Skill inventory and gap analysis |
 | `continuous-agent-loop` | Continuous autonomous agent loop patterns and controls |
-| `blueprint` | Build a step-by-step construction plan for multi-session, multi-agent Salesforce projects |
 | `prompt-optimizer` | Analyze and rewrite prompts to match SCC components for better agent performance |
 | `sf-visualforce-development` | Visualforce page patterns, controllers, and migration to LWC |
 | `sf-aura-development` | Aura component patterns and LWC migration strategies |
@@ -250,7 +244,7 @@ All content is structured for use across multiple AI harnesses:
 
 ## Skills (User-Invocable)
 
-39 skills are user-invocable via `/skill-name`. 19 are auto-activating context skills. Key skills by category:
+33 skills are user-invocable via `/skill-name`. 19 are auto-activating context skills. Key skills by category:
 
 ### Salesforce Development
 
@@ -268,7 +262,6 @@ All content is structured for use across multiple AI harnesses:
 | `/sf-flow-development` | Review Flows for best practices and anti-patterns |
 | `/sf-agentforce-development` | Design and configure an Agentforce AI agent |
 | `/sf-governor-limits` | Governor limit audit — SOQL, DML, heap, CPU, callouts |
-| `/blueprint` | Create a step-by-step implementation plan |
 | `/sf-debugging` | Debug using logs, debug levels, and tracing |
 | `/sf-e2e-testing` | End-to-end test patterns and deployment verification |
 | `/sf-platform-events-cdc` | Platform Events and Change Data Capture review |
@@ -281,12 +274,8 @@ All content is structured for use across multiple AI harnesses:
 | Skill | Description |
 |---|---|
 | `/sf-build-fix` | Fix build errors and resolve dependencies |
-| `/verification-loop` | Quality gate — security, governor, coverage, code review |
 | `/continuous-agent-loop` | Multi-agent orchestration and autonomous loops |
-| `/continuous-learning-v2` | Pattern learning, instincts, session management |
 | `/prompt-optimizer` | Optimize prompts for better agent performance |
-| `/eval-harness` | Evaluate code quality with formal eval framework |
-| `/skill-stocktake` | Audit skill portfolio health and coverage |
 | `/sf-help` | Discover SCC skills, agents, and workflows |
 | `/sf-quickstart` | Interactive onboarding and project detection |
 | `/checkpoint` | Save a development checkpoint for rollback |
@@ -299,7 +288,6 @@ All content is structured for use across multiple AI harnesses:
 | `/aside` | Quick side investigation without losing context |
 | `/model-route` | Route tasks to optimal model by complexity |
 | `/sf-harness-audit` | Audit SCC harness configuration |
-| `/deep-research` | Multi-source research with citations |
 
 ---
 

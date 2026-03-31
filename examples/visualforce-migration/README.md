@@ -237,7 +237,7 @@ export default class AccountEditor extends NavigationMixin(LightningElement) {
 <!-- accountEditor.js-meta.xml -->
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>62.0</apiVersion>
+    <apiVersion>66.0</apiVersion>
     <isExposed>true</isExposed>
     <targets>
         <target>lightning__RecordPage</target>

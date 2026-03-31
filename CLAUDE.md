@@ -61,8 +61,8 @@ The project is a **plugin system** — mostly Markdown/JSON content consumed by 
 
 ### Core Content Directories (Markdown + YAML frontmatter)
 
-- **agents/** — 27 specialized subagents (sf-planner, sf-apex-reviewer, sf-lwc-reviewer, sf-tdd-guide, sf-security-reviewer, sf-soql-optimizer, sf-trigger-architect, sf-devops-guide, sf-flow-reviewer, sf-agentforce-builder, sf-performance-optimizer, sf-integration-architect, sf-data-architect, sf-deployment-guide, sf-code-reviewer, sf-chief-of-staff, doc-updater, sf-e2e-runner, sf-harness-optimizer, refactor-cleaner, sf-architect, sf-build-resolver, sf-docs-lookup, loop-operator, sf-admin, sf-visualforce-reviewer, sf-aura-reviewer). Format: Markdown with YAML frontmatter (`name`, `description`, `tools`, `model`).
-- **skills/** — 58 workflow/domain-knowledge modules (39 with `user-invocable: true` for direct invocation via `/skill-name`; 19 are auto-activating context skills). Includes 32 Salesforce-specific skills, 13 platform skills, and 13 workflow skills (sf-help, sf-quickstart, sf-build-fix, sf-harness-audit, checkpoint, sf-docs-lookup, refactor-clean, save-session, resume-session, sessions, update-docs, aside, model-route). Format: Markdown with YAML frontmatter (`name`, `description`, `origin`, `user-invocable`) in `skills/<name>/SKILL.md` directories.
+- **agents/** — 32 specialized subagents (sf-planner, sf-apex-reviewer, sf-lwc-reviewer, sf-tdd-guide, sf-security-reviewer, sf-soql-optimizer, sf-trigger-architect, sf-devops-guide, sf-flow-reviewer, sf-agentforce-builder, sf-performance-optimizer, sf-integration-architect, sf-data-architect, sf-deployment-guide, sf-code-reviewer, sf-chief-of-staff, doc-updater, sf-e2e-runner, sf-harness-optimizer, refactor-cleaner, sf-architect, sf-build-resolver, sf-docs-lookup, loop-operator, sf-admin, sf-visualforce-reviewer, sf-aura-reviewer, sf-verification-runner, sf-blueprint-planner, deep-researcher, learning-engine, eval-runner). Format: Markdown with YAML frontmatter (`name`, `description`, `tools`, `model`).
+- **skills/** — 52 workflow/domain-knowledge modules (33 with `user-invocable: true` for direct invocation via `/skill-name`; 19 are auto-activating context skills). Includes 32 Salesforce-specific skills, 7 platform skills, and 13 workflow skills (sf-help, sf-quickstart, sf-build-fix, sf-harness-audit, checkpoint, sf-docs-lookup, refactor-clean, save-session, resume-session, sessions, update-docs, aside, model-route). Format: Markdown with YAML frontmatter (`name`, `description`, `origin`, `user-invocable`) in `skills/<name>/SKILL.md` directories.
 - **hooks/hooks.json** — Claude Code hook lifecycle (SessionStart, PreToolUse, PostToolUse, PostToolUseFailure, PreCompact, Stop, SessionEnd). Hook scripts live in `scripts/hooks/`.
 
 ### Script Infrastructure (Node.js, CommonJS)
@@ -83,7 +83,7 @@ The project is a **plugin system** — mostly Markdown/JSON content consumed by 
 
 ## Key Conventions
 
-- **Target Salesforce API version: 62.0 (Spring '26)**. Skills and code examples target this version. When referencing API-version-specific features (SOQL Cursors, RunRelevantTests, @testFor), always note the minimum version required.
+- **Target Salesforce API version: 66.0 (Spring '26)**. Skills and code examples target this version. When referencing API-version-specific features (SOQL Cursors, RunRelevantTests, @testFor), always note the minimum version required.
 - **Node.js >= 20** required. Pinned: Node 20.19.0, Python 3.12.8 (`.tool-versions`).
 - **CommonJS throughout** — all scripts use `require()`/`module.exports`.
 - **File naming** — lowercase with hyphens (e.g., `sf-apex-reviewer.md`, `sf-trigger-frameworks`).

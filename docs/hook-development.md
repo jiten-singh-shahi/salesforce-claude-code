@@ -513,7 +513,7 @@ Some hooks use `run-with-flags-shell.sh` instead of the Node.js wrapper, for hoo
   "matcher": "*",
   "hooks": [{
     "type": "command",
-    "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags-shell.sh\" \"pre:observe\" \"skills/continuous-learning-v2/hooks/observe.sh\" \"standard,strict\"",
+    "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags-shell.sh\" \"pre:observe\" \"scripts/hooks/learning-observe.sh\" \"standard,strict\"",
     "async": true,
     "timeout": 10
   }],

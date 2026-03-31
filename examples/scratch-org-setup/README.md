@@ -54,7 +54,7 @@ sfdx-project.json             # Project configuration
   ],
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "62.0"
+  "sourceApiVersion": "66.0"
 }
 ```
 

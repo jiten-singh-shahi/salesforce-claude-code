@@ -13,10 +13,10 @@ You need to create an `AccountRatingService` that assigns ratings to accounts ba
 ### Step 1 -- Plan the Implementation
 
 ```
-/blueprint Create an AccountRatingService that rates accounts as Hot (>= $1M revenue), Warm ($100K-$1M), or Cold (< $100K)
+Plan an AccountRatingService that rates accounts as Hot (>= $1M revenue), Warm ($100K-$1M), or Cold (< $100K)
 ```
 
-**Agent invoked**: `sf-planner`
+**Agent invoked**: `sf-blueprint-planner`
 
 **What happens**: The planner agent analyzes the requirement and produces a structured plan including:
 - Classes to create (`AccountRatingService.cls`, `AccountRatingServiceTest.cls`)
@@ -283,10 +283,10 @@ sf project deploy start --source-dir force-app/ --target-org Staging --test-leve
 ### Step 6 -- Verify Deployment
 
 ```
-/verification-loop Confirm the deployment to Staging succeeded and all tests pass
+Verify the deployment to Staging succeeded and all tests pass
 ```
 
-**Agent invoked**: `sf-e2e-runner`
+**Agent invoked**: `sf-verification-runner`
 
 **What happens**:
 1. Queries the deployment status.
@@ -606,6 +606,6 @@ All critical and high severity findings resolved.
 |---|---|---|---|
 | Apex TDD | `/sf-tdd-workflow`, `/sf-apex-best-practices`, `/sf-governor-limits` | sf-tdd-guide, sf-apex-reviewer, sf-performance-optimizer | governor-check, quality-gate, post-write |
 | LWC Development | `/sf-lwc-development`, `/sf-deployment` | sf-lwc-reviewer, sf-deployment-guide | post-write, post-edit-console-warn, sfdx-validate |
-| Deployment Pipeline | `/sf-scratch-org-workflow`, `/sf-apex-testing`, `/sf-deployment`, `/verification-loop` | sf-devops-guide, sf-deployment-guide, sf-e2e-runner | session-start, sfdx-validate, post-bash-build-complete |
+| Deployment Pipeline | `/sf-scratch-org-workflow`, `/sf-apex-testing`, `/sf-deployment` | sf-devops-guide, sf-deployment-guide, sf-verification-runner | session-start, sfdx-validate, post-bash-build-complete |
 | Security Audit | `/sf-security`, `/sf-apex-best-practices` | sf-security-reviewer, sf-apex-reviewer | governor-check, quality-gate, sfdx-scanner-check |
 | Performance Optimization | `/sf-governor-limits`, `/sf-soql-optimization`, `/sf-trigger-frameworks`, `/sf-governor-limits` | sf-performance-optimizer, sf-soql-optimizer, sf-trigger-architect | governor-check, quality-gate, sfdx-validate |
