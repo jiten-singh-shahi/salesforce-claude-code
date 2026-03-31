@@ -12,6 +12,17 @@
           }
         ],
         "description": "Display Salesforce project context: detected org, scratch orgs, CLI version"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/check-platform-docs-age.js\"",
+            "async": true,
+            "timeout": 5
+          }
+        ],
+        "description": "Warn if platform reference docs (deprecations, API versions) are outdated"
       }
     ],
     "PreToolUse": [
@@ -37,7 +48,7 @@
       },
       {
         "matcher": "*",
-        "hooks": [{ "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags-shell.sh\" \"pre:observe\" \"skills/continuous-learning-v2/hooks/observe.sh\" \"standard,strict\"", "async": true, "timeout": 10 }],
+        "hooks": [{ "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags-shell.sh\" \"pre:observe\" \"scripts/hooks/learning-observe.sh\" \"standard,strict\"", "async": true, "timeout": 10 }],
         "description": "Capture tool use observations for continuous learning"
       },
       {
@@ -128,7 +139,7 @@
     "PostToolUse": [
       {
         "matcher": "*",
-        "hooks": [{ "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags-shell.sh\" \"post:observe\" \"skills/continuous-learning-v2/hooks/observe.sh\" \"standard,strict\"", "async": true, "timeout": 10 }],
+        "hooks": [{ "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags-shell.sh\" \"post:observe\" \"scripts/hooks/learning-observe.sh\" \"standard,strict\"", "async": true, "timeout": 10 }],
         "description": "Capture tool use results for continuous learning"
       },
       {

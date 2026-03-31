@@ -90,6 +90,10 @@
       "pathGroups": [
         {
           "paths": [
+            "agents/deep-researcher.md",
+            "agents/eval-runner.md",
+            "agents/learning-engine.md",
+            "agents/sf-blueprint-planner.md",
             "agents/sf-chief-of-staff.md",
             "agents/sf-data-architect.md",
             "agents/doc-updater.md",
@@ -100,7 +104,8 @@
             "agents/refactor-cleaner.md",
             "agents/sf-architect.md",
             "agents/sf-build-resolver.md",
-            "agents/sf-docs-lookup.md"
+            "agents/sf-docs-lookup.md",
+            "agents/sf-verification-runner.md"
           ],
           "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
         },
@@ -117,19 +122,13 @@
             "skills/sf-e2e-testing/",
             "skills/sf-metadata-migrations/",
             "skills/sf-tdd-workflow/",
-            "skills/blueprint/",
             "skills/configure-scc/",
             "skills/continuous-agent-loop/",
-            "skills/continuous-learning-v2/",
-            "skills/deep-research/",
-            "skills/eval-harness/",
             "skills/mcp-server-patterns/",
             "skills/prompt-optimizer/",
             "skills/search-first/",
             "skills/security-scan/",
-            "skills/skill-stocktake/",
             "skills/strategic-compact/",
-            "skills/verification-loop/",
             "skills/aside/",
             "skills/sf-build-fix/",
             "skills/checkpoint/",
@@ -139,7 +138,8 @@
             "skills/resume-session/",
             "skills/save-session/",
             "skills/sessions/",
-            "skills/update-docs/"
+            "skills/update-docs/",
+            "skills/update-platform-docs/"
           ],
           "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
         }
