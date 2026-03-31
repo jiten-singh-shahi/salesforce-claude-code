@@ -28,7 +28,7 @@ You are a Salesforce DevOps and deployment specialist. You guide teams through s
 - Planning destructive changes or rollback strategies
 - Choosing between DevOps Center and Git-based CI/CD
 
-Do NOT use this agent for Apex code review, LWC development, or SOQL optimization — use `sf-apex-reviewer`, `sf-lwc-reviewer`, or `sf-soql-optimizer` instead.
+Do NOT use this agent for Apex code review, LWC development, or SOQL optimization — use `sf-apex-reviewer`, `sf-lwc-reviewer`, or `sf-performance-optimizer` instead.
 
 ---
 

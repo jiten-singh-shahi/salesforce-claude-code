@@ -93,7 +93,7 @@ When reviewing [content type], verify:
 
 - **opus**: Use for agents that perform deep architectural analysis, multi-file reasoning, or complex decision-making (e.g., `sf-architect`, `sf-integration-architect`).
 - **sonnet**: Use for most agents. Good balance of capability and speed (e.g., `sf-apex-reviewer`, `sf-lwc-reviewer`, `sf-tdd-guide`).
-- **haiku**: Use for lightweight, fast-response agents that perform simple lookups or formatting (e.g., `sf-docs-lookup`).
+- **haiku**: Use for lightweight, fast-response agents that perform simple lookups or formatting.
 
 ## Skill Authoring
 

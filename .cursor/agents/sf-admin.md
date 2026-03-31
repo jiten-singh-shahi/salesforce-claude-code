@@ -18,7 +18,7 @@ Use this agent when you need to:
 - Evaluate Custom Metadata Types vs Custom Settings vs Custom Labels choices
 - Review formula fields, validation rules, or reporting strategy
 
-Do NOT use this agent for Apex class review, LWC component review, or SOQL query optimization — use `sf-apex-reviewer`, `sf-lwc-reviewer`, or `sf-soql-optimizer` for those.
+Do NOT use this agent for Apex class review, LWC component review, or SOQL query optimization — use `sf-apex-reviewer`, `sf-lwc-reviewer`, or `sf-performance-optimizer` for those.
 
 ## Analysis Process
 

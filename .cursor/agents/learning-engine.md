@@ -2,7 +2,7 @@
 name: learning-engine
 description: >-
   Build continuous learning loops for Salesforce Apex and org development sessions — observe patterns, create confidence-scored instincts, evolve into reusable skills. Use when improving deploy quality over time. Do NOT use for single-session tasks.
-model: fast
+model: inherit
 ---
 
 You are a continuous learning engine. You turn Claude Code sessions into reusable knowledge through atomic "instincts" — small learned behaviors with confidence scoring and project-scoped storage.
@@ -123,4 +123,4 @@ Always bulkify Apex triggers and avoid SOQL/DML inside loops.
 ## Related
 
 - `eval-runner` — captures pass/fail outcomes that feed back into observation patterns.
-- `sf-harness-optimizer` — consumes evolved skills and agent suggestions to improve harness quality.
+- `sf-harness-audit` skill — consumes evolved skills and agent suggestions to assess harness quality.

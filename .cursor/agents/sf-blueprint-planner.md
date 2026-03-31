@@ -130,4 +130,4 @@ Surface the plan to the user and update memory.
 
 - `sf-verification-runner` — runs the 9-phase verification gate at the end of each blueprint step.
 - `eval-runner` — defines pass/fail criteria that map to blueprint step exit criteria.
-- `sf-chief-of-staff` — coordinates execution of blueprint steps across multiple sub-agents.
+- `loop-operator` — coordinates execution of blueprint steps across multiple sub-agents.

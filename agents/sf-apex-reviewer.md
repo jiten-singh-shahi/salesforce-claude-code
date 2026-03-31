@@ -357,7 +357,7 @@ When reviewing an Apex file, verify:
 ## Related
 
 - **Agent**: `sf-security-reviewer` — Deep Salesforce security model analysis
-- **Agent**: `sf-soql-optimizer` — SOQL query performance and selectivity review
+- **Agent**: `sf-performance-optimizer` — SOQL query performance and selectivity review
 - **Agent**: `sf-code-reviewer` — Cross-domain review (Apex + LWC + Flow)
 - **Skill**: `sf-apex-best-practices` — Production-ready Apex patterns (invoke via `/sf-apex-best-practices`)
 - **Skill**: `sf-apex-constraints` — Governor limits and bulkification rules (invoke via `/sf-apex-constraints`)

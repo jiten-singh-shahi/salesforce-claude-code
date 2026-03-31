@@ -261,12 +261,12 @@ Execute Phases 3–8 in order: governor limit grep (SOQL/DML in loops, hardcoded
 
 ### Step 3 — Produce Verification Report
 
-Assemble all phase results into the structured Verification Report output format. Set `Overall` to `READY` only if Build, Tests (≥75% coverage), and Security all pass with no CRITICAL issues. List every issue with phase, file path, and remediation hint. Route CRITICAL/HIGH security findings to `sf-security-reviewer`, SOQL governor violations to `sf-soql-optimizer`, and build failures to `sf-build-resolver`.
+Assemble all phase results into the structured Verification Report output format. Set `Overall` to `READY` only if Build, Tests (≥75% coverage), and Security all pass with no CRITICAL issues. List every issue with phase, file path, and remediation hint. Route CRITICAL/HIGH security findings to `sf-security-reviewer`, SOQL governor violations to `sf-performance-optimizer`, and build failures to `sf-build-resolver`.
 
 ## Related
 
 - **Agent**: `sf-security-reviewer` — Deep security audit when Phase 5 flags issues
-- **Agent**: `sf-soql-optimizer` — SOQL optimization when Phase 3 flags governor violations
+- **Agent**: `sf-performance-optimizer` — SOQL and performance optimization when Phase 3 flags governor violations
 - **Agent**: `sf-build-resolver` — Fix build failures identified in Phase 1
 - **Skill**: `sf-testing-constraints` — Apex testing standards (invoke via `/sf-testing-constraints`)
 - **Skill**: `sf-deployment-constraints` — Deployment safety rules (invoke via `/sf-deployment-constraints`)

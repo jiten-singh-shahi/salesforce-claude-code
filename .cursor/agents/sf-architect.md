@@ -22,7 +22,7 @@ Use this agent when you need to:
 - Produce an ordered implementation plan before development begins
 - Assess deployment order and dependencies for a feature or migration
 
-Do NOT use this agent for code review, deployment execution, or testing tasks. Use `sf-apex-reviewer`, `sf-lwc-reviewer`, or `sf-deployment-guide` for those concerns.
+Do NOT use this agent for code review, deployment execution, or testing tasks. Use `sf-apex-reviewer`, `sf-lwc-reviewer`, or `sf-devops-deployment` for those concerns.
 
 ## Analysis Process
 
@@ -290,7 +290,7 @@ Architecture Decision:
 - **Agent**: `sf-apex-reviewer` — Review Apex implementation of the architecture
 - **Agent**: `sf-integration-architect` — Deep integration pattern design
 - **Agent**: `sf-security-reviewer` — Security review of a planned implementation
-- **Agent**: `sf-soql-optimizer` — SOQL optimization for queries in the plan
+- **Agent**: `sf-performance-optimizer` — SOQL and performance optimization for queries in the plan
 - **Skill**: `sf-data-modeling` — Object relationships, field types, CMDT, sharing model, and migration patterns (invoke via `/sf-data-modeling`)
 - **Skill**: `sf-integration` — Salesforce integration patterns (invoke via `/sf-integration`)
 - **Skill**: `sf-governor-limits` — Governor limit mitigation strategies (invoke via `/sf-governor-limits`)

@@ -269,4 +269,4 @@ See skill `sf-apex-async-patterns` for full implementation patterns: Queueable c
 - **Skill**: `sf-apex-async-patterns` — Async pattern selection and implementation (invoke via `/sf-apex-async-patterns`)
 - **Agent**: `sf-security-reviewer` — Security enforcement (`WITH USER_MODE`, FLS) in queries
 - **Agent**: `sf-apex-reviewer` — General Apex code quality review
-- **Agent**: `sf-planner` — Planning data model changes that affect query patterns
+- **Agent**: `sf-blueprint-planner` — Planning data model changes that affect query patterns

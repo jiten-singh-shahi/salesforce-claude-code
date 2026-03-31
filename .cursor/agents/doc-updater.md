@@ -127,5 +127,5 @@ Never proceed past an escalation point autonomously.
 ## Related
 
 - **Agent**: `sf-architect` — architecture decisions that should be documented as ADRs
-- **Agent**: `sf-deployment-guide` — deployment runbooks and change management
+- **Agent**: `sf-devops-deployment` — deployment runbooks and change management
 - **Agent**: `sf-code-reviewer` — identifies undocumented code patterns during reviews

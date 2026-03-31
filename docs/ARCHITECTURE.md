@@ -53,9 +53,9 @@ Specialized subagents delegated to by the main Claude Code agent. Each agent has
 - `tools` — Which tools the agent can use
 - `model` — Which model to use (sonnet for most, opus for complex tasks)
 
-**Salesforce-specific agents**: sf-apex-reviewer, sf-lwc-reviewer, sf-flow-reviewer, sf-trigger-architect, sf-soql-optimizer, sf-data-architect, sf-agentforce-builder, sf-deployment-guide, sf-architect, sf-build-resolver, sf-docs-lookup, sf-admin, sf-integration-architect, sf-performance-optimizer, sf-data-architect, sf-e2e-runner, sf-devops-guide, sf-visualforce-reviewer, sf-aura-reviewer
+**Salesforce-specific agents**: sf-apex-reviewer, sf-lwc-reviewer, sf-flow-reviewer, sf-trigger-architect, sf-agentforce-builder, sf-architect, sf-build-resolver, sf-admin, sf-integration-architect, sf-performance-optimizer, sf-e2e-runner, sf-devops-deployment, sf-visualforce-reviewer, sf-aura-reviewer
 
-**Shared agents**: sf-planner, sf-code-reviewer, sf-security-reviewer, sf-tdd-guide, doc-updater, refactor-cleaner, sf-harness-optimizer, sf-chief-of-staff, loop-operator
+**Shared agents**: sf-code-reviewer, sf-security-reviewer, sf-tdd-guide, sf-blueprint-planner, sf-verification-runner, doc-updater, refactor-cleaner, loop-operator, deep-researcher, learning-engine, eval-runner
 
 ### Commands (Markdown with Frontmatter)
 

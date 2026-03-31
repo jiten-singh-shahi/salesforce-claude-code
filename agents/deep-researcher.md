@@ -144,4 +144,4 @@ Never proceed past an escalation point autonomously.
 
 - **Skill**: `sf-docs-lookup` — single-source official doc lookup
 - **Agent**: `sf-architect` — architecture decision-making using research outputs
-- **Agent**: `sf-chief-of-staff` — orchestrating multi-phase investigations
+- **Agent**: `loop-operator` — orchestrating multi-phase investigations

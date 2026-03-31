@@ -47,11 +47,6 @@
         "description": "Check MCP server health before MCP tool execution and block unhealthy MCP calls"
       },
       {
-        "matcher": "*",
-        "hooks": [{ "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags-shell.sh\" \"pre:observe\" \"scripts/hooks/learning-observe.sh\" \"standard,strict\"", "async": true, "timeout": 10 }],
-        "description": "Capture tool use observations for continuous learning"
-      },
-      {
         "matcher": "Bash",
         "hooks": [
           {
@@ -137,11 +132,6 @@
       }
     ],
     "PostToolUse": [
-      {
-        "matcher": "*",
-        "hooks": [{ "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags-shell.sh\" \"post:observe\" \"scripts/hooks/learning-observe.sh\" \"standard,strict\"", "async": true, "timeout": 10 }],
-        "description": "Capture tool use results for continuous learning"
-      },
       {
         "matcher": "Write",
         "hooks": [

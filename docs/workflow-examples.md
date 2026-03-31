@@ -194,7 +194,7 @@ npx lwc-jest --coverage
 /sf-deployment Deploy accountRatingCard and AccountRatingService to scratch org
 ```
 
-**Agent invoked**: `sf-deployment-guide`
+**Agent invoked**: `sf-devops-deployment`
 
 **Hook activity**:
 - `sfdx-validate.js` fires before the deploy command, checking for missing `--test-level` flag.
@@ -212,7 +212,7 @@ Full development lifecycle from scratch org creation through production deployme
 /sf-scratch-org-workflow Create a new scratch org for feature/account-rating
 ```
 
-**Agent invoked**: `sf-devops-guide`
+**Agent invoked**: `sf-devops-deployment`
 
 **What happens**:
 1. Verifies Dev Hub is connected:
@@ -259,7 +259,7 @@ sf apex run test --target-org account-rating --test-level RunLocalTests --code-c
 /sf-deployment Validate deployment to staging (dry run)
 ```
 
-**Agent invoked**: `sf-deployment-guide`
+**Agent invoked**: `sf-devops-deployment`
 
 ```bash
 sf project deploy validate --source-dir force-app/ --target-org Staging --test-level RunLocalTests --wait 30
@@ -483,7 +483,7 @@ MEDIUM (1):
 /sf-soql-optimization Optimize the SOQL queries in OrderProcessor.cls
 ```
 
-**Agent invoked**: `sf-soql-optimizer`
+**Agent invoked**: `sf-performance-optimizer`
 
 **What happens**: The agent refactors the code to move queries outside loops:
 
@@ -605,7 +605,7 @@ All critical and high severity findings resolved.
 | Workflow | Primary Commands | Agents Invoked | Key Hooks |
 |---|---|---|---|
 | Apex TDD | `/sf-tdd-workflow`, `/sf-apex-best-practices`, `/sf-governor-limits` | sf-tdd-guide, sf-apex-reviewer, sf-performance-optimizer | governor-check, quality-gate, post-write |
-| LWC Development | `/sf-lwc-development`, `/sf-deployment` | sf-lwc-reviewer, sf-deployment-guide | post-write, post-edit-console-warn, sfdx-validate |
-| Deployment Pipeline | `/sf-scratch-org-workflow`, `/sf-apex-testing`, `/sf-deployment` | sf-devops-guide, sf-deployment-guide, sf-verification-runner | session-start, sfdx-validate, post-bash-build-complete |
+| LWC Development | `/sf-lwc-development`, `/sf-deployment` | sf-lwc-reviewer, sf-devops-deployment | post-write, post-edit-console-warn, sfdx-validate |
+| Deployment Pipeline | `/sf-scratch-org-workflow`, `/sf-apex-testing`, `/sf-deployment` | sf-devops-deployment, sf-devops-deployment, sf-verification-runner | session-start, sfdx-validate, post-bash-build-complete |
 | Security Audit | `/sf-security`, `/sf-apex-best-practices` | sf-security-reviewer, sf-apex-reviewer | governor-check, quality-gate, sfdx-scanner-check |
-| Performance Optimization | `/sf-governor-limits`, `/sf-soql-optimization`, `/sf-trigger-frameworks`, `/sf-governor-limits` | sf-performance-optimizer, sf-soql-optimizer, sf-trigger-architect | governor-check, quality-gate, sfdx-validate |
+| Performance Optimization | `/sf-governor-limits`, `/sf-soql-optimization`, `/sf-trigger-frameworks`, `/sf-governor-limits` | sf-performance-optimizer, sf-performance-optimizer, sf-trigger-architect | governor-check, quality-gate, sfdx-validate |

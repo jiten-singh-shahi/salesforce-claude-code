@@ -109,6 +109,6 @@ Never proceed past an escalation point autonomously.
 
 - `refactor-cleaner` — code needs refactoring (not a build error)
 - `sf-architect` — architecture changes needed
-- `sf-planner` — new features required
+- `sf-blueprint-planner` — new features required
 - `sf-security-reviewer` — security issues found during diagnosis
 - Skills: `sf-build-fix`, `sf-apex-constraints`, `sf-deployment-constraints`

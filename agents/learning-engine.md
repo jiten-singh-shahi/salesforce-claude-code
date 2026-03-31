@@ -5,7 +5,7 @@ description: >-
   observe patterns, create confidence-scored instincts, evolve into reusable skills.
   Use when improving deploy quality over time. Do NOT use for single-session tasks.
 tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
-model: haiku
+model: sonnet
 origin: SCC
 ---
 
@@ -127,4 +127,4 @@ Always bulkify Apex triggers and avoid SOQL/DML inside loops.
 ## Related
 
 - `eval-runner` — captures pass/fail outcomes that feed back into observation patterns.
-- `sf-harness-optimizer` — consumes evolved skills and agent suggestions to improve harness quality.
+- `sf-harness-audit` skill — consumes evolved skills and agent suggestions to assess harness quality.

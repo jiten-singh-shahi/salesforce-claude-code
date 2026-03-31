@@ -482,7 +482,7 @@ Fix: [Specific remediation with code example]
 
 ## Related
 
-- **Agent**: `sf-soql-optimizer` — SOQL query performance and selectivity review
+- **Agent**: `sf-performance-optimizer` — SOQL query performance and selectivity review
 - **Agent**: `sf-visualforce-reviewer` — Visualforce-specific XSS and controller security
 - **Skill**: `sf-security` — Quick reference (invoke via `/sf-security`)
 - **Skill**: `sf-security-constraints` — Security enforcement rules (invoke via `/sf-security-constraints`)

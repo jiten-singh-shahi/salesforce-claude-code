@@ -17,9 +17,9 @@ SCC is a unified system where each layer serves a distinct role:
 | Layer | What It Does | Examples |
 |-------|-------------|----------|
 | **@salesforce/mcp** | Platform capabilities — query orgs, deploy metadata, run tests, analyze code | Org management, SOQL queries, Apex test execution |
-| **32 Agents** | Expert routing — each agent specializes in one Salesforce domain | `sf-apex-reviewer`, `sf-soql-optimizer`, `sf-trigger-architect`, `sf-security-reviewer` |
-| **52 Skills** | Institutional knowledge + workflows — 33 user-invocable via `/skill-name`, 19 auto-activating | `/sf-apex-best-practices`, `/sf-deployment`, `/sf-soql-optimization`, `/sf-security` |
-| **28 Rules** | Always-on governance — enforced on every interaction | `with sharing` mandatory, `WITH USER_MODE` for SOQL, naming conventions |
+| **25 Agents** | Expert routing — each agent specializes in one Salesforce domain | `sf-apex-reviewer`, `sf-performance-optimizer`, `sf-trigger-architect`, `sf-security-reviewer` |
+| **55 Skills** | Institutional knowledge + workflows — 35 user-invocable via `/skill-name`, 20 auto-activating | `/sf-apex-best-practices`, `/sf-deployment`, `/sf-soql-optimization`, `/sf-security` |
+| **7 Constraint Skills** | Always-on governance via auto-activating skills | `sf-apex-constraints`, `sf-soql-constraints`, `sf-security-constraints`, `sf-trigger-constraints` |
 | **28 Hooks** | Automated enforcement — quality gates run on every code change | SOQL-in-loop detection, PMD via sf scanner, privilege escalation checks |
 
 **Together:** `@salesforce/mcp` gives Claude the hands to work with Salesforce. SCC gives Claude the brain to work well.
@@ -166,33 +166,31 @@ All content is structured for use across multiple AI harnesses:
 
 | Agent | Description |
 |---|---|
-| `sf-planner` | Decomposes Salesforce features into implementation tasks |
-| `sf-code-reviewer` | General Salesforce code quality review |
 | `sf-apex-reviewer` | Deep Apex quality, patterns, and governor limits |
 | `sf-lwc-reviewer` | LWC component architecture and accessibility review |
-| `sf-tdd-guide` | Test-driven development guidance for Apex |
+| `sf-code-reviewer` | General Salesforce code quality review |
 | `sf-security-reviewer` | CRUD/FLS/sharing and injection vulnerability audit |
-| `sf-soql-optimizer` | SOQL query analysis and index-aware rewriting |
+| `sf-tdd-guide` | Test-driven development guidance for Apex |
 | `sf-trigger-architect` | Trigger framework design and refactoring |
-| `sf-devops-guide` | SF CLI, scratch orgs, CI/CD pipeline guidance |
 | `sf-flow-reviewer` | Flow Builder best practices and performance review |
 | `sf-agentforce-builder` | Agentforce agent design and configuration |
-| `sf-performance-optimizer` | Governor limit analysis and performance tuning |
+| `sf-performance-optimizer` | Governor limit analysis, SOQL optimization, and performance tuning |
 | `sf-integration-architect` | REST/SOAP/Platform Events integration patterns |
-| `sf-data-architect` | Object model, relationships, and data migration |
-| `sf-deployment-guide` | Deployment strategy, validation, and rollback |
-| `sf-chief-of-staff` | Session coordination and task delegation |
-| `doc-updater` | Documentation generation and maintenance |
-| `sf-e2e-runner` | End-to-end test execution and analysis |
-| `sf-harness-optimizer` | AI harness configuration optimization |
-| `refactor-cleaner` | Code refactoring and cleanup |
 | `sf-architect` | Salesforce architecture design and review |
-| `sf-build-resolver` | Build error resolution and dependency fixes |
-| `sf-docs-lookup` | Salesforce documentation search and reference |
 | `sf-admin` | Salesforce admin configuration and audit |
+| `sf-build-resolver` | Build error resolution and dependency fixes |
+| `sf-devops-deployment` | SF CLI, CI/CD pipelines, deployment strategy and rollback |
+| `sf-e2e-runner` | End-to-end test execution and analysis |
 | `sf-visualforce-reviewer` | Visualforce page review and migration guidance |
 | `sf-aura-reviewer` | Aura component review and LWC migration guidance |
+| `sf-blueprint-planner` | Multi-session project planning and coordination |
+| `sf-verification-runner` | Quality gates: build, lint, test, security, deploy readiness |
+| `doc-updater` | Documentation generation and maintenance |
+| `refactor-cleaner` | Code refactoring and cleanup |
 | `loop-operator` | Autonomous loop execution and monitoring |
+| `deep-researcher` | Multi-source Salesforce research and synthesis |
+| `learning-engine` | Continuous learning from session patterns |
+| `eval-runner` | Eval suite definition and execution |
 
 ---
 
