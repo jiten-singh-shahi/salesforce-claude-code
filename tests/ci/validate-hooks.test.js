@@ -411,5 +411,59 @@ test('validates nested hook format (hooks array within entry)', () => {
   }
 });
 
+// ── Branch: referenced script does not exist → error ──────────────────────
+
+test('fails when referenced script does not exist on disk', () => {
+  const tmp = makeTmpDir();
+  try {
+    writeHooksJson(tmp, {
+      hooks: {
+        SessionStart: [
+          {
+            hooks: [
+              { type: 'command', command: `node "\${CLAUDE_PLUGIN_ROOT}/scripts/hooks/nonexistent-hook.js"` }
+            ]
+          }
+        ]
+      }
+    });
+    const result = runValidator(tmp);
+    assert.strictEqual(result.status, 1);
+    assert.ok(result.stderr.includes('referenced script not found'));
+    assert.ok(result.stderr.includes('nonexistent-hook.js'));
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+// ── Branch: referenced script exists → passes ─────────────────────────────
+
+test('passes when referenced script exists on disk', () => {
+  const tmp = makeTmpDir();
+  try {
+    // Create the script file
+    const scriptsDir = path.join(tmp, 'scripts', 'hooks');
+    fs.mkdirSync(scriptsDir, { recursive: true });
+    fs.writeFileSync(path.join(scriptsDir, 'my-hook.js'), '// hook');
+
+    writeHooksJson(tmp, {
+      hooks: {
+        SessionStart: [
+          {
+            hooks: [
+              { type: 'command', command: `node "\${CLAUDE_PLUGIN_ROOT}/scripts/hooks/my-hook.js"` }
+            ]
+          }
+        ]
+      }
+    });
+    const result = runValidator(tmp);
+    assert.strictEqual(result.status, 0);
+    assert.ok(result.stdout.includes('PASSED'));
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
 console.log(`\nvalidate-hooks.test.js: ${passCount} passed, ${failCount} failed`);
 if (failCount > 0) process.exit(1);

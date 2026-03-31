@@ -9,6 +9,7 @@
  *   - Top-level structure has a "hooks" object
  *   - Lifecycle event keys are from the known set
  *   - Each hook entry has type: "command" and a non-empty command string
+ *   - Referenced script files exist on disk
  */
 
 const fs = require('fs');
@@ -103,6 +104,32 @@ function flattenHookEntries(eventHooks) {
   return flat;
 }
 
+/**
+ * Extract script file paths from a hook command string.
+ * Handles patterns like:
+ *   node "${CLAUDE_PLUGIN_ROOT}/scripts/hooks/foo.js"
+ *   bash "${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags-shell.sh" ... "scripts/hooks/bar.sh"
+ *   npx block-no-verify@1.1.2  (npm packages — skip)
+ */
+function extractScriptPaths(commandStr, root) {
+  const paths = [];
+  // Match quoted paths containing scripts/hooks/ (with or without ${CLAUDE_PLUGIN_ROOT})
+  const quoted = commandStr.match(/"[^"]*scripts\/hooks\/[^"]*"/g) || [];
+  for (const q of quoted) {
+    const cleaned = q.replace(/"/g, '').replace(/\$\{CLAUDE_PLUGIN_ROOT\}\/?/, '');
+    const resolved = path.resolve(root, cleaned);
+    paths.push(resolved);
+  }
+  // Match unquoted paths (e.g., bare scripts/hooks/foo.js args)
+  const unquoted = commandStr.match(/(?:^|\s)(scripts\/hooks\/\S+)/g) || [];
+  for (const u of unquoted) {
+    const cleaned = u.trim().replace(/"/g, '');
+    const resolved = path.resolve(root, cleaned);
+    if (!paths.includes(resolved)) paths.push(resolved);
+  }
+  return paths;
+}
+
 let hookCount = 0;
 
 for (const [eventName, eventHooks] of Object.entries(parsed.hooks)) {
@@ -160,6 +187,14 @@ for (const [eventName, eventHooks] of Object.entries(parsed.hooks)) {
       errors.push(`${loc}: "command" must not be empty`);
     } else {
       hookCount++;
+
+      // Validate referenced scripts exist on disk
+      const scriptPaths = extractScriptPaths(hook.command, pluginRoot);
+      for (const sp of scriptPaths) {
+        if (!fs.existsSync(sp)) {
+          errors.push(`${loc}: referenced script not found: ${path.relative(pluginRoot, sp)}`);
+        }
+      }
     }
 
     // Optional but recommended: matcher for PreToolUse/PostToolUse
