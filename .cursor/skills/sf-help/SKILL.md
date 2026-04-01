@@ -1,184 +1,152 @@
 ---
 name: sf-help
 description: >-
-  Use when asking what SCC can do. Discover SCC commands, agents, and skills — organized by Salesforce workflow to answer what tools are available and which to use.
+  Use when asking what SCC can do. Discover SCC agents and skills — organized by Salesforce workflow to answer what tools are available and which to use.
 ---
 
-# SCC Help — Command, Skill, and Agent Discovery
+# SCC Help — Agent and Skill Discovery
 
-Show available SCC commands, skills, and agents organized by Salesforce workflow. Answers "what can I do?" and "which command/skill should I use?"
-
-SCC provides **55 skills** (35 user-invocable) for deep domain knowledge and core workflows, and **25 specialized agents** for complex multi-step work.
-
-> **Note:** All workflows are now available as **skills**. Skills activate automatically when relevant, and 35 of them can also be invoked directly by name. See the categorized list below.
+SCC provides **17 agents** for end-to-end Salesforce development and **55 skills** for domain knowledge. Agents are lean workflow orchestrators. Skills carry patterns, examples, and rules.
 
 ## When to Use
 
-- When you need to discover what SCC commands, skills, or agents are available
-- When deciding which command or skill to use for a specific Salesforce workflow
-- When onboarding to a project and want to understand SCC capabilities
-- When searching for a specific tool by keyword (e.g., "apex", "lwc", "deploy", "test", "security")
-- When you want a categorized overview of the full SCC toolset
+- Discovering what SCC agents and skills are available
+- Deciding which agent to use for a specific task
+- Onboarding to a project and understanding SCC capabilities
+- Searching by keyword (e.g., "apex", "lwc", "deploy", "test", "security")
 
-## Usage
+## Domain Agents (11)
 
-```
-sf-help                    # Full categorized command + skill list
-sf-help apex               # Commands and skills for Apex development
-sf-help lwc                # Commands and skills for LWC development
-sf-help deploy             # Skills for deployment workflows
-sf-help test               # Skills for testing workflows
-sf-help security           # Skills for security review
-sf-help <keyword>          # Search commands and skills by keyword
-```
-
-## Utility Skills
-
-### Project Setup & Onboarding
-
-| Skill | What It Does |
-|-------|-------------|
-| `/sf-help` | This skill — discover available skills and agents |
-| `/sf-quickstart` | Interactive onboarding for new projects |
-
-### Build & Refactoring
-
-| Skill | What It Does |
-|-------|-------------|
-| `/sf-build-fix` | Fix build and deployment errors |
-| `/refactor-clean` | Dead code removal and consolidation |
-
-### Session & Checkpoints
-
-| Skill | What It Does |
-|-------|-------------|
-| `/save-session` | Save session state for later |
-| `/resume-session` | Resume from saved session |
-| `/sessions` | List and manage saved sessions |
-| `/checkpoint` | Save a recovery checkpoint |
-
-### Documentation & Meta
-
-| Skill | What It Does |
-|-------|-------------|
-| `/sf-docs-lookup` | Look up documentation topics |
-| `/update-docs` | Update project documentation |
-| `/update-platform-docs` | Refresh platform deprecation & API version reference docs |
-| `/sf-harness-audit` | Audit SCC configuration health |
-| `/aside` | Start a side conversation without affecting main context |
-| `/model-route` | Route to the best model for a task |
-
-## Salesforce Domain Skills (24)
-
-These skills can be invoked directly by name (e.g., "use sf-tdd-workflow" or "apply sf-security"):
-
-### Code Review & Quality
-
-| Skill | What It Does |
-|-------|-------------|
-| `sf-apex-best-practices` | Enterprise Apex coding standards and patterns |
-| `sf-governor-limits` | Governor limit detection and remediation |
-| `sf-soql-optimization` | SOQL query performance optimization |
-| `sf-trigger-frameworks` | Trigger handler pattern refactoring |
-
-### Testing
-
-| Skill | What It Does |
-|-------|-------------|
-| `sf-tdd-workflow` | Test-driven Apex development (RED-GREEN-REFACTOR) |
-| `sf-apex-testing` | Apex test patterns and coverage analysis |
-| `sf-e2e-testing` | End-to-end integration testing |
-
-### Security
-
-| Skill | What It Does |
-|-------|-------------|
-| `sf-security` | Security audit (CRUD/FLS, sharing, injection) |
-
-### Development
-
-| Skill | What It Does |
-|-------|-------------|
-| `sf-lwc-development` | Lightning Web Component development |
-| `sf-flow-development` | Flow design and automation |
-| `sf-agentforce-development` | Agentforce agent and action development |
-| `sf-data-modeling` | Data model and relationship design |
-| `sf-visualforce-development` | Visualforce page development and migration |
-| `sf-aura-development` | Aura component development and migration |
-| `sf-platform-events-cdc` | Platform Events and Change Data Capture |
-
-### Deployment & DevOps
-
-| Skill | What It Does |
-|-------|-------------|
-| `sf-deployment` | Guided deployment workflow |
-| `sf-debugging` | Debug log analysis and troubleshooting |
-
-### Platform Skills
-
-| Skill | What It Does |
-|-------|-------------|
-| `continuous-agent-loop` | Continuous autonomous agent workflow |
-| `prompt-optimizer` | Optimize prompts for SCC |
-
-### Platform Agents (migrated from skills)
+These agents auto-activate based on your task. Each follows TDD and preloads constraint skills.
 
 | Agent | What It Does |
 |-------|-------------|
-| `sf-blueprint-planner` | Architecture blueprint generation |
-| `deep-researcher` | Deep multi-source research |
-| `sf-verification-runner` | Pre-deployment verification loop |
+| `sf-architect` | Orchestrator — analyzes requirements, designs solutions, decomposes tasks, runs final review |
+| `sf-apex-agent` | All Apex — classes, triggers, batch, async, callouts, tests (TDD) |
+| `sf-lwc-agent` | All LWC — components, Jest tests, wire service, events, SLDS |
+| `sf-flow-agent` | All Flow — record-triggered, screen, scheduled, approval processes |
+| `sf-admin-agent` | All config — objects, permissions, sharing, metadata, Experience Cloud |
+| `sf-integration-agent` | All integration — REST/SOAP callouts, Named Creds, Platform Events, CDC |
+| `sf-agentforce-agent` | Agentforce — topics, custom Apex actions, prompt templates |
+| `sf-review-agent` | Cross-domain review — security audit, performance, test coverage |
+| `sf-bugfix-agent` | Fix build errors, test failures, deploy issues (minimal diff) |
+| `sf-aura-reviewer` | Review Aura components + migration to LWC |
+| `sf-visualforce-reviewer` | Review Visualforce pages + migration to LWC |
+
+## Platform Agents (6)
+
+| Agent | What It Does |
+|-------|-------------|
+| `deep-researcher` | Multi-source research with citations |
+| `doc-updater` | Documentation sync and codemap generation |
+| `eval-runner` | Evaluate and benchmark performance |
 | `learning-engine` | Instinct-based learning from sessions |
-| `eval-runner` | Evaluate and benchmark SCC performance |
+| `loop-operator` | Autonomous agent loop management |
+| `refactor-cleaner` | Dead code removal and consolidation |
 
-## Additional Skills (20)
+## Constraint Skills (7) — Auto-loaded by agents
 
-These skills activate automatically when relevant context is detected. They do not need to be invoked directly:
+These enforce hard rules. Agents preload them via `skills` frontmatter.
 
-| Skill Category | Skills |
-|---------------|--------|
-| Salesforce | `sf-integration`, `sf-api-design`, `sf-metadata-management`, `sf-devops-ci-cd`, `sf-approval-processes`, `sf-experience-cloud`, `sf-apex-enterprise-patterns`, `sf-apex-cursor`, `sf-lwc-testing`, `sf-apex-async-patterns`, `sf-apex-constraints`, `sf-soql-constraints`, `sf-security-constraints`, `sf-trigger-constraints`, `sf-testing-constraints`, `sf-lwc-constraints`, `sf-deployment-constraints` |
-| Platform | `mcp-server-patterns`, `security-scan`, `strategic-compact` |
+| Skill | Rules |
+|-------|-------|
+| `sf-apex-constraints` | Governor limits, bulkification, naming |
+| `sf-lwc-constraints` | Component naming, security, accessibility |
+| `sf-trigger-constraints` | One-trigger-per-object, handler delegation |
+| `sf-security-constraints` | CRUD/FLS, sharing, injection prevention |
+| `sf-testing-constraints` | Coverage, isolation, assertions |
+| `sf-soql-constraints` | Query safety, selectivity |
+| `sf-deployment-constraints` | Deploy safety, test levels, validation |
 
-## Available Agents
+## Pattern Skills (28) — Read by agents on demand
 
-For complex multi-step work, SCC provides 25 specialized agents. Key agents (10 of 25) are listed below. These are invoked automatically when relevant, but you can also reference them directly:
+Agents read these for domain knowledge when the task matches. Not user-invocable.
 
-| Agent | Specialty |
+### Apex
+
+| Skill | Knowledge |
 |-------|-----------|
-| `sf-trigger-architect` | Trigger framework design (FFLIB, pragmatic handler) |
-| `sf-code-reviewer` | Comprehensive cross-domain Salesforce code review |
-| `sf-apex-reviewer` | Enterprise Apex code review |
-| `sf-lwc-reviewer` | Lightning Web Component review |
-| `sf-security-reviewer` | Security audit (CRUD/FLS, sharing, injection) |
-| `sf-flow-reviewer` | Flow design and automation review |
-| `sf-agentforce-builder` | Agentforce agent and action development |
-| `sf-architect` | Solution architecture and data model design |
-| `sf-integration-architect` | Integration pattern design |
-| `sf-performance-optimizer` | Performance bottleneck analysis |
+| `sf-apex-best-practices` | Class organization, error handling, collections |
+| `sf-apex-testing` | TestDataFactory, bulk scenarios, mocks |
+| `sf-apex-async-patterns` | Batch vs Queueable vs @future decision |
+| `sf-apex-enterprise-patterns` | FFLIB selector/domain/service/UoW |
+| `sf-apex-cursor` | Cursor API for large result sets |
+| `sf-trigger-frameworks` | Handler patterns, recursion prevention |
+| `sf-soql-optimization` | Selectivity, indexes, query plans |
+| `sf-governor-limits` | Limit reference, optimization strategies |
 
-## Quick Start Recommendations
+### LWC
 
-**New to a Salesforce project?** Start with:
+| Skill | Knowledge |
+|-------|-----------|
+| `sf-lwc-development` | Component lifecycle, wire, events, SLDS |
+| `sf-lwc-testing` | Jest mocking, DOM queries, accessibility |
 
-1. `/sf-quickstart` — detect your project and configure SCC
-2. Use `sf-tdd-workflow` skill — write tests first
-3. Use `sf-apex-best-practices` skill — review before committing
-4. Use `sf-security` skill — security check before deploying
+### Flow
 
-**Fixing build errors?** Use `/sf-build-fix`
+| Skill | Knowledge |
+|-------|-----------|
+| `sf-flow-development` | Flow types, bulkification, error handling |
+| `sf-approval-processes` | Approval lifecycle, multi-step, delegation |
 
-**Need documentation?** Use `/sf-docs-lookup <topic>`
+### Admin / Config
 
-**Want to improve test coverage?** Use `sf-apex-testing` skill then `sf-tdd-workflow` skill
+| Skill | Knowledge |
+|-------|-----------|
+| `sf-data-modeling` | Objects, relationships, CMDTs, sharing |
+| `sf-experience-cloud` | Sites, guest users, external sharing |
+| `sf-metadata-management` | package.xml, .forceignore, source tracking |
 
-**Debugging an issue?** Use `sf-debugging` skill
+### Integration
 
-## Examples
+| Skill | Knowledge |
+|-------|-----------|
+| `sf-integration` | REST/SOAP callouts, Named Creds, retry |
+| `sf-platform-events-cdc` | Event publish/subscribe, CDC setup |
+| `sf-api-design` | Custom REST endpoints, batch operations |
 
-```
-sf-help
-sf-help apex
-sf-help What skill should I use to review my trigger code?
-sf-help How do I check for governor limit violations?
-```
+### Agentforce
+
+| Skill | Knowledge |
+|-------|-----------|
+| `sf-agentforce-development` | Topics, actions, prompt templates |
+
+### Cross-domain
+
+| Skill | Knowledge |
+|-------|-----------|
+| `sf-security` | CRUD/FLS enforcement, sharing, injection |
+| `sf-e2e-testing` | Integration test strategy, bulk scenarios |
+| `sf-debugging` | Debug logs, explain plans, common errors |
+| `sf-deployment` | Deploy strategies, validation-only, rollback |
+| `sf-devops-ci-cd` | GitHub Actions, CI/CD, scratch org CI |
+| `sf-tdd-workflow` | Red-Green-Refactor, TDD methodology |
+| `sf-build-fix` | Compilation errors, metadata conflicts |
+
+### Legacy
+
+| Skill | Knowledge |
+|-------|-----------|
+| `sf-aura-development` | Aura patterns + LWC migration |
+| `sf-visualforce-development` | VF patterns + LWC migration |
+
+## Utility Skills — User-invocable
+
+| Skill | What It Does |
+|-------|-------------|
+| `/sf-help` | This skill — discover available agents and skills |
+| `/sf-quickstart` | Interactive onboarding for new projects |
+| `/sf-docs-lookup` | Look up Salesforce documentation |
+| `/sf-harness-audit` | Audit SCC configuration health |
+| `/sessions` | List and manage saved sessions |
+
+## Quick Start
+
+1. `/sf-quickstart` — detect project type, configure SCC
+2. Describe your task — sf-architect auto-activates for planning
+3. Domain agents auto-activate for building (sf-apex-agent, sf-lwc-agent, etc.)
+4. sf-review-agent auto-activates before deployment
+
+**Fixing build errors?** Describe the error — sf-bugfix-agent activates.
+
+**Need docs?** `/sf-docs-lookup <topic>`
