@@ -2,7 +2,7 @@
 name: sf-agentforce-development
 description: "Agentforce AI agent development — topics, actions, Prompt Templates, testing. Use when building or testing Agentforce agents. Do NOT use for non-Agentforce Apex or Flow-only automation."
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # Agentforce Development

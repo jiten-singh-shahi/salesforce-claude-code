@@ -5,7 +5,7 @@ description: >-
   sharing keywords, SOQL injection prevention, AppExchange review prep.
   Do NOT use for general Apex or LWC patterns.
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # Salesforce Security

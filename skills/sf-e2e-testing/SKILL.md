@@ -4,7 +4,7 @@ description: >-
   Use when writing Salesforce Apex end-to-end integration tests, deployment
   verification, or bulk scenario validation. Do NOT use for unit tests or TDD.
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # Salesforce E2E Testing

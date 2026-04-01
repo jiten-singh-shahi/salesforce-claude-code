@@ -5,7 +5,7 @@ description: >-
   package deployment, validation-then-quick-deploy, rollback planning,
   and production deployment best practices.
 origin: SCC
-user-invocable: true
+user-invocable: false
 disable-model-invocation: true
 ---
 

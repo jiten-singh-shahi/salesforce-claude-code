@@ -2,7 +2,7 @@
 name: sf-build-fix
 description: "Auto-fix Salesforce build errors — Apex compilation, metadata conflicts, dependencies, test failures. Use when build errors block deployment. Do NOT use for writing new features or refactoring."
 origin: SCC
-user-invocable: true
+user-invocable: false
 disable-model-invocation: true
 ---
 

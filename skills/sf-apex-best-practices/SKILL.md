@@ -4,7 +4,7 @@ description: >-
   Use when writing production-ready Salesforce Apex classes — organization,
   error handling, collection patterns. Do NOT use for test classes or triggers.
 origin: SCC
-user-invocable: true
+user-invocable: false
 allowed-tools: Read, Grep, Glob, Edit, Write, Bash
 ---
 

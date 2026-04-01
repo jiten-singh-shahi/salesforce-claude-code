@@ -5,7 +5,7 @@ description: >-
   CPU optimization, async offloading, bulk processing strategies.
   Do NOT use for general Apex or LWC patterns.
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # Governor Limits — Working Within Limits

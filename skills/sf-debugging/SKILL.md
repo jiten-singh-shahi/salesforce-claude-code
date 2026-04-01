@@ -2,7 +2,7 @@
 name: sf-debugging
 description: "Salesforce debugging — debug logs, SOQL explain plan, Flow debug, LWC DevTools, error resolution. Use when diagnosing Apex exceptions, governor breaches, or Flow failures. Do NOT use for tests or build errors."
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # Salesforce Debugging Techniques

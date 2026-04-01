@@ -4,7 +4,7 @@ description: >-
   Salesforce Aura component development — bundles, events, server-side actions,
   Locker Service, and LWC migration. Use when maintaining or migrating Aura.
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # Aura Component Development

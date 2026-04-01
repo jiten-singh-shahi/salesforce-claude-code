@@ -4,7 +4,7 @@ description: >-
   Salesforce Platform Events and CDC — Apex publish/subscribe, event replay,
   testing patterns. Use when designing event-driven integrations or data sync.
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # Platform Events & Change Data Capture

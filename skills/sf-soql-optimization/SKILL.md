@@ -2,7 +2,7 @@
 name: sf-soql-optimization
 description: "SOQL optimization — selective queries, index strategy, query plans, relationship efficiency, large data volumes. Use when queries hit limits or designing for 100K+ records. Do NOT use for general Apex, LWC, or Flow."
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # SOQL Optimization

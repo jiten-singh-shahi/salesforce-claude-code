@@ -5,7 +5,7 @@ description: >-
   or sharing models for scalable org architecture.
   Do NOT use for SOQL optimization or Apex patterns.
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # Salesforce Data Modeling

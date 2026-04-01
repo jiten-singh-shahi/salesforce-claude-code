@@ -4,7 +4,7 @@ description: >-
   Salesforce Apex trigger framework patterns — TriggerHandler, FFLIB Domain,
   TDTM, bypass and recursion control. Use when adopting or refactoring triggers.
 origin: SCC
-user-invocable: true
+user-invocable: false
 allowed-tools: Read, Grep, Glob, Edit, Write, Bash
 disable-model-invocation: true
 ---
