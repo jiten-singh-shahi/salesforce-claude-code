@@ -145,7 +145,7 @@ function validateAgent(filePath, availableSkills) {
       );
     }
 
-    if (!/\buse when\b|\bwhen\s+(you|the|a|an|user)\b/i.test(desc)) {
+    if (!/\buse\s+(?:proactively\s+)?when\b|\bwhen\s+(you|the|a|an|user)\b/i.test(desc)) {
       fileErrors.push(
         'description missing WHEN clause — add "Use when [trigger conditions]"'
       );
@@ -153,6 +153,15 @@ function validateAgent(filePath, availableSkills) {
 
     if (!/do not|don't|not for|except|excluding/i.test(desc)) {
       warn(relPath, 'description missing WHEN NOT clause — add "Do NOT use for [exclusions]"');
+    }
+
+    // Claude Code auto-delegates based on description. "Use proactively"
+    // encourages auto-delegation without the user explicitly asking.
+    if (!/\buse proactively\b/i.test(desc)) {
+      warn(relPath,
+        'description missing PROACTIVE clause — add "Use PROACTIVELY when [trigger]" ' +
+        'to enable auto-delegation by Claude Code'
+      );
     }
   }
 

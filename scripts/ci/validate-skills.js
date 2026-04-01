@@ -247,6 +247,17 @@ function validateSkill(skillDir, file) {
   // ── skill type checks ─────────────────────────────────────────────────────
   const skillType = detectSkillType(name, body);
 
+  // SF pattern skills should have strong "Use when" triggers for auto-invocation.
+  // Constraint skills are auto-loaded via agent `skills` frontmatter, so skip.
+  if (skillType !== 'constraint' && /^sf-/.test(name)) {
+    if (!/\buse when\b/i.test(desc)) {
+      warn(label,
+        'SF pattern skill description should include "Use when [trigger]" ' +
+        'to enable auto-invocation by Claude'
+      );
+    }
+  }
+
   if (skillType === 'constraint') {
     if (userInvocable === true) {
       fileErrors.push('constraint skill must NOT be user-invocable — remove user-invocable: true');
