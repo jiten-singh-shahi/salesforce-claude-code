@@ -105,6 +105,7 @@ Before building custom tooling, check if an MCP server handles it:
 ### Salesforce Decision Examples
 
 **Scenario 1: "We need rollup summary fields on lookup relationships"**
+
 ```
 Search: AppExchange "rollup summary lookup"
 Found: DLRS (Declarative Lookup Rollup Summaries) — 4.8★, 5000+ installs
@@ -113,6 +114,7 @@ Result: Zero custom Apex code for rollup calculations
 ```
 
 **Scenario 2: "We need delta deployments in CI"**
+
 ```
 Search: npm "salesforce delta deployment"
 Found: sfdx-git-delta — actively maintained, 1000+ stars
@@ -121,6 +123,7 @@ Result: Deploy only changed metadata, 10x faster CI
 ```
 
 **Scenario 3: "We need custom approval routing based on territory"**
+
 ```
 Search: AppExchange "dynamic approval routing territory"
 Found: Several packages but none match exact business rules

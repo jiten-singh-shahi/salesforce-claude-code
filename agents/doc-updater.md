@@ -119,6 +119,7 @@ docs/
 ## Escalation
 
 Stop and ask the human before:
+
 - Overwriting any section not marked `<!-- AUTO-GENERATED -->`
 - Deleting entire documentation sections
 - Modifying CLAUDE.md or any harness configuration file

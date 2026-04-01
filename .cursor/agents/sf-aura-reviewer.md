@@ -24,12 +24,15 @@ Do NOT use this agent for LWC component review — use `sf-lwc-reviewer`. Do NOT
 ## Analysis Process
 
 ### Step 1 — Discover
+
 Read all Aura component bundles using Glob (`**/*.cmp`, `**/*Controller.js`, `**/*Helper.js`, `**/*.evt`) and Read. Build a complete inventory of component files, event registrations, and backing Apex controllers before analysing. Flag any bundles missing required files (Controller, Helper) upfront.
 
 ### Step 2 — Analyse Architecture, Events, and Locker Compliance
+
 Apply the sf-aura-development skill to each bundle. Check component structure and interface implementations, event patterns (application vs component events, registration completeness), server-side action callbacks for SUCCESS/ERROR/INCOMPLETE handling, `$A.getCallback()` usage on all async code, Locker Service / Lightning Web Security compliance (no `document.querySelector`, no `eval()`), and storable action correctness. Assess migration readiness against the LWC feasibility matrix.
 
 ### Step 3 — Report Migration Readiness
+
 Produce findings using the Severity Matrix below. Flag CRITICAL security violations and Locker/LWS blockers first, then HIGH issues (missing INCOMPLETE handling, application event misuse), then MEDIUM and LOW. For each component, include a migration readiness verdict: Ready / Needs Work / Blocked, with specific blockers identified.
 
 ## Severity Matrix

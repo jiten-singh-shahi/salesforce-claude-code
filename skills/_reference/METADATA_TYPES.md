@@ -1,7 +1,7 @@
 # Metadata Types — Salesforce Reference
 
-> Source: https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_types_list.htm
-> Registry: https://github.com/forcedotcom/source-deploy-retrieve (metadataRegistry.json)
+> Source: <https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_types_list.htm>
+> Registry: <https://github.com/forcedotcom/source-deploy-retrieve> (metadataRegistry.json)
 > Last verified: API v66.0, Spring '26 (2026-03-28)
 
 ## Common Metadata Types

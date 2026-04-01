@@ -56,6 +56,7 @@ site:developer.salesforce.com <category-specific terms>
 ```
 
 For admin/configuration topics, also check:
+
 ```
 site:help.salesforce.com <topic>
 ```
@@ -73,6 +74,7 @@ When presenting documentation results:
 ### Step 4 — Cross-Reference with SCC Knowledge
 
 After finding the official docs, check if SCC has relevant skills:
+
 - Skills in `skills/` or `skills2/` that cover the topic in depth
 - Mention relevant SCC resources: "For best practices on this, see the `sf-soql-optimization` skill."
 

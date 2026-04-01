@@ -1,9 +1,10 @@
 # Salesforce API Versions — Feature Tracker
 
 > Last verified: 2026-03-31 against Spring '26 (API v66.0)
-> Source: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_versions.htm
+> Source: <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_versions.htm>
 >
 > **MAINTENANCE:**
+>
 > 1. When a new release ships: add section at TOP with `Added: YYYY-MM`
 > 2. Remove sections older than 24 months (model knows them by then)
 > 3. Update "Last verified" date

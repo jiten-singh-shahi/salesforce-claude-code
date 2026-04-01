@@ -113,6 +113,7 @@ See skill `sf-data-modeling` for CMDT design examples and Apex usage patterns.
 | Log/audit objects | Any object expecting millions of records |
 
 **Key LDV recommendations:**
+
 1. Add an indexed, unique `External_Id__c` field to every object receiving migrated data
 2. Plan an archiving strategy from day one (Big Objects, off-platform archive)
 3. Avoid roll-up summaries on LDV detail objects — recalculation is expensive; use nightly Batch aggregation instead

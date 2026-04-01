@@ -163,6 +163,7 @@ For complex multi-step work, SCC provides 25 specialized agents. Key agents (10 
 ## Quick Start Recommendations
 
 **New to a Salesforce project?** Start with:
+
 1. `/sf-quickstart` — detect your project and configure SCC
 2. Use `sf-tdd-workflow` skill — write tests first
 3. Use `sf-apex-best-practices` skill — review before committing

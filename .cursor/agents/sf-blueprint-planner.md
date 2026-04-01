@@ -83,12 +83,14 @@ Surface the plan to the user and update memory.
 ## Salesforce Blueprint Checklists
 
 ### Object Model Layer
+
 - [ ] Custom objects and fields
 - [ ] Relationships (lookup vs. master-detail)
 - [ ] Record types, page layouts, validation rules
 - [ ] Field-level security and sharing rules
 
 ### Apex Layer
+
 - [ ] Service classes (business logic)
 - [ ] Selector classes (SOQL — FFLIB pattern)
 - [ ] Domain/trigger handler classes
@@ -96,23 +98,27 @@ Surface the plan to the user and update memory.
 - [ ] Test classes with TestDataFactory
 
 ### LWC Layer
+
 - [ ] Component hierarchy (parent/child)
 - [ ] Wire services and Apex method calls
 - [ ] Event architecture (CustomEvent, LMS)
 - [ ] Jest test files
 
 ### Security Layer
+
 - [ ] Permission sets and permission set groups
 - [ ] Sharing rules and OWD
 - [ ] CRUD/FLS enforcement (`WITH USER_MODE` vs. `stripInaccessible`)
 - [ ] Named credentials for callouts
 
 ### Integration Layer
+
 - [ ] External services and named credentials
 - [ ] Platform Events or CDC
 - [ ] REST/SOAP endpoints (if custom)
 
 ### Deployment Strategy
+
 - [ ] Metadata types in deployment
 - [ ] Order: data model → code → config
 - [ ] Destructive changes manifest
@@ -120,6 +126,7 @@ Surface the plan to the user and update memory.
 - [ ] Rollback plan
 
 ### Verification Gates (per step)
+
 - [ ] All Apex tests pass
 - [ ] Coverage >= 75% (target: 85%)
 - [ ] No governor limit violations

@@ -52,6 +52,7 @@ sf apex run test --target-org MySandbox --test-level RunLocalTests --code-covera
 ```
 
 Also examine:
+
 - `.github/workflows/` for existing CI/CD setup
 - `manifest/package.xml` for deployment scope
 - `config/project-scratch-def.json` for scratch org configuration
@@ -221,6 +222,7 @@ sf project deploy start \
 Use `--post-destructive-changes` (deletes AFTER deployment succeeds) rather than `--pre-destructive-changes`. If the deployment fails, nothing is deleted.
 
 **Critical warnings:**
+
 - Deleting a custom field permanently destroys ALL data in that field. Export first with `sf data export tree`.
 - Custom fields cannot be deleted until all references (Apex, Flows, Layouts) are removed.
 - Salesforce has NO rollback for destructive changes.
@@ -237,6 +239,7 @@ Use `--post-destructive-changes` (deletes AFTER deployment succeeds) rather than
 3. Add GitHub repository secrets: `SF_CLIENT_ID`, `SF_SERVER_KEY` (base64-encoded), `SF_USERNAME`, `SF_PROD_USERNAME`, `SF_SANDBOX_USERNAME`.
 
 **JWT auth command (used in all CI steps):**
+
 ```bash
 echo "$SF_SERVER_KEY" | base64 --decode > server.key
 sf org login jwt \
@@ -252,6 +255,7 @@ sf org login jwt \
 Trigger: `pull_request` to `main` or `develop`.
 
 Key steps in order:
+
 1. Install SF CLI: `npm install -g @salesforce/cli`
 2. Decode server key and JWT-authenticate to sandbox
 3. Create scratch org: `sf org create scratch -f config/project-scratch-def.json -a CIScratchOrg -d 1`
@@ -265,6 +269,7 @@ Key steps in order:
 Trigger: `push` to `develop` (→ Staging) or `main` (→ Production).
 
 For Production:
+
 1. JWT-authenticate with `--instance-url https://login.salesforce.com`
 2. Validate and capture job ID: `sf project deploy validate ... --json | tee validate-result.json`
 3. Quick deploy: `JOB_ID=$(jq -r '.result.id' validate-result.json) && sf project deploy quick --job-id "$JOB_ID" --target-org Production`
@@ -287,6 +292,7 @@ feature/ticket-789  ──┘
 - **main** — production branch, requires approval gate
 
 **Per-developer scratch org setup:**
+
 ```bash
 sf org create scratch -f config/project-scratch-def.json -a feature-my-feature -d 7
 sf project deploy start -o feature-my-feature
@@ -371,6 +377,7 @@ DevOps Center (GA since Winter '24) tracks metadata changes as work items with p
 ### Safe Schema Change Patterns
 
 **Renaming a field (5-step safe pattern):**
+
 1. Create the new field
 2. Deploy data migration (Apex batch) to copy values
 3. Update all references (Apex, LWC, Flows, Reports) — use `grep -rn "Old_Field__c" force-app/`

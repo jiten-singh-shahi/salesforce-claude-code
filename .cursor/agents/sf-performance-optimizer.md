@@ -30,6 +30,7 @@ Do NOT use this agent for code review, LWC component review, or deployment tasks
 Use `Grep` and `Glob` to read all Apex classes, triggers, and batch jobs in scope. Search for SOQL queries inside `for` loops (`for` bodies containing `SELECT`), DML statements inside loops, duplicate queries across methods, and `@future`/Queueable/Batch usage. Capture any `System.LimitException` error messages from logs.
 
 Key grep patterns:
+
 - SOQL in loops: search for `for (` followed by `[SELECT` within the same method scope
 - DML in loops: search for `insert`/`update`/`delete`/`upsert` inside loop bodies
 - Non-selective patterns: `WHERE` clauses lacking indexed fields, `LIKE '%...%'`, `!=`, `NOT IN`
@@ -38,6 +39,7 @@ Key grep patterns:
 ### Step 2 — Analyse
 
 Map each finding to its limit category:
+
 - **SOQL count** — queries per transaction (100 sync / 200 async)
 - **DML count** — DML statements per transaction (150) or DML rows (10,000)
 - **Heap** — 6 MB sync / 12 MB async; caused by over-fetching fields or large in-memory collections
@@ -106,6 +108,7 @@ See skill `sf-governor-limits` for complete limits reference including callouts,
 ### Selectivity Rules
 
 A query is **selective** when it returns less than:
+
 - **10%** of records (or fewer than 333,000 on objects with > 3.33M records)
 - **5%** for non-indexed field filters
 
@@ -114,6 +117,7 @@ Non-selective queries on large objects cause timeouts.
 ### Query Plan Tool
 
 Use the Developer Console Query Plan tool before deploying queries against large objects:
+
 1. **Developer Console** > **Query Editor**
 2. **Help** > **Preferences** > check **Enable Query Plan**
 3. Write SOQL, click **Query Plan** (not Execute)
@@ -223,6 +227,7 @@ if (!toUpdate.isEmpty()) update toUpdate;
 | Large paginated reports (Spring '26) | `Cursor` + Queueable | Up to 50M rows, per-page heap only |
 
 **Key constraints:**
+
 - `@future` — primitives only (no SObjects), max 50 calls per transaction
 - `Queueable` — can chain jobs; constrained by daily async Apex execution limit (shared with all async types)
 - `Batch Apex` — cannot be called from `@future`; prefer for background mass operations where per-execute limit reset is critical

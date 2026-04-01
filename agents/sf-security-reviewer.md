@@ -112,11 +112,13 @@ public inherited sharing class RecordAccessChecker {
 `WITH USER_MODE` and `AccessLevel.USER_MODE` enforce CRUD and FLS. Record-level sharing is controlled separately by the class-level `with sharing` keyword.
 
 **Important distinction — read vs write behavior:**
+
 - **For SOQL queries, `WITH USER_MODE` silently strips inaccessible fields from the result.** The query succeeds but inaccessible fields are `null` in the returned records.
 - **For DML operations with `AccessLevel.USER_MODE`, it throws `SecurityException` on missing CRUD/FLS.**
 - **`Security.stripInaccessible()`** silently removes inaccessible fields and returns partial data, plus provides `getRemovedFields()` to inspect what was stripped.
 
 Choose based on business requirement:
+
 - **DML protection (AccessLevel.USER_MODE):** Enforces CRUD + FLS on write operations — throws on violation
 - **Query with silent stripping (WITH USER_MODE):** Inaccessible fields silently become `null` in results
 - **Granular field inspection (stripInaccessible):** When you need to know exactly which fields were removed

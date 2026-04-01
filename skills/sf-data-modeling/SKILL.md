@@ -212,6 +212,7 @@ public with sharing class ProjectSharingService {
 Objects with >100,000 records require special attention.
 
 **Schema design:**
+
 - Add external ID fields on objects queried by non-Id values
 - Request custom indexes on fields used in WHERE clauses
 - Consider skinny tables for frequently-accessed field subsets

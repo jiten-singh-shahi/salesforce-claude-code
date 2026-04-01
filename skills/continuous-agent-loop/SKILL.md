@@ -133,6 +133,7 @@ Claude reads this at iteration start, updates at iteration end.
 ## 4. The De-Sloppify Pattern
 
 **Add-on for any loop.** When you ask an LLM to implement Apex with TDD, it over-tests:
+
 - Tests verifying Salesforce platform behavior
 - Defensive null checks for schema-guaranteed fields
 - Excessive try/catch blocks

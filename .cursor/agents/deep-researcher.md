@@ -127,6 +127,7 @@ Salesforce releases 3x/year: Spring (Feb), Summer (Jun), Winter (Oct).
 ## Escalation
 
 Stop and ask the human before:
+
 - Writing research reports to files the user did not explicitly request
 - Making conclusions or recommendations when fewer than 3 independent sources support them
 - Presenting pilot/beta features as production-ready without a clear caveat

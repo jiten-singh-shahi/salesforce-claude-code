@@ -1,8 +1,8 @@
 # Flow Patterns — Reference
 
-> Source: https://architect.salesforce.com/docs/architect/decision-guides/guide/record-triggered
-> Source: https://help.salesforce.com/s/articleView?id=platform.flow_considerations_limit_transaction.htm
-> Source: https://help.salesforce.com/s/articleView?id=platform.flow_concepts_bulkification.htm
+> Source: <https://architect.salesforce.com/docs/architect/decision-guides/guide/record-triggered>
+> Source: <https://help.salesforce.com/s/articleView?id=platform.flow_considerations_limit_transaction.htm>
+> Source: <https://help.salesforce.com/s/articleView?id=platform.flow_concepts_bulkification.htm>
 > Last verified: API v66.0, Spring '26 (2026-03-28)
 
 ## Flow Types

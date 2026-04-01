@@ -1,6 +1,6 @@
 # Sharing Model — Reference
 
-> Source: https://architect.salesforce.com/fundamentals/platform-sharing-architecture
+> Source: <https://architect.salesforce.com/fundamentals/platform-sharing-architecture>
 > Last verified: API v66.0, Spring '26 (2026-03-28)
 
 ## Apex Sharing Keywords

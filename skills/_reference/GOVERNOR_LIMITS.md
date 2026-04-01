@@ -1,7 +1,7 @@
 # Governor Limits — Salesforce Reference
 
 > Last verified: API v66.0 (Spring '26)
-> Source: https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_gov_limits.htm
+> Source: <https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_gov_limits.htm>
 
 Salesforce governor limits prevent any single Apex transaction from monopolizing shared infrastructure. Hitting a limit throws `System.LimitException`, which **cannot be caught** — it terminates the transaction immediately.
 

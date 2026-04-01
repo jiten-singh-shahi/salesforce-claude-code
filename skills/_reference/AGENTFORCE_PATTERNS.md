@@ -1,8 +1,8 @@
 # Agentforce Patterns — Reference
 
-> Source: https://developer.salesforce.com/docs/ai/agentforce/guide/get-started-actions.html
-> Also: https://developer.salesforce.com/blogs/2025/07/best-practices-for-building-agentforce-apex-actions
-> Also: https://developer.salesforce.com/blogs/2025/01/how-to-write-effective-natural-language-instructions-for-agentforce
+> Source: <https://developer.salesforce.com/docs/ai/agentforce/guide/get-started-actions.html>
+> Also: <https://developer.salesforce.com/blogs/2025/07/best-practices-for-building-agentforce-apex-actions>
+> Also: <https://developer.salesforce.com/blogs/2025/01/how-to-write-effective-natural-language-instructions-for-agentforce>
 > Last verified: API v66.0, Spring '26 (2026-03-28)
 
 ## Architecture

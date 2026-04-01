@@ -25,12 +25,14 @@ Remove dead code and consolidate duplicates safely. Uses Salesforce Code Analyze
 ### Step 1 — Detect Dead Code
 
 **Option A: Salesforce Code Analyzer (preferred)**
+
 ```bash
 sf code-analyzer run --target force-app --format table
 sf code-analyzer run --target force-app --format json | jq '.[] | select(.severity <= 2)'
 ```
 
 **Option B: Manual analysis**
+
 ```bash
 # Find Apex classes with no references.
 # Uses sfdx-project.json packageDirectories to find all source paths,
@@ -90,6 +92,7 @@ grep -rl "ClassName" force-app/main/default/layouts/
 ### Step 4 — Managed Package Considerations
 
 Never remove without checking:
+
 - `@AuraEnabled` methods — may be called by LWC/Aura components not in your source
 - `@InvocableMethod` — may be called by Flows you can't see in source control
 - `global` methods — may be called by subscriber orgs or external packages
@@ -99,6 +102,7 @@ Never remove without checking:
 ### Step 5 — Remove One at a Time
 
 For each SAFE item:
+
 1. Delete the dead code
 2. Run tests: `sf apex run test --test-level RunLocalTests --wait 15`
 3. Verify deployment: `sf project deploy start --dry-run --wait 10`
@@ -107,6 +111,7 @@ For each SAFE item:
 ### Step 6 — Consolidate Duplicates
 
 After dead code removal, look for consolidation opportunities:
+
 1. Identify similar methods across classes (same logic, different names)
 2. Extract shared logic into a utility/service class
 3. Update all callers to use the shared implementation

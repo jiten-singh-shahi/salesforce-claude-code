@@ -3,6 +3,7 @@
 > Last verified: 2026-03-31
 >
 > **MAINTENANCE:**
+>
 > 1. Append new entries with `Added: YYYY-MM` when Salesforce announces deprecations
 > 2. Remove entries older than 24 months (model knows them). Exception: "Retiring Soon" entries stay until retirement date + 24 months.
 > 3. Update "Last verified" date

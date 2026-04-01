@@ -69,6 +69,7 @@ When reviewing [content type], verify:
 
 - **Skills**: `skill-name-1`, `skill-name-2`
 - **Skills**: `/skill-name` (user-invocable)
+
 ```
 
 ### YAML Frontmatter Fields
@@ -102,6 +103,7 @@ Skills are workflow/domain-knowledge modules that provide reference information 
 ### Skill Directory Structure
 
 ```
+
 skills/
   sf-apex-testing/
     SKILL.md
@@ -109,6 +111,7 @@ skills/
     SKILL.md
   sf-lwc-development/
     SKILL.md
+
 ```
 
 ### SKILL.md Format
@@ -165,6 +168,7 @@ public with sharing class ExampleService {
 
 - **Agent**: `sf-agent-name` -- For interactive guidance
 - **Skills**: `/sf-skill-name` -- Quick access via slash command (user-invocable)
+
 ```
 
 ### Skill Frontmatter Fields
@@ -253,6 +257,7 @@ sf apex run test --class-names MyTest --target-org <alias>
 
 - **Agent**: `sf-agent-name` -- For interactive guidance
 - **Skills**: `/sf-other-skill` -- Complementary skill
+
 ```
 
 ### User-Invocable Skill Frontmatter

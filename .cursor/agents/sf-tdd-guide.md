@@ -29,6 +29,7 @@ Before writing any production code, write a test that describes the behavior. Th
 Name the test class after the production class (`AccountServiceTest` for `AccountService`). Use `@TestSetup` for shared data and `TestDataFactory` for all record creation.
 
 Test what to cover (priority order):
+
 1. Happy path — the normal expected use case
 2. Bulk scenario — 200 records (trigger context maximum)
 3. Null / empty inputs — guard clause coverage
@@ -64,6 +65,7 @@ Follow the same Red-Green-Refactor cycle for LWC:
 3. Add more tests for error states, edge cases, then refactor
 
 Key Jest patterns:
+
 - Mock imperative Apex with `jest.fn()` + `mockResolvedValue` / `mockRejectedValue`
 - Mock `@wire`-decorated Apex with `createApexTestWireAdapter`
 - Always clean the DOM in `afterEach` and call `jest.clearAllMocks()`
@@ -105,6 +107,7 @@ sf project deploy start \
 ## Escalation
 
 Stop and ask the human before:
+
 - Writing test classes for code that does not exist yet and requirements are ambiguous — confirm expected behavior before writing tests that encode assumptions
 - Modifying existing production code to make a new test pass when the change affects behavior beyond the targeted method — confirm scope first
 

@@ -1,7 +1,7 @@
 # Async Apex Patterns -- Reference
 
-> Source: https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_async_overview.htm
-> Also: https://architect.salesforce.com/decision-guides/async-processing
+> Source: <https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_async_overview.htm>
+> Also: <https://architect.salesforce.com/decision-guides/async-processing>
 > Last verified: API v66.0, Spring '26 (2026-03-28)
 
 ## Pattern Summary
@@ -16,12 +16,15 @@
 ## Method Signatures
 
 **@future** -- `@future public static void doWork(List<Id> ids) { }` / `@future(callout=true) public static void doCallout(String url) { }`
+
 - Must be `static`. Return: `void` only. Params: **primitives and collections of primitives only** (no SObjects).
 
 **Queueable** -- `public class MyJob implements Queueable { public void execute(QueueableContext ctx) { } }`
+
 - Invoke: `Id jobId = System.enqueueJob(new MyJob());`
 
 **Batch** -- `implements Database.Batchable<SObject>`
+
 - `Database.QueryLocator start(Database.BatchableContext bc)` -- up to **50M rows**
 - `Iterable<SObject> start(Database.BatchableContext bc)` -- alternative, 50K row limit
 - `void execute(Database.BatchableContext bc, List<SObject> scope)` -- scope 1-2000, default 200
@@ -30,6 +33,7 @@
 - Must be **outer class**. Add `Database.Stateful` to retain state across `execute()` calls.
 
 **Schedulable** -- `public class MyJob implements Schedulable { public void execute(SchedulableContext ctx) { } }`
+
 - Invoke: `System.schedule('Daily 5AM', '0 0 5 * * ?', new MyJob());`
 - CRON format: `Seconds Minutes Hours Day Month DayOfWeek OptionalYear`
 
@@ -51,14 +55,17 @@
 ## Queueable Advanced Features (API v50.0+)
 
 **AsyncOptions** -- pass as second arg to `System.enqueueJob(job, opts)`:
+
 - `opts.MinimumQueueableDelayInMinutes` -- 0-10 minutes
 - `opts.MaximumQueueableStackDepth` -- cap chain depth
 - `opts.DuplicateSignature` -- `new QueueableDuplicateSignature.Builder().addId(id).build()`
 
 **AsyncInfo** -- runtime introspection:
+
 - `AsyncInfo.getCurrentQueueableStackDepth()`, `.getMaximumQueueableStackDepth()`, `.hasMaxStackDepth()`
 
 **Transaction Finalizers** -- `implements Finalizer` with `void execute(FinalizerContext ctx)`:
+
 - Attach inside Queueable: `System.attachFinalizer(new MyFinalizer());`
 - `ctx.getResult()` returns `SUCCESS` or `UNHANDLED_EXCEPTION`; `ctx.getAsyncApexJobId()` returns parent job ID.
 - Runs after Queueable completes (success **or** failure). Can catch `System.LimitException` (normally uncatchable).

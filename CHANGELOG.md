@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+
 - Migrated 6 orchestration skills to agents per Law 4 ("Agents sequence, skills teach"):
   - `verification-loop` → `sf-verification-runner` agent
   - `blueprint` → `sf-blueprint-planner` agent

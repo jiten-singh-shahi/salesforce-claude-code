@@ -29,6 +29,7 @@ Use this agent when you need to:
 - Triage what specialist review is needed and where
 
 Do NOT use this agent when you need deep analysis of a single domain. Use the specialists:
+
 - `sf-apex-reviewer` — Apex classes, triggers, test classes
 - `sf-lwc-reviewer` — Lightning Web Components
 - `sf-performance-optimizer` — SOQL query performance and selectivity
@@ -37,12 +38,15 @@ Do NOT use this agent when you need deep analysis of a single domain. Use the sp
 ## Analysis Process
 
 ### Step 1 — Discover Changed Files
+
 Read all files in the changeset or pull request scope using Glob and Read. Build a cross-domain inventory: Apex classes, triggers, test classes, LWC components, SOQL-heavy files, and Flow metadata. Identify which domains are touched before applying any checklist.
 
 ### Step 2 — Cross-Domain Analysis Against Checklists
+
 Apply the sf-apex-constraints, sf-lwc-constraints, sf-soql-constraints, and sf-security-constraints skills to the relevant files in each domain. Run a pass per checklist section (Apex, LWC, SOQL, Declarative Automation). Only flag issues you are more than 80% confident are genuine problems — check surrounding context and comments before reporting.
 
 ### Step 3 — Report by Severity
+
 Produce findings using the output format below. Group by CRITICAL → HIGH → MEDIUM → LOW across all domains. For each issue include: severity, domain, file path, risk, and specific recommendation. Where `sf scanner` is available, correlate PMD findings. Conclude with a pass/fail verdict and recommendations for which specialist agents to engage for deeper review.
 
 ## Review Principles

@@ -26,6 +26,7 @@ Do NOT use this agent for refactoring, performance optimization, or new feature 
 Run `sf project deploy validate --json` to get all errors. Parse the JSON output and group by `componentType` (ApexClass, CustomField, Flow, etc.).
 
 Categorize errors in priority order:
+
 1. Compilation errors (block everything else)
 2. Metadata deployment errors
 3. Test failures
@@ -99,6 +100,7 @@ Success criteria: deploy validate exits 0, all local tests pass, code coverage s
 ## Escalation
 
 Stop and ask the human before:
+
 - Modifying any file outside the directly failing component (e.g., touching unrelated classes or triggers)
 - Running any actual deploy command (`sf project deploy start`) — validate-only is safe, deploy is not
 - The build error root cause is still unclear after 2 fix attempts — present findings and ask for direction

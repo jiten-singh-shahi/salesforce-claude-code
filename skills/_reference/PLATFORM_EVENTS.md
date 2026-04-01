@@ -1,7 +1,7 @@
 # Platform Events & CDC — Reference
 
-> Source: https://developer.salesforce.com/docs/atlas.en-us.platform_events.meta/platform_events/platform_event_limits.htm
-> Source: https://developer.salesforce.com/docs/atlas.en-us.change_data_capture.meta/change_data_capture/cdc_allocations.htm
+> Source: <https://developer.salesforce.com/docs/atlas.en-us.platform_events.meta/platform_events/platform_event_limits.htm>
+> Source: <https://developer.salesforce.com/docs/atlas.en-us.change_data_capture.meta/change_data_capture/cdc_allocations.htm>
 > Last verified: API v66.0, Spring '26 (2026-03-28)
 
 ## Platform Event Definitions
@@ -117,4 +117,5 @@ First 100,000 changes in a single transaction produce normal change events. Beyo
 - Apex triggers, flows, processes fire in test context; CometD/Pub/Sub API subscribers do **not**.
 
 ## Apex Trigger Batch Size
+
 Platform event and CDC triggers receive up to **2,000 records per batch** (vs. 200 for standard DML triggers). Use `EventBus.TriggerContext.currentContext().setResumeCheckpoint(replayId)` to checkpoint and resume on failure. Throw `EventBus.RetryableException` to retry from last checkpoint.
