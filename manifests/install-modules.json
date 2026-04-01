@@ -8,7 +8,7 @@
       "pathGroups": [
         {
           "paths": [
-            "agents/sf-planner.md",
+            "agents/sf-blueprint-planner.md",
             "agents/sf-code-reviewer.md",
             "agents/sf-tdd-guide.md"
           ],
@@ -18,7 +18,8 @@
           "paths": [
             "skills/sf-help/",
             "skills/sf-quickstart/",
-            "skills/model-route/"
+            "skills/model-route/",
+            "skills/_reference/"
           ],
           "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
         },
@@ -41,7 +42,6 @@
           "paths": [
             "agents/sf-apex-reviewer.md",
             "agents/sf-trigger-architect.md",
-            "agents/sf-soql-optimizer.md",
             "agents/sf-performance-optimizer.md"
           ],
           "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
@@ -51,7 +51,11 @@
             "skills/sf-trigger-frameworks/",
             "skills/sf-apex-async-patterns/",
             "skills/sf-apex-testing/",
-            "skills/sf-apex-best-practices/"
+            "skills/sf-apex-best-practices/",
+            "skills/sf-apex-constraints/",
+            "skills/sf-trigger-constraints/",
+            "skills/sf-testing-constraints/",
+            "skills/sf-soql-constraints/"
           ],
           "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
         }
@@ -73,7 +77,8 @@
         {
           "paths": [
             "skills/sf-lwc-development/",
-            "skills/sf-lwc-testing/"
+            "skills/sf-lwc-testing/",
+            "skills/sf-lwc-constraints/"
           ],
           "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
         }
@@ -93,18 +98,13 @@
             "agents/deep-researcher.md",
             "agents/eval-runner.md",
             "agents/learning-engine.md",
-            "agents/sf-blueprint-planner.md",
-            "agents/sf-chief-of-staff.md",
-            "agents/sf-data-architect.md",
             "agents/doc-updater.md",
             "agents/sf-e2e-runner.md",
-            "agents/sf-harness-optimizer.md",
             "agents/sf-integration-architect.md",
             "agents/loop-operator.md",
             "agents/refactor-cleaner.md",
             "agents/sf-architect.md",
             "agents/sf-build-resolver.md",
-            "agents/sf-docs-lookup.md",
             "agents/sf-verification-runner.md"
           ],
           "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
@@ -114,13 +114,10 @@
             "skills/sf-apex-cursor/",
             "skills/sf-apex-enterprise-patterns/",
             "skills/sf-metadata-management/",
-            "skills/sf-package-development/",
             "skills/sf-data-modeling/",
             "skills/sf-debugging/",
             "skills/sf-integration/",
-            "skills/sf-docker-patterns/",
             "skills/sf-e2e-testing/",
-            "skills/sf-metadata-migrations/",
             "skills/sf-tdd-workflow/",
             "skills/configure-scc/",
             "skills/continuous-agent-loop/",
@@ -156,16 +153,15 @@
       "pathGroups": [
         {
           "paths": [
-            "agents/sf-devops-guide.md",
-            "agents/sf-deployment-guide.md"
+            "agents/sf-devops-deployment.md"
           ],
           "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
         },
         {
           "paths": [
-            "skills/sf-scratch-org-workflow/",
             "skills/sf-devops-ci-cd/",
-            "skills/sf-deployment/"
+            "skills/sf-deployment/",
+            "skills/sf-deployment-constraints/"
           ],
           "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
         }
@@ -188,7 +184,8 @@
           "paths": [
             "skills/sf-security/",
             "skills/sf-governor-limits/",
-            "skills/sf-soql-optimization/"
+            "skills/sf-soql-optimization/",
+            "skills/sf-security-constraints/"
           ],
           "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
         }
@@ -222,8 +219,7 @@
             "skills/sf-aura-development/",
             "skills/sf-platform-events-cdc/",
             "skills/sf-approval-processes/",
-            "skills/sf-experience-cloud/",
-            "skills/sf-reporting-dashboards/"
+            "skills/sf-experience-cloud/"
           ],
           "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
         }
