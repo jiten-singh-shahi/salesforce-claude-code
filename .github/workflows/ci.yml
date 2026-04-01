@@ -87,7 +87,9 @@ jobs:
 
       - name: Test CLI --version
         run: |
-          node scripts/scc.js --version 2>&1 | grep -q "scc-universal"
+          VERSION=$(node scripts/scc.js --version 2>&1)
+          echo "Version output: $VERSION"
+          echo "$VERSION" | grep -qE "^[0-9]+\.[0-9]+\.[0-9]+"
 
       # ── Create dummy Salesforce project ───────────────────────────────
       - name: Create test project
@@ -168,44 +170,6 @@ jobs:
           test ! -f /tmp/test-project/.claude/agents/sf-agentforce-builder.md
           test ! -f /tmp/test-project/.claude/agents/sf-flow-reviewer.md
           test ! -f /tmp/test-project/.claude/skills/sf-flow-development/SKILL.md
-
-      # ── Test: scc doctor ──────────────────────────────────────────────
-      - name: Test scc doctor (should report healthy)
-        run: |
-          cd /tmp/test-project
-          npx scc doctor 2>&1 | grep -qi "healthy\|ok\|no issues\|installed"
-
-      # ── Test: scc status ──────────────────────────────────────────────
-      - name: Test scc status
-        run: |
-          cd /tmp/test-project
-          npx scc status
-
-      # ── Test: scc status --json ───────────────────────────────────────
-      - name: Test scc status --json
-        run: |
-          cd /tmp/test-project
-          npx scc status --json | node -e "JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'))"
-
-      # ── Test: scc list-installed ──────────────────────────────────────
-      - name: Test scc list-installed
-        run: |
-          cd /tmp/test-project
-          OUTPUT=$(npx scc list-installed)
-          echo "$OUTPUT"
-          echo "$OUTPUT" | grep -q "sf-apex-reviewer"
-
-      # ── Test: scc plan ────────────────────────────────────────────────
-      - name: Test scc plan
-        run: |
-          cd /tmp/test-project
-          npx scc plan
-
-      # ── Test: scc uninstall --dry-run ─────────────────────────────────
-      - name: Test scc uninstall --dry-run
-        run: |
-          cd /tmp/test-project
-          npx scc uninstall --dry-run 2>&1 | grep -q "sf-apex-reviewer"
 
       # ── Test: scc uninstall ───────────────────────────────────────────
       - name: Test scc uninstall

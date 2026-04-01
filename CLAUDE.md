@@ -44,6 +44,9 @@ npx markdownlint '**/*.md' --ignore node_modules --fix
 # Coverage (80% lines/functions/branches/statements required)
 npm run coverage
 
+# Smoke test (tests npm pack + install/uninstall in a temp project)
+bash scripts/ci/smoke-test.sh
+
 # SCC CLI
 npx scc install <target>     # Install SCC content (apex, lwc, all)
 npx scc doctor               # Diagnose missing/drifted files

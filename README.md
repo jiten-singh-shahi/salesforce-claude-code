@@ -487,7 +487,9 @@ Contributions are welcome! Please follow these guidelines:
 git clone <repo>
 cd salesforce-claude-code
 npm install
-npm test
+git config core.hooksPath .githooks   # Enable pre-commit checks
+npm test                               # Build + lint + validate + tests
+bash scripts/ci/smoke-test.sh          # Pack + install/uninstall smoke test
 ```
 
 ---
