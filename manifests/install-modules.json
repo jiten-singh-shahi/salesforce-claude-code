@@ -8,9 +8,8 @@
       "pathGroups": [
         {
           "paths": [
-            "agents/sf-blueprint-planner.md",
-            "agents/sf-code-reviewer.md",
-            "agents/sf-tdd-guide.md"
+            "agents/sf-architect.md",
+            "agents/sf-code-reviewer.md"
           ],
           "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
         },
@@ -103,9 +102,7 @@
             "agents/sf-integration-architect.md",
             "agents/loop-operator.md",
             "agents/refactor-cleaner.md",
-            "agents/sf-architect.md",
-            "agents/sf-build-resolver.md",
-            "agents/sf-verification-runner.md"
+            "agents/sf-build-resolver.md"
           ],
           "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
         },
@@ -152,9 +149,7 @@
       "description": "Salesforce DevOps — agents, skills for CI/CD, deployments, scratch orgs",
       "pathGroups": [
         {
-          "paths": [
-            "agents/sf-devops-deployment.md"
-          ],
+          "paths": [],
           "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
         },
         {
