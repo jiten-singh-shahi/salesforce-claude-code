@@ -45,3 +45,236 @@ jobs:
 
       - name: Skills health check
         run: node scripts/dev/skills-health.js
+
+  install-smoke-test:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # ── Pack tarball (simulates npm publish) ──────────────────────────
+      - name: Create npm tarball
+        run: |
+          npm pack
+          echo "TARBALL=$(ls scc-universal-*.tgz)" >> $GITHUB_ENV
+
+      - name: Verify tarball exists and is non-empty
+        run: |
+          test -f "$TARBALL"
+          SIZE=$(stat --format=%s "$TARBALL")
+          echo "Tarball size: ${SIZE} bytes"
+          test "$SIZE" -gt 100000  # Must be > 100KB
+
+      # ── CLI help and version ──────────────────────────────────────────
+      - name: Test CLI --help
+        run: |
+          node scripts/scc.js --help 2>&1 | grep -q "SCC — Salesforce Claude Code CLI"
+
+      - name: Test CLI --version
+        run: |
+          node scripts/scc.js --version 2>&1 | grep -q "scc-universal"
+
+      # ── Create dummy Salesforce project ───────────────────────────────
+      - name: Create test project
+        run: |
+          mkdir -p /tmp/test-project/force-app/main/default/classes
+          echo '{ "packageDirectories": [{ "path": "force-app", "default": true }] }' > /tmp/test-project/sfdx-project.json
+
+      # ── Install from tarball into test project ────────────────────────
+      - name: Install tarball into test project
+        run: |
+          cd /tmp/test-project
+          npm init -y > /dev/null 2>&1
+          npm install "$GITHUB_WORKSPACE/$TARBALL"
+
+      # ── Test: scc install apex ────────────────────────────────────────
+      - name: Test scc install apex
+        run: |
+          cd /tmp/test-project
+          npx scc install apex
+
+      - name: Verify apex install — core agents
+        run: |
+          test -f /tmp/test-project/.claude/agents/sf-blueprint-planner.md
+          test -f /tmp/test-project/.claude/agents/sf-code-reviewer.md
+          test -f /tmp/test-project/.claude/agents/sf-tdd-guide.md
+
+      - name: Verify apex install — apex agents
+        run: |
+          test -f /tmp/test-project/.claude/agents/sf-apex-reviewer.md
+          test -f /tmp/test-project/.claude/agents/sf-trigger-architect.md
+          test -f /tmp/test-project/.claude/agents/sf-performance-optimizer.md
+
+      - name: Verify apex install — security agent
+        run: |
+          test -f /tmp/test-project/.claude/agents/sf-security-reviewer.md
+
+      - name: Verify apex install — devops agent
+        run: |
+          test -f /tmp/test-project/.claude/agents/sf-devops-deployment.md
+
+      - name: Verify apex install — core skills
+        run: |
+          test -f /tmp/test-project/.claude/skills/sf-help/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-quickstart/SKILL.md
+          test -f /tmp/test-project/.claude/skills/model-route/SKILL.md
+
+      - name: Verify apex install — apex skills
+        run: |
+          test -f /tmp/test-project/.claude/skills/sf-trigger-frameworks/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-apex-async-patterns/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-apex-testing/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-apex-best-practices/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-apex-constraints/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-soql-constraints/SKILL.md
+
+      - name: Verify apex install — security skills
+        run: |
+          test -f /tmp/test-project/.claude/skills/sf-security/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-governor-limits/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-soql-optimization/SKILL.md
+
+      - name: Verify apex install — devops skills
+        run: |
+          test -f /tmp/test-project/.claude/skills/sf-deployment/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-deployment-constraints/SKILL.md
+
+      - name: Verify apex install — hooks
+        run: |
+          test -f /tmp/test-project/.claude/hooks/hooks.json
+
+      - name: Verify apex install — reference files
+        run: |
+          test -d /tmp/test-project/.claude/skills/_reference
+          test -f /tmp/test-project/.claude/skills/_reference/GOVERNOR_LIMITS.md
+
+      - name: Verify apex install — NO extended content (should not be installed)
+        run: |
+          test ! -f /tmp/test-project/.claude/agents/sf-agentforce-builder.md
+          test ! -f /tmp/test-project/.claude/agents/sf-flow-reviewer.md
+          test ! -f /tmp/test-project/.claude/skills/sf-flow-development/SKILL.md
+
+      # ── Test: scc doctor ──────────────────────────────────────────────
+      - name: Test scc doctor (should report healthy)
+        run: |
+          cd /tmp/test-project
+          npx scc doctor 2>&1 | grep -qi "healthy\|ok\|no issues\|installed"
+
+      # ── Test: scc status ──────────────────────────────────────────────
+      - name: Test scc status
+        run: |
+          cd /tmp/test-project
+          npx scc status
+
+      # ── Test: scc status --json ───────────────────────────────────────
+      - name: Test scc status --json
+        run: |
+          cd /tmp/test-project
+          npx scc status --json | node -e "JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'))"
+
+      # ── Test: scc list-installed ──────────────────────────────────────
+      - name: Test scc list-installed
+        run: |
+          cd /tmp/test-project
+          OUTPUT=$(npx scc list-installed)
+          echo "$OUTPUT"
+          echo "$OUTPUT" | grep -q "sf-apex-reviewer"
+
+      # ── Test: scc plan ────────────────────────────────────────────────
+      - name: Test scc plan
+        run: |
+          cd /tmp/test-project
+          npx scc plan
+
+      # ── Test: scc uninstall --dry-run ─────────────────────────────────
+      - name: Test scc uninstall --dry-run
+        run: |
+          cd /tmp/test-project
+          npx scc uninstall --dry-run 2>&1 | grep -q "sf-apex-reviewer"
+
+      # ── Test: scc uninstall ───────────────────────────────────────────
+      - name: Test scc uninstall
+        run: |
+          cd /tmp/test-project
+          npx scc uninstall --yes
+
+      - name: Verify uninstall removed files
+        run: |
+          test ! -f /tmp/test-project/.claude/agents/sf-apex-reviewer.md
+          test ! -f /tmp/test-project/.claude/skills/sf-apex-testing/SKILL.md
+
+      # ── Test: scc install all (full profile) ──────────────────────────
+      - name: Test scc install all
+        run: |
+          cd /tmp/test-project
+          npx scc install all
+
+      - name: Verify full install — extended agents present
+        run: |
+          test -f /tmp/test-project/.claude/agents/sf-agentforce-builder.md
+          test -f /tmp/test-project/.claude/agents/sf-flow-reviewer.md
+          test -f /tmp/test-project/.claude/agents/sf-visualforce-reviewer.md
+          test -f /tmp/test-project/.claude/agents/sf-aura-reviewer.md
+          test -f /tmp/test-project/.claude/agents/sf-admin.md
+
+      - name: Verify full install — extended skills present
+        run: |
+          test -f /tmp/test-project/.claude/skills/sf-flow-development/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-agentforce-development/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-visualforce-development/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-aura-development/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-experience-cloud/SKILL.md
+
+      - name: Verify full install — platform agents present
+        run: |
+          test -f /tmp/test-project/.claude/agents/deep-researcher.md
+          test -f /tmp/test-project/.claude/agents/sf-integration-architect.md
+          test -f /tmp/test-project/.claude/agents/sf-build-resolver.md
+
+      - name: Verify full install — platform skills present
+        run: |
+          test -f /tmp/test-project/.claude/skills/sf-apex-cursor/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-data-modeling/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-debugging/SKILL.md
+
+      # ── Test: scc install lwc (after clean uninstall) ─────────────────
+      - name: Clean uninstall before lwc test
+        run: |
+          cd /tmp/test-project
+          npx scc uninstall --yes
+
+      - name: Test scc install lwc
+        run: |
+          cd /tmp/test-project
+          npx scc install lwc
+
+      - name: Verify lwc install — lwc agent and skills present
+        run: |
+          test -f /tmp/test-project/.claude/agents/sf-lwc-reviewer.md
+          test -f /tmp/test-project/.claude/skills/sf-lwc-development/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-lwc-testing/SKILL.md
+          test -f /tmp/test-project/.claude/skills/sf-lwc-constraints/SKILL.md
+
+      - name: Verify lwc install — NO apex-specific agents
+        run: |
+          test ! -f /tmp/test-project/.claude/agents/sf-apex-reviewer.md
+          test ! -f /tmp/test-project/.claude/agents/sf-trigger-architect.md
+
+      # ── Summary ───────────────────────────────────────────────────────
+      - name: Smoke test passed
+        run: echo "All install smoke tests passed successfully"
