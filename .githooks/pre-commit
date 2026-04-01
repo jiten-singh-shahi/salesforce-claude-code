@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
-# pre-commit hook — rebuild all derived content, fail if unstaged changes detected.
+# pre-commit hook — mirrors CI checks locally before commit.
 #
-# Ensures .cursor/skills/, .cursor/agents/, and .cursor/rules/
-# are always in sync with their sources before any commit.
+# Runs: build, lint (ESLint + markdownlint), validators, and tests.
+# Ensures .cursor/ generated files stay in sync with sources.
 #
 # Setup: git config core.hooksPath .githooks
+# Skip:  git commit --no-verify (emergency only)
 
 set -euo pipefail
 
+# ── 1. Build ────────────────────────────────────────────────────────────────
 echo "[pre-commit] Running build..."
 npm run build --silent 2>/dev/null
 
@@ -27,3 +29,36 @@ if [ -n "$CHANGED" ]; then
 fi
 
 echo "[pre-commit] Build verified — all generated files in sync."
+
+# ── 2. ESLint ───────────────────────────────────────────────────────────────
+echo "[pre-commit] Running ESLint..."
+if ! npx eslint . --quiet 2>/dev/null; then
+  echo ""
+  echo "[pre-commit] ESLint failed. Fix errors above and try again."
+  exit 1
+fi
+echo "[pre-commit] ESLint passed."
+
+# ── 3. markdownlint ────────────────────────────────────────────────────────
+echo "[pre-commit] Running markdownlint..."
+if ! npx markdownlint '**/*.md' --ignore node_modules 2>/dev/null; then
+  echo ""
+  echo "[pre-commit] markdownlint failed. Run 'npx markdownlint --fix' to auto-fix."
+  exit 1
+fi
+echo "[pre-commit] markdownlint passed."
+
+# ── 4. CI validators ───────────────────────────────────────────────────────
+echo "[pre-commit] Running validators..."
+node scripts/ci/validate-agents.js && \
+node scripts/ci/validate-commands.js && \
+node scripts/ci/validate-skills.js && \
+node scripts/ci/validate-hooks.js && \
+node scripts/ci/validate-install-manifests.js && \
+node scripts/ci/validate-no-personal-paths.js
+echo "[pre-commit] Validators passed."
+
+# ── 5. Tests ────────────────────────────────────────────────────────────────
+echo "[pre-commit] Running tests..."
+node tests/run-all.js
+echo "[pre-commit] All checks passed."
