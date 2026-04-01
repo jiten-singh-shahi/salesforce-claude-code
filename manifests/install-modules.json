@@ -4,12 +4,13 @@
     {
       "id": "core",
       "kind": "bundle",
-      "description": "Core baseline — essential agents, core skills, lifecycle hooks, platform configs",
+      "description": "Core baseline — architect, review agent, core skills, lifecycle hooks",
       "pathGroups": [
         {
           "paths": [
             "agents/sf-architect.md",
-            "agents/sf-code-reviewer.md"
+            "agents/sf-review-agent.md",
+            "agents/sf-bugfix-agent.md"
           ],
           "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
         },
@@ -35,12 +36,11 @@
     {
       "id": "apex",
       "kind": "bundle",
-      "description": "Apex development — agents, skills, SOQL optimization",
+      "description": "Apex development — agent, skills, SOQL optimization",
       "pathGroups": [
         {
           "paths": [
-            "agents/sf-apex-agent.md",
-            "agents/sf-performance-optimizer.md"
+            "agents/sf-apex-agent.md"
           ],
           "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
         },
@@ -69,7 +69,7 @@
       "description": "Lightning Web Components — agent, skills",
       "pathGroups": [
         {
-          "paths": ["agents/sf-lwc-reviewer.md"],
+          "paths": ["agents/sf-lwc-agent.md"],
           "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
         },
         {
@@ -97,11 +97,9 @@
             "agents/eval-runner.md",
             "agents/learning-engine.md",
             "agents/doc-updater.md",
-            "agents/sf-e2e-runner.md",
-            "agents/sf-integration-architect.md",
+            "agents/sf-integration-agent.md",
             "agents/loop-operator.md",
-            "agents/refactor-cleaner.md",
-            "agents/sf-build-resolver.md"
+            "agents/refactor-cleaner.md"
           ],
           "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
         },
@@ -145,12 +143,8 @@
     {
       "id": "devops",
       "kind": "bundle",
-      "description": "Salesforce DevOps — agents, skills for CI/CD, deployments, scratch orgs",
+      "description": "Salesforce DevOps — skills for CI/CD, deployments, scratch orgs",
       "pathGroups": [
-        {
-          "paths": [],
-          "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
-        },
         {
           "paths": [
             "skills/sf-devops-ci-cd/",
@@ -168,12 +162,8 @@
     {
       "id": "security",
       "kind": "bundle",
-      "description": "Security — agent, skills for CRUD/FLS, sharing, injection prevention, governor limits",
+      "description": "Security — skills for CRUD/FLS, sharing, injection prevention, governor limits",
       "pathGroups": [
-        {
-          "paths": ["agents/sf-security-reviewer.md"],
-          "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
-        },
         {
           "paths": [
             "skills/sf-security/",
@@ -196,11 +186,11 @@
       "pathGroups": [
         {
           "paths": [
-            "agents/sf-agentforce-builder.md",
-            "agents/sf-flow-reviewer.md",
+            "agents/sf-agentforce-agent.md",
+            "agents/sf-flow-agent.md",
             "agents/sf-visualforce-reviewer.md",
             "agents/sf-aura-reviewer.md",
-            "agents/sf-admin.md"
+            "agents/sf-admin-agent.md"
           ],
           "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
         },
