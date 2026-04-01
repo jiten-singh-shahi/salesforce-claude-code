@@ -4,15 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Salesforce Claude Code (SCC)** is an agent harness performance system — a Claude Code plugin providing production-ready agents, skills, hooks, and MCP configurations specifically for Salesforce development. Published as `scc-universal` on npm. Works across Claude Code and Cursor.
+**Salesforce Claude Code (SCC)** is an agent harness performance system — a Claude Code plugin providing production-ready agents, skills, hooks, and MCP configurations specifically for Salesforce development. Works across Claude Code and Cursor.
 
-This is the root directory for all SCC source code.
+- **npm package:** `scc-universal` (CLI install name)
+- **Plugin name:** `salesforce-claude-code` (marketplace display name)
 
 ## Build & Test Commands
 
 ```bash
-cd salesforce-claude-code
-
 # Install dependencies
 npm install
 
@@ -31,7 +30,6 @@ node tests/hooks/hooks.test.js
 
 # Run individual CI validators
 node scripts/ci/validate-agents.js
-node scripts/ci/validate-commands.js
 node scripts/ci/validate-skills.js
 node scripts/ci/validate-hooks.js
 node scripts/ci/validate-install-manifests.js
@@ -40,36 +38,41 @@ node scripts/ci/validate-no-personal-paths.js
 # Lint (ESLint + markdownlint)
 npm run lint
 
+# Auto-fix markdownlint errors
+npx markdownlint '**/*.md' --ignore node_modules --fix
+
 # Coverage (80% lines/functions/branches/statements required)
 npm run coverage
 
 # SCC CLI
-npx scc install <language>   # Install SCC content for a language (apex, lwc, all)
+npx scc install <target>     # Install SCC content (apex, lwc, all)
 npx scc doctor               # Diagnose missing/drifted files
 npx scc repair               # Restore drifted files
 npx scc status               # Query JSON state store
-npx scc sessions             # List/inspect sessions
 npx scc uninstall            # Remove SCC-managed files
 npx scc plan                 # Preview files to be installed (dry run)
 npx scc list-installed       # Show currently installed SCC files
-npx scc session-inspect      # Inspect a specific session's details
 ```
 
 ## Architecture
 
 The project is a **plugin system** — mostly Markdown/JSON content consumed by AI agent harnesses, backed by Node.js scripts for installation, hooks, and validation.
 
-### Core Content Directories (Markdown + YAML frontmatter)
+### Core Content (Markdown + YAML frontmatter)
 
-- **agents/** — 25 specialized subagents (sf-apex-reviewer, sf-lwc-reviewer, sf-tdd-guide, sf-security-reviewer, sf-trigger-architect, sf-flow-reviewer, sf-agentforce-builder, sf-performance-optimizer, sf-integration-architect, sf-code-reviewer, doc-updater, sf-e2e-runner, refactor-cleaner, sf-architect, sf-build-resolver, loop-operator, sf-admin, sf-visualforce-reviewer, sf-aura-reviewer, sf-verification-runner, sf-blueprint-planner, sf-devops-deployment, deep-researcher, learning-engine, eval-runner). Format: Markdown with YAML frontmatter (`name`, `description`, `tools`, `model`).
-- **skills/** — 55 workflow/domain-knowledge modules (35 with `user-invocable: true` for direct invocation via `/skill-name`; 20 are auto-activating context skills). Includes Salesforce-specific skills, platform skills, and workflow skills (sf-help, sf-quickstart, sf-build-fix, sf-harness-audit, checkpoint, sf-docs-lookup, refactor-clean, save-session, resume-session, sessions, update-docs, aside, model-route). Format: Markdown with YAML frontmatter (`name`, `description`, `origin`, `user-invocable`) in `skills/<name>/SKILL.md` directories.
+- **agents/** — 25 specialized subagents. Format: Markdown with YAML frontmatter (`name`, `description`, `tools`, `model`, `origin`, `readonly`).
+- **skills/** — 55 workflow/domain-knowledge modules (35 user-invocable, 20 auto-activating). Format: `skills/<name>/SKILL.md` with YAML frontmatter (`name`, `description`, `origin`, `user-invocable`).
 - **hooks/hooks.json** — Claude Code hook lifecycle (SessionStart, PreToolUse, PostToolUse, PostToolUseFailure, PreCompact, Stop, SessionEnd). Hook scripts live in `scripts/hooks/`.
+
+### Generated Content (Never Edit Directly)
+
+- **.cursor/** — Auto-generated from `agents/` and `skills/` by `npm run build`. The pre-commit hook enforces sync. Always edit the source in `agents/` or `skills/`, then run `npm run build` and stage `.cursor/`.
 
 ### Script Infrastructure (Node.js, CommonJS)
 
 - **scripts/scc.js** — Main CLI entry point (`npx scc`).
 - **scripts/cli/** — End-user CLI commands (install, uninstall).
-- **scripts/dev/** — Contributor/dev tools (doctor, repair, status, build-cursor, harness-audit, etc.).
+- **scripts/dev/** — Contributor/dev tools (doctor, repair, status, build-cursor, harness-audit).
 - **scripts/lib/** — Shared utilities (package-manager detection, install executor, JSON state store, adapters).
 - **scripts/hooks/** — Hook implementations. Uses `run-with-flags.js` for profile-based gating.
 - **scripts/ci/** — CI validators enforcing structure/frontmatter of all content types.
@@ -79,11 +82,28 @@ The project is a **plugin system** — mostly Markdown/JSON content consumed by 
 ### Cross-Harness Support
 
 - **.claude-plugin/** — Plugin manifest for Claude Code marketplace.
-- **.cursor/** — Cursor IDE skills, agents, and hooks.
+- **.cursor-plugin/** — Plugin manifest for Cursor marketplace.
+
+## Pre-commit Hook
+
+The pre-commit hook (`.githooks/pre-commit`) mirrors CI locally: build, ESLint, markdownlint, all 6 validators, and full test suite. Setup for new contributors:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+## Release Process
+
+Versioning is automated via release-please. On merge to `main`:
+
+1. Release-please creates a Release PR bumping `package.json` and all 4 plugin manifests (`.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, `.cursor-plugin/plugin.json`, `.cursor-plugin/marketplace.json`).
+2. Merging the Release PR triggers `npm publish --provenance --access public`.
+
+Conventional commit types drive version bumps: `feat:` → minor, `fix:` → patch, `feat!:` → major.
 
 ## Key Conventions
 
-- **Target Salesforce API version: 66.0 (Spring '26)**. Skills and code examples target this version. When referencing API-version-specific features (SOQL Cursors, RunRelevantTests, @testFor), always note the minimum version required.
+- **Target Salesforce API version: 66.0 (Spring '26)**. When referencing API-version-specific features (SOQL Cursors, RunRelevantTests, @testFor), always note the minimum version required.
 - **Node.js >= 20** required. Pinned: Node 20.19.0, Python 3.12.8 (`.tool-versions`).
 - **CommonJS throughout** — all scripts use `require()`/`module.exports`.
 - **File naming** — lowercase with hyphens (e.g., `sf-apex-reviewer.md`, `sf-trigger-frameworks`).
