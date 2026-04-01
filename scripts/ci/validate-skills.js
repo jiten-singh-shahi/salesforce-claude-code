@@ -216,7 +216,7 @@ function validateSkill(skillDir, file) {
       );
     }
 
-    if (!/do not|don\'t|not for|except|excluding/i.test(desc)) {
+    if (!/do not|don't|not for|except|excluding/i.test(desc)) {
       warn(label, 'description missing WHEN NOT clause — add "Do NOT use for [exclusions]"');
     }
   }

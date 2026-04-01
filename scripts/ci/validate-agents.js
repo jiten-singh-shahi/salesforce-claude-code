@@ -151,7 +151,7 @@ function validateAgent(filePath, availableSkills) {
       );
     }
 
-    if (!/do not|don\'t|not for|except|excluding/i.test(desc)) {
+    if (!/do not|don't|not for|except|excluding/i.test(desc)) {
       warn(relPath, 'description missing WHEN NOT clause — add "Do NOT use for [exclusions]"');
     }
   }
@@ -195,8 +195,6 @@ function validateAgent(filePath, availableSkills) {
   const FILE_WRITE_TOOLS = new Set(['write', 'edit', 'multiedit']);
   const readonly = parseBool(frontmatter.readonly);
   const hasFileWriteTools = toolsList.some(t => FILE_WRITE_TOOLS.has(t));
-  const hasDestructiveTools = toolsList.some(t => DESTRUCTIVE_TOOLS.has(t));
-
   if (readonly === true && hasFileWriteTools) {
     const writeTools = toolsList.filter(t => FILE_WRITE_TOOLS.has(t));
     fileErrors.push(
@@ -300,7 +298,7 @@ function validateAgent(filePath, availableSkills) {
     if (readonly !== true) {
       warn(relPath, 'inspector agent should have readonly: true');
     }
-    if (hasWriteTools) {
+    if (hasFileWriteTools) {
       fileErrors.push('inspector agent must not have write tools — inspectors are read-only');
     }
   }
