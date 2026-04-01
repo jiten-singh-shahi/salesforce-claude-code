@@ -39,8 +39,7 @@
       "pathGroups": [
         {
           "paths": [
-            "agents/sf-apex-reviewer.md",
-            "agents/sf-trigger-architect.md",
+            "agents/sf-apex-agent.md",
             "agents/sf-performance-optimizer.md"
           ],
           "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
