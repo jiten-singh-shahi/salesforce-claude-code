@@ -209,7 +209,7 @@ Full development lifecycle from scratch org creation through production deployme
 ### Step 1 -- Create a Scratch Org
 
 ```
-/sf-scratch-org-workflow Create a new scratch org for feature/account-rating
+/sf-deployment Create a new scratch org for feature/account-rating
 ```
 
 **Agent invoked**: `sf-devops-deployment`
@@ -606,6 +606,6 @@ All critical and high severity findings resolved.
 |---|---|---|---|
 | Apex TDD | `/sf-tdd-workflow`, `/sf-apex-best-practices`, `/sf-governor-limits` | sf-tdd-guide, sf-apex-reviewer, sf-performance-optimizer | governor-check, quality-gate, post-write |
 | LWC Development | `/sf-lwc-development`, `/sf-deployment` | sf-lwc-reviewer, sf-devops-deployment | post-write, post-edit-console-warn, sfdx-validate |
-| Deployment Pipeline | `/sf-scratch-org-workflow`, `/sf-apex-testing`, `/sf-deployment` | sf-devops-deployment, sf-devops-deployment, sf-verification-runner | session-start, sfdx-validate, post-bash-build-complete |
+| Deployment Pipeline | `/sf-deployment`, `/sf-apex-testing`, `/sf-deployment` | sf-devops-deployment, sf-devops-deployment, sf-verification-runner | session-start, sfdx-validate, post-bash-build-complete |
 | Security Audit | `/sf-security`, `/sf-apex-best-practices` | sf-security-reviewer, sf-apex-reviewer | governor-check, quality-gate, sfdx-scanner-check |
 | Performance Optimization | `/sf-governor-limits`, `/sf-soql-optimization`, `/sf-trigger-frameworks`, `/sf-governor-limits` | sf-performance-optimizer, sf-performance-optimizer, sf-trigger-architect | governor-check, quality-gate, sfdx-validate |

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Salesforce Claude Code (SCC)** is an agent harness performance system — a Claude Code plugin providing production-ready agents, skills, hooks, and MCP configurations specifically for Salesforce development. Published as `scc-universal` on npm (v1.0.0). Works across Claude Code and Cursor.
+**Salesforce Claude Code (SCC)** is an agent harness performance system — a Claude Code plugin providing production-ready agents, skills, hooks, and MCP configurations specifically for Salesforce development. Published as `scc-universal` on npm. Works across Claude Code and Cursor.
 
 This is the root directory for all SCC source code.
 

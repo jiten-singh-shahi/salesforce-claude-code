@@ -12,12 +12,12 @@ Salesforce Claude Code (SCC) is a **plugin harness system** — a collection of 
 │              (Claude Code / Cursor)                        │
 ├─────────────────────────────────────────────────────────┤
 │                                                           │
-│  ┌──────────┐ ┌──────────┐ ┌────────────┐               │
-│  │  Agents   │ │  Skills  │ │   Rules    │               │
-│  │  (27)     │ │  (58)    │ │  (28)      │               │
-│  └─────┬────┘ └─────┬────┘ └─────┬──────┘               │
-│        │            │            │              │        │
-│  ┌─────┴────────────┴────────────┴──────────────┴─────┐ │
+│  ┌──────────┐ ┌──────────┐                               │
+│  │  Agents   │ │  Skills  │                               │
+│  │  (25)     │ │  (55)    │                               │
+│  └─────┬────┘ └─────┬────┘                               │
+│        │            │                                    │
+│  ┌─────┴────────────┴─────────────────────────────────┐ │
 │  │                   hooks.json                        │ │
 │  │     SessionStart → PreToolUse → PostToolUse →       │ │
 │  │     PostToolUseFailure → PreCompact → Stop →       │ │
@@ -57,10 +57,6 @@ Specialized subagents delegated to by the main Claude Code agent. Each agent has
 
 **Shared agents**: sf-code-reviewer, sf-security-reviewer, sf-tdd-guide, sf-blueprint-planner, sf-verification-runner, doc-updater, refactor-cleaner, loop-operator, deep-researcher, learning-engine, eval-runner
 
-### Commands (Markdown with Frontmatter)
-
-Slash commands invoked by users. Each command defines a workflow with steps, examples, and output formats. Commands can reference agents and skills.
-
 ### Skills (Directories with SKILL.md)
 
 Domain-knowledge modules loaded into context when relevant. Skills have:
@@ -68,18 +64,6 @@ Domain-knowledge modules loaded into context when relevant. Skills have:
 - `name` and `description` in frontmatter
 - Sections: When to Use, How It Works, Examples, Anti-patterns
 - `origin: SCC` to identify Salesforce-specific skills
-
-### Rules (Organized Markdown)
-
-Always-loaded guidelines organized by domain:
-
-- `common/` — Universal rules (git, security, testing, patterns)
-- `apex/` — Apex coding standards, security, triggers
-- `lwc/` — LWC coding style, performance, testing
-- `soql/` — SOQL optimization and security
-- `flow/` — Flow best practices, naming conventions, testing
-- `visualforce/` — Visualforce coding style and security
-- `aura/` — Aura coding style and security
 
 ## Script Layer
 
@@ -121,8 +105,8 @@ SCC uses a JSON state store (`~/.scc/state.json`) to track:
 
 | Harness | Directory | Integration Level |
 |---------|-----------|------------------|
-| Claude Code | `.claude-plugin/` | Full (hooks, agents, skills, commands, rules) |
-| Cursor | `.cursor/` | Rules only (apex, lwc, salesforce) |
+| Claude Code | `.claude-plugin/` | Full (hooks, agents, skills) |
+| Cursor | `.cursor/` | Skills, agents, hooks |
 
 ## Installation Flow
 
@@ -133,9 +117,8 @@ npx scc install all
     ├── Resolve component list for profile
     ├── Generate install plan (scripts/dev/install-plan.js)
     ├── Execute plan (scripts/cli/install-apply.js)
-    │   ├── Copy agents to .agents/
+    │   ├── Copy agents to target
     │   ├── Copy skills to target
-    │   ├── Copy rules to target
     │   └── Register hooks
     └── Update state store (scripts/lib/state-store.js)
 ```
