@@ -7,22 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
+### Changed — Architecture Refactor
 
-- Migrated 6 orchestration skills to agents per Law 4 ("Agents sequence, skills teach"):
-  - `verification-loop` → `sf-verification-runner` agent
-  - `blueprint` → `sf-blueprint-planner` agent
-  - `deep-research` → `deep-researcher` agent
-  - `eval-harness` → `eval-runner` agent
-  - `continuous-learning-v2` → `learning-engine` agent
-  - `skill-stocktake` → merged into `sf-harness-optimizer` agent
-- Hook path `skills/continuous-learning-v2/hooks/observe.sh` → `scripts/hooks/learning-observe.sh`
-- Consolidated to 25 agents and 55 skills (35 user-invocable, 20 auto-activating)
-- Removed phantom agents: sf-planner, sf-soql-optimizer, sf-chief-of-staff, sf-data-architect, sf-harness-optimizer, sf-docs-lookup (agent), sf-devops-guide, sf-deployment-guide
-- Removed phantom skills: sf-package-development, sf-docker-patterns, sf-metadata-migrations, sf-scratch-org-workflow, sf-reporting-dashboards
-- Upgraded CI validators: description limits 100-250 chars, SF keyword requirements, body structure checks, readonly/tools consistency
-- Aligned CI validators (validate-agents.js, validate-skills.js) with architect Python validators (validate_agent.py, validate_skill.py)
-- Renamed `### Constraints` → `### Guardrails` in 12 action skills to prevent constraint misclassification
-- Fixed install manifests to remove stale references and add missing constraint skills
-- Added release-please config for auto-bumping all plugin manifest versions
-- Removed premature docs/releases/ directory (release-please generates release notes)
+- **Agents: 25 → 17** — Lean full-stack domain agents that design, build, test, AND review
+  - New orchestrator: `sf-architect` (bookend pattern — runs at start and end, enforces TDD)
+  - New domain agents: `sf-apex-agent`, `sf-lwc-agent`, `sf-flow-agent`, `sf-admin-agent`, `sf-integration-agent`, `sf-agentforce-agent`
+  - New cross-domain: `sf-review-agent` (security + performance + E2E), `sf-bugfix-agent`
+  - Kept legacy review-only: `sf-aura-reviewer`, `sf-visualforce-reviewer`
+  - 6 platform agents unchanged
+- **Skills: invocability change** — 28 pattern skills changed from user-invocable to model-invocable (agents read them on demand via Read tool)
+- **Agent prompt size: 4-10KB → 1-2KB** — Agents are lean workflow orchestrators, skills carry domain knowledge
+- **"Use PROACTIVELY" in descriptions** — Enables Claude Code auto-delegation without user asking
+- Added proactive delegation check to agent and skill CI validators
+- Rewritten sf-help for new 17-agent architecture
+- Updated install manifests for new agent filenames
+- Added install smoke test job to CI pipeline
+- Added SECURITY.md, PR template, hardened .gitignore
+- Pre-commit hook now mirrors CI: build + ESLint + markdownlint + validators + tests
+
+### Removed
+
+- 8 agents absorbed into new lean agents: sf-blueprint-planner, sf-tdd-guide, sf-verification-runner, sf-devops-deployment, sf-trigger-architect, sf-security-reviewer, sf-performance-optimizer, sf-e2e-runner
+- 6 agents renamed: sf-apex-reviewer → sf-apex-agent, sf-lwc-reviewer → sf-lwc-agent, sf-flow-reviewer → sf-flow-agent, sf-admin → sf-admin-agent, sf-integration-architect → sf-integration-agent, sf-code-reviewer → sf-review-agent

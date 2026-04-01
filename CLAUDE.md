@@ -63,8 +63,8 @@ The project is a **plugin system** — mostly Markdown/JSON content consumed by 
 
 ### Core Content (Markdown + YAML frontmatter)
 
-- **agents/** — 25 specialized subagents. Format: Markdown with YAML frontmatter (`name`, `description`, `tools`, `model`, `origin`, `readonly`).
-- **skills/** — 55 workflow/domain-knowledge modules (35 user-invocable, 20 auto-activating). Format: `skills/<name>/SKILL.md` with YAML frontmatter (`name`, `description`, `origin`, `user-invocable`).
+- **agents/** — 17 agents (11 Salesforce domain + 6 platform). Lean workflow orchestrators (~80-150 lines). Preload constraint skills via `skills` frontmatter. Format: Markdown with YAML frontmatter (`name`, `description`, `tools`, `model`, `origin`, `readonly`, `skills`).
+- **skills/** — 55 domain-knowledge modules (7 constraint, 28 pattern, 5 utility, 15 platform). Pattern skills are model-invocable (agents read them on demand). Format: `skills/<name>/SKILL.md` with YAML frontmatter (`name`, `description`, `origin`, `user-invocable`).
 - **hooks/hooks.json** — Claude Code hook lifecycle (SessionStart, PreToolUse, PostToolUse, PostToolUseFailure, PreCompact, Stop, SessionEnd). Hook scripts live in `scripts/hooks/`.
 
 ### Generated Content (Never Edit Directly)

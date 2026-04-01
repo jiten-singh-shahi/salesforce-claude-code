@@ -17,7 +17,7 @@ SCC is a unified system where each layer serves a distinct role:
 | Layer | What It Does | Examples |
 |-------|-------------|----------|
 | **@salesforce/mcp** | Platform capabilities — query orgs, deploy metadata, run tests, analyze code | Org management, SOQL queries, Apex test execution |
-| **25 Agents** | Expert routing — each agent specializes in one Salesforce domain | `sf-apex-reviewer`, `sf-performance-optimizer`, `sf-trigger-architect`, `sf-security-reviewer` |
+| **17 Agents** | Lean full-stack agents that design, build, test, and review | `sf-architect`, `sf-apex-agent`, `sf-lwc-agent`, `sf-review-agent` |
 | **55 Skills** | Institutional knowledge + workflows — 35 user-invocable via `/skill-name`, 20 auto-activating | `/sf-apex-best-practices`, `/sf-deployment`, `/sf-soql-optimization`, `/sf-security` |
 | **7 Constraint Skills** | Always-on governance via auto-activating skills | `sf-apex-constraints`, `sf-soql-constraints`, `sf-security-constraints`, `sf-trigger-constraints` |
 | **29 Hooks** | Automated enforcement — quality gates run on every code change | SOQL-in-loop detection, PMD via sf scanner, privilege escalation checks |
@@ -210,25 +210,17 @@ All content is structured for use across multiple AI harnesses:
 
 | Agent | Description |
 |---|---|
-| `sf-apex-reviewer` | Deep Apex quality, patterns, and governor limits |
-| `sf-lwc-reviewer` | LWC component architecture and accessibility review |
-| `sf-code-reviewer` | General Salesforce code quality review |
-| `sf-security-reviewer` | CRUD/FLS/sharing and injection vulnerability audit |
-| `sf-tdd-guide` | Test-driven development guidance for Apex |
-| `sf-trigger-architect` | Trigger framework design and refactoring |
-| `sf-flow-reviewer` | Flow Builder best practices and performance review |
-| `sf-agentforce-builder` | Agentforce agent design and configuration |
-| `sf-performance-optimizer` | Governor limit analysis, SOQL optimization, and performance tuning |
-| `sf-integration-architect` | REST/SOAP/Platform Events integration patterns |
-| `sf-architect` | Salesforce architecture design and review |
-| `sf-admin` | Salesforce admin configuration and audit |
-| `sf-build-resolver` | Build error resolution and dependency fixes |
-| `sf-devops-deployment` | SF CLI, CI/CD pipelines, deployment strategy and rollback |
-| `sf-e2e-runner` | End-to-end test execution and analysis |
-| `sf-visualforce-reviewer` | Visualforce page review and migration guidance |
+| `sf-architect` | Orchestrator — analyze requirements, design solutions, decompose tasks, final review |
+| `sf-apex-agent` | All Apex — classes, triggers, batch, async, callouts, tests (TDD) |
+| `sf-lwc-agent` | All LWC — components, Jest tests, wire service, events, SLDS |
+| `sf-flow-agent` | All Flow — record-triggered, screen, scheduled, approval processes |
+| `sf-admin-agent` | All config — objects, permissions, sharing, metadata, Experience Cloud |
+| `sf-integration-agent` | All integration — REST/SOAP callouts, Named Creds, Platform Events, CDC |
+| `sf-agentforce-agent` | Agentforce — topics, custom Apex actions, prompt templates |
+| `sf-review-agent` | Cross-domain review — security audit, performance, test coverage |
+| `sf-bugfix-agent` | Fix build errors, test failures, deploy issues (minimal diff) |
 | `sf-aura-reviewer` | Aura component review and LWC migration guidance |
-| `sf-blueprint-planner` | Multi-session project planning and coordination |
-| `sf-verification-runner` | Quality gates: build, lint, test, security, deploy readiness |
+| `sf-visualforce-reviewer` | Visualforce page review and migration guidance |
 | `doc-updater` | Documentation generation and maintenance |
 | `refactor-cleaner` | Code refactoring and cleanup |
 | `loop-operator` | Autonomous loop execution and monitoring |
@@ -427,7 +419,7 @@ Control which hooks run via the `SCC_HOOK_PROFILE` environment variable:
 
 1. `/sf-soql-optimization` - Fix expensive queries
 2. `/sf-governor-limits` - Find limit violations
-3. Use the `sf-performance-optimizer` agent for deep analysis
+3. Use the `sf-review-agent` for deep analysis
 
 ### Context Window Management
 
