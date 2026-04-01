@@ -69,6 +69,7 @@ find force-app -name "*.permissionset-meta.xml" | wc -l
 Update these sections with `<!-- AUTO-GENERATED-START -->` / `<!-- AUTO-GENERATED-END -->` markers:
 
 **Project Structure:**
+
 ```markdown
 ## Project Structure
 
@@ -83,11 +84,13 @@ Update these sections with `<!-- AUTO-GENERATED-START -->` / `<!-- AUTO-GENERATE
 ```
 
 **Setup Instructions:**
+
 - Scratch org creation command from `config/project-scratch-def.json`
 - Data seeding scripts if present
 - Permission set assignments
 
 **Available Commands:**
+
 - List custom SF CLI commands from `package.json` scripts
 - Document any custom sfdx plugins
 

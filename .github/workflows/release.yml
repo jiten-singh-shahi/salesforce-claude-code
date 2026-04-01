@@ -21,7 +21,8 @@ jobs:
       - uses: googleapis/release-please-action@v4
         id: release
         with:
-          release-type: node
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
 
   publish:
     needs: release-please
@@ -29,19 +30,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Sync version to plugin manifests
-        run: node scripts/dev/bump-version.js --set ${{ needs.release-please.outputs.version }}
 
       - name: Run tests
         run: npm test

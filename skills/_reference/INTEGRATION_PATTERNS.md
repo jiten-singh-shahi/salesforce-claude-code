@@ -1,8 +1,8 @@
 # Integration Patterns — Reference
 
-> Source: https://architect.salesforce.com/fundamentals/integration-patterns
-> Source: https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_callouts_timeouts.htm
-> Source: https://help.salesforce.com/s/articleView?id=xcloud.nc_auth_protocols.htm
+> Source: <https://architect.salesforce.com/fundamentals/integration-patterns>
+> Source: <https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_callouts_timeouts.htm>
+> Source: <https://help.salesforce.com/s/articleView?id=xcloud.nc_auth_protocols.htm>
 > Last verified: API v66.0, Spring '26 (2026-03-28)
 
 ## Apex Callout Limits

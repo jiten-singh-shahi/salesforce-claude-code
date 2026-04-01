@@ -161,6 +161,7 @@ node run-with-flags.js <hook-name> <min-profile> <script-path>
 - `script-path` -- Absolute path to the hook script.
 
 The wrapper:
+
 1. Reads stdin (the tool input/output JSON).
 2. Checks if the hook is disabled via `SCC_DISABLED_HOOKS`.
 3. Checks if the current `SCC_HOOK_PROFILE` meets the minimum level.
@@ -304,6 +305,7 @@ Edit `hooks/hooks.json` and add your hook under the appropriate lifecycle event:
 ```
 
 Choose the right lifecycle event:
+
 - **PreToolUse** -- For validation/warnings before the action happens.
 - **PostToolUse** -- For analysis/checks after the action succeeds.
 - **PostToolUseFailure** -- For error recovery after the action fails.
@@ -405,6 +407,7 @@ node scripts/ci/validate-hooks.js
 ```
 
 This validator checks that:
+
 - `hooks/hooks.json` is valid JSON and conforms to `schemas/hooks.schema.json`.
 - Every script referenced in hooks.json actually exists on disk.
 - Every hook entry has a `description` field.
@@ -526,9 +529,11 @@ The shell wrapper follows the same profile-gating logic but for Bash scripts. Th
 ## Existing Hooks Reference
 
 ### SessionStart
+
 - **session-start.js** -- Detects sfdx-project.json, SF CLI version, connected orgs. Runs unconditionally.
 
 ### PreToolUse
+
 - **block-no-verify** -- Blocks `--no-verify` flag on git commands. No profile gating.
 - **mcp-health-check.js** -- Checks MCP server health before MCP tool calls. Standard profile.
 - **observe.sh** -- Captures tool use events for continuous learning. Standard/strict profiles.
@@ -541,6 +546,7 @@ The shell wrapper follows the same profile-gating logic but for Bash scripts. Th
 - **suggest-compact.js** -- Tracks tool call count, suggests compaction. Standard profile.
 
 ### PostToolUse
+
 - **observe.sh** -- Captures tool results for continuous learning. Standard/strict profiles.
 - **post-write.js** -- Reminds about test coverage after Apex/LWC file writes. No profile gating.
 - **quality-gate.js** -- Runs quality checks on edited Apex/LWC files. Standard profile.
@@ -552,12 +558,15 @@ The shell wrapper follows the same profile-gating logic but for Bash scripts. Th
 - **post-bash-pr-created.js** -- Detects PR creation and logs review command. Standard profile.
 
 ### PostToolUseFailure
+
 - **mcp-health-check.js** -- Tracks failed MCP calls, marks unhealthy servers. Standard profile.
 
 ### PreCompact
+
 - **pre-compact.js** -- Saves session state before context compaction. Minimal profile.
 
 ### Stop
+
 - **stop-hook.js** -- Summarizes Salesforce changes and suggests next steps. No profile gating.
 - **check-console-log.js** -- Checks for console.log in modified files. Standard profile.
 - **session-end.js** -- Persists session summary. Standard profile.
@@ -565,4 +574,5 @@ The shell wrapper follows the same profile-gating logic but for Bash scripts. Th
 - **evaluate-session.js** -- Evaluates session for extractable patterns. Standard profile.
 
 ### SessionEnd
+
 - **session-end-marker.js** -- Non-blocking session end lifecycle marker. Minimal profile.

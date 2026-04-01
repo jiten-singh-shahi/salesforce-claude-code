@@ -1,7 +1,7 @@
 ---
 name: sf-e2e-runner
 description: >-
-  Use when creating, maintaining, or running end-to-end tests for Salesforce applications — Apex E2E suites, LWC integration tests, scratch org test runs. Do NOT use for unit tests on isolated classes or pure UI automation tasks. Keywords: E2E testing, Apex test suite, LWC Jest, scratch org, code coverage.
+  Use when creating or running end-to-end tests for Salesforce — Apex E2E suites, LWC integration tests, scratch org test runs. Do NOT use for unit tests or pure UI automation.
 model: inherit
 ---
 
@@ -62,6 +62,7 @@ For each scenario, define these test dimensions:
 Design a `TestDataFactory` that builds the complete object hierarchy for your E2E scenarios. This is the foundation — poor test data is the #1 cause of flaky E2E tests.
 
 **Principles:**
+
 - Build data top-down: Account → Contact → Opportunity → OpportunityLineItem
 - Use `@TestSetup` for the shared base hierarchy (runs once per test class)
 - Use `TestDataFactory` methods for scenario-specific variations
@@ -91,6 +92,7 @@ Use `Test.startTest()`/`Test.stopTest()` to reset governor limits around the cod
 - `Limits.getQueries()` / `Limits.getDmlStatements()` — assert governor limit consumption
 
 See skill `sf-e2e-testing` for complete code examples covering:
+
 - Full sales cycle (Lead → Opportunity → Quote → Order)
 - Flow integration testing (Record-Triggered Flows with E2E verification)
 - Platform Event publish → subscribe → side-effect verification
@@ -103,6 +105,7 @@ See skill `sf-e2e-testing` for complete code examples covering:
 Use Jest with `@salesforce/apex` mocks for LWC integration testing. E2E LWC tests differ from unit tests in that they exercise multi-component interaction and full data flow.
 
 **E2E LWC test patterns:**
+
 - Parent-child component communication via events
 - Multiple wire adapters loading in sequence
 - Error state propagation (Apex throws → component shows error)
@@ -169,6 +172,7 @@ Flaky tests erode confidence in the test suite. Diagnose systematically:
 | Parallel test execution | Tests interfere with shared data | Use unique identifiers (timestamp + test name) in test data |
 
 **Flaky test remediation process:**
+
 1. Run the failing test 5 times in isolation — if it passes consistently, the issue is test interference
 2. Run with `--synchronous` flag to disable parallel execution
 3. Check `ApexTestResult` for governor limit proximity (>80% of any limit = fragile)
@@ -210,6 +214,7 @@ force-app/test/default/classes/
 ```
 
 Each E2E test class should:
+
 - Test one complete business workflow end-to-end
 - Have a `@TestSetup` method that builds the full data hierarchy
 - Include at minimum: happy path, bulk (200), and error/negative test methods
@@ -218,6 +223,7 @@ Each E2E test class should:
 ## Escalation
 
 Stop and ask the human before:
+
 - Creating a new scratch org (may consume org limits or require specific definition files)
 - Running any operation that modifies or deletes real test data in a non-scratch org
 - Modifying an existing test class that already has passing tests — confirm intended scope first

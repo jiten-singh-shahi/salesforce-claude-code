@@ -61,7 +61,7 @@ Environment:
   SCC_DISABLED_HOOKS  Comma-separated list of hooks to disable
   SF_ORG_ALIAS        Default Salesforce org alias
 
-Documentation: https://github.com/jiten/salesforce-claude-code
+Documentation: https://github.com/jiten-singh-shahi/salesforce-claude-code
 `);
   process.exit(exitCode);
 }

@@ -205,6 +205,7 @@ Orchestrates business processes that span multiple objects or require a full tra
 **Naming:** `{ObjectNamePlural}Service` — e.g., `AccountsService`
 
 **Rules:**
+
 1. Static methods only — services are stateless
 2. No SOQL — delegate to Selectors
 3. No direct DML — use Unit of Work
@@ -342,6 +343,6 @@ sf project deploy start --source-dir fflib-apex-mocks/sfdx-source --target-org m
 
 - **Agents**: `sf-apex-reviewer`, `sf-architect` — For interactive guidance
 
-### Constraints
+### Guardrails
 
 - `sf-apex-constraints` — Governs all Apex code including enterprise pattern implementations

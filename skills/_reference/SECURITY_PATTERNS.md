@@ -1,7 +1,7 @@
 # Security Patterns — Salesforce Reference
 
 > Last verified: API v66.0 (Spring '26)
-> Source: https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_security_guide.htm
+> Source: <https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_security_guide.htm>
 
 ## Salesforce Security Layers
 

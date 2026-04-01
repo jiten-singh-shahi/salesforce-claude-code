@@ -19,6 +19,7 @@ Plan an AccountRatingService that rates accounts as Hot (>= $1M revenue), Warm (
 **Agent invoked**: `sf-blueprint-planner`
 
 **What happens**: The planner agent analyzes the requirement and produces a structured plan including:
+
 - Classes to create (`AccountRatingService.cls`, `AccountRatingServiceTest.cls`)
 - Governor limit considerations (no SOQL/DML needed -- pure in-memory logic)
 - Test scenarios (happy path, bulk 200 records, null input, empty list, permission testing)
@@ -32,6 +33,7 @@ Plan an AccountRatingService that rates accounts as Hot (>= $1M revenue), Warm (
 **Agent invoked**: `sf-tdd-guide`
 
 **What happens**:
+
 1. Checks if `TestDataFactory.cls` exists in the project.
 2. Creates `AccountRatingServiceTest.cls` with test methods:
    - `testRateAccount_HighRevenue_SetsHotRating` -- single record, Hot path
@@ -43,6 +45,7 @@ Plan an AccountRatingService that rates accounts as Hot (>= $1M revenue), Warm (
 3. Runs the tests to confirm they fail (Red phase confirmed).
 
 **Hook activity**:
+
 - `post-write.js` fires after the test class file is written, reminding about test coverage.
 
 ### Step 3 -- Implement the Service (Green Phase)
@@ -54,6 +57,7 @@ sf apex run test --class-names AccountRatingServiceTest --target-org MyScratchOr
 ```
 
 **Hook activity**:
+
 - `governor-check.js` fires after each Edit to the Apex file, checking for SOQL/DML in loops.
 - `quality-gate.js` fires after edits, checking for anti-patterns.
 - `sfdx-validate.js` fires before the test command, checking for missing flags.
@@ -69,6 +73,7 @@ sf apex run test --class-names AccountRatingServiceTest --target-org MyScratchOr
 **Agent invoked**: `sf-apex-reviewer`
 
 **What happens**: The reviewer checks the implementation against its checklist:
+
 1. Sharing declaration (`with sharing` present)
 2. SOQL outside loops (no SOQL needed in this case)
 3. DML outside loops (single `update` call on a collection)
@@ -81,6 +86,7 @@ sf apex run test --class-names AccountRatingServiceTest --target-org MyScratchOr
 ### Step 5 -- Refactor
 
 With green tests as a safety net, refactor:
+
 - Extract revenue thresholds to Custom Metadata or constants
 - Apply service layer pattern if needed
 - Run tests after each change to confirm they still pass
@@ -112,6 +118,7 @@ You need to create an `accountRatingCard` LWC that displays an account's rating 
 **Agent invoked**: `sf-lwc-reviewer`
 
 **What happens**: Reviews the plan for the component and provides guidance on:
+
 - Component structure (HTML template, JS controller, CSS, meta XML)
 - Wire service vs imperative Apex for data loading
 - Accessibility requirements (ARIA labels, color contrast, keyboard navigation)
@@ -130,6 +137,7 @@ The agent creates four files:
 **`accountRatingCard.js-meta.xml`** -- Metadata defining targets (Lightning Record Page, App Page).
 
 **Hook activity**:
+
 - `post-write.js` fires after each file write, detecting LWC files and reminding about test coverage.
 - `post-edit-console-warn.js` fires after JS edits, warning about any `console.log` statements.
 
@@ -180,6 +188,7 @@ npx lwc-jest --coverage
 **Agent invoked**: `sf-lwc-reviewer`
 
 **What it checks**:
+
 - Color is not the only indicator (badges also have text labels)
 - ARIA attributes on interactive elements
 - Keyboard navigation support
@@ -197,6 +206,7 @@ npx lwc-jest --coverage
 **Agent invoked**: `sf-devops-deployment`
 
 **Hook activity**:
+
 - `sfdx-validate.js` fires before the deploy command, checking for missing `--test-level` flag.
 - `post-bash-build-complete.js` fires after deployment completes.
 
@@ -209,30 +219,39 @@ Full development lifecycle from scratch org creation through production deployme
 ### Step 1 -- Create a Scratch Org
 
 ```
-/sf-scratch-org-workflow Create a new scratch org for feature/account-rating
+/sf-deployment Create a new scratch org for feature/account-rating
 ```
 
 **Agent invoked**: `sf-devops-deployment`
 
 **What happens**:
+
 1. Verifies Dev Hub is connected:
+
    ```bash
    sf org list --json
    ```
+
 2. Creates a scratch org with the project definition:
+
    ```bash
    sf org create scratch --definition-file config/project-scratch-def.json --alias account-rating --duration-days 7 --set-default
    ```
+
 3. Pushes source to the new scratch org:
+
    ```bash
    sf project deploy start --source-dir force-app/ --target-org account-rating
    ```
+
 4. Imports sample data if a data plan exists:
+
    ```bash
    sf data import tree --plan data/sample-data-plan.json --target-org account-rating
    ```
 
 **Hook activity**:
+
 - `session-start.js` fires at session start, displaying the newly created scratch org.
 - `sfdx-validate.js` fires before each SF CLI command.
 
@@ -247,6 +266,7 @@ Use the Apex TDD workflow (Workflow 1) and LWC development workflow (Workflow 2)
 ```
 
 **What happens**:
+
 ```bash
 sf apex run test --target-org account-rating --test-level RunLocalTests --code-coverage --result-format human --wait 30
 ```
@@ -266,6 +286,7 @@ sf project deploy validate --source-dir force-app/ --target-org Staging --test-l
 ```
 
 **Hook activity**:
+
 - `sfdx-validate.js` recognizes the validate command and confirms it is a dry run (no destructive action).
 
 **Expected outcome**: Validation succeeds. No test failures, no missing dependencies, coverage thresholds met.
@@ -277,6 +298,7 @@ sf project deploy start --source-dir force-app/ --target-org Staging --test-leve
 ```
 
 **Hook activity**:
+
 - `sfdx-validate.js` checks for `--test-level` flag (present -- good).
 - `post-bash-build-complete.js` fires after deployment completes, logging a success notice.
 
@@ -289,6 +311,7 @@ Verify the deployment to Staging succeeded and all tests pass
 **Agent invoked**: `sf-verification-runner`
 
 **What happens**:
+
 1. Queries the deployment status.
 2. Runs a subset of tests on Staging to confirm everything works.
 3. Checks that the new components are accessible in the target org.
@@ -312,21 +335,25 @@ Run a comprehensive security audit on the codebase, fix findings, and verify the
 **What happens**: The security reviewer performs a multi-pass analysis:
 
 **Pass 1 -- Sharing Model**:
+
 - Checks every Apex class for explicit sharing declaration (`with sharing`, `without sharing`, `inherited sharing`).
 - Flags classes without sharing declaration as CRITICAL.
 - Flags `without sharing` classes that lack a justification comment as HIGH.
 
 **Pass 2 -- CRUD/FLS Enforcement**:
+
 - Checks SOQL queries for `WITH USER_MODE` (preferred) or `WITH SECURITY_ENFORCED` (legacy).
 - Checks DML operations for `AccessLevel.USER_MODE` or `Security.stripInaccessible`.
 - Flags unprotected queries as HIGH.
 
 **Pass 3 -- SOQL Injection**:
+
 - Scans for string concatenation in dynamic SOQL (`Database.query()`).
 - Checks if `String.escapeSingleQuotes()` is used.
 - Flags direct user input concatenation as CRITICAL.
 
 **Pass 4 -- LWC Security**:
+
 - Checks for `innerHTML` usage (XSS risk).
 - Verifies `lightning/platformResourceLoader` is used for external scripts (not direct script tags).
 - Checks for hardcoded credentials or API keys.
@@ -357,6 +384,7 @@ MEDIUM (1):
 Address each finding by severity, starting with CRITICAL:
 
 **Fix SOQL injection:**
+
 ```
 /sf-apex-best-practices Fix the SOQL injection in AccountQueryController.cls
 ```
@@ -373,6 +401,7 @@ List<Account> results = [SELECT Id FROM Account WHERE Name = :searchTerm];
 ```
 
 **Fix missing sharing:**
+
 ```apex
 // Before
 public class ReportExporter {
@@ -382,6 +411,7 @@ public with sharing class ReportExporter {
 ```
 
 **Fix FLS enforcement:**
+
 ```apex
 // Before
 List<Contact> contacts = [SELECT Id, Name, Email FROM Contact WHERE AccountId = :accountId];
@@ -391,6 +421,7 @@ List<Contact> contacts = [SELECT Id, Name, Email FROM Contact WHERE AccountId = 
 ```
 
 **Hook activity**:
+
 - `governor-check.js` fires after each edit, checking the modified files.
 - `quality-gate.js` fires after each edit, running additional quality checks.
 
@@ -441,6 +472,7 @@ Identify and fix performance bottlenecks in an existing Salesforce codebase.
 **Agent invoked**: `sf-performance-optimizer`
 
 **What happens**: The agent scans all Apex classes and triggers for:
+
 - SOQL queries inside loops (CRITICAL)
 - DML operations inside loops (CRITICAL)
 - HTTP callouts inside loops (CRITICAL)
@@ -556,6 +588,7 @@ sf apex run test --class-names OrderProcessorTest,AccountTriggerHandlerTest --ta
 ```
 
 **Hook activity**:
+
 - `governor-check.js` fires after each edit to the Apex files, confirming the SOQL/DML-in-loop patterns are resolved.
 - `quality-gate.js` fires after edits, confirming anti-patterns are cleaned up.
 
@@ -590,6 +623,7 @@ All critical and high severity findings resolved.
 **Agent invoked**: `sf-performance-optimizer`
 
 **What it checks beyond governor limits**:
+
 - Query selectivity (indexed fields in WHERE clauses)
 - Large data volume considerations (millions of records)
 - Batch size recommendations
@@ -606,6 +640,6 @@ All critical and high severity findings resolved.
 |---|---|---|---|
 | Apex TDD | `/sf-tdd-workflow`, `/sf-apex-best-practices`, `/sf-governor-limits` | sf-tdd-guide, sf-apex-reviewer, sf-performance-optimizer | governor-check, quality-gate, post-write |
 | LWC Development | `/sf-lwc-development`, `/sf-deployment` | sf-lwc-reviewer, sf-devops-deployment | post-write, post-edit-console-warn, sfdx-validate |
-| Deployment Pipeline | `/sf-scratch-org-workflow`, `/sf-apex-testing`, `/sf-deployment` | sf-devops-deployment, sf-devops-deployment, sf-verification-runner | session-start, sfdx-validate, post-bash-build-complete |
+| Deployment Pipeline | `/sf-deployment`, `/sf-apex-testing`, `/sf-deployment` | sf-devops-deployment, sf-devops-deployment, sf-verification-runner | session-start, sfdx-validate, post-bash-build-complete |
 | Security Audit | `/sf-security`, `/sf-apex-best-practices` | sf-security-reviewer, sf-apex-reviewer | governor-check, quality-gate, sfdx-scanner-check |
 | Performance Optimization | `/sf-governor-limits`, `/sf-soql-optimization`, `/sf-trigger-frameworks`, `/sf-governor-limits` | sf-performance-optimizer, sf-performance-optimizer, sf-trigger-architect | governor-check, quality-gate, sfdx-validate |

@@ -74,7 +74,7 @@ function isTestClass(code) {
 function trackLoopDepth(processedLines) {
   const depths = [];
   let globalBraceDepth = 0;   // total brace depth in file
-  let activeLoopDepths = [];   // stack: globalBraceDepth where each braced loop started
+  const activeLoopDepths = [];   // stack: globalBraceDepth where each braced loop started
   let unbracedStack = 0;       // counter for nested unbraced loops
   let parenDepth = 0;          // for multi-line for/while declarations
   let pendingLoop = false;     // SCANNING_DECLARATION state

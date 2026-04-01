@@ -6,7 +6,6 @@ set -e
 # Captures tool use events for pattern analysis by the learning-engine agent.
 # Claude Code passes hook data via stdin as JSON.
 #
-# Adapted from ECC continuous-learning-v2/hooks/observe.sh for SCC.
 # Registered via hooks/hooks.json (PreToolUse + PostToolUse, standard+strict profiles).
 
 HOOK_PHASE="${1:-post}"

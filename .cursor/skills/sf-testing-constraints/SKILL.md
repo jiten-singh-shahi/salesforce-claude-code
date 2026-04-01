@@ -118,6 +118,7 @@ All test record creation goes through a centralized `TestDataFactory` class. Inl
 ### A3 — Always assert positive AND negative cases
 
 Every service method needs at least:
+
 - One positive test (valid input produces expected output)
 - One negative test (invalid input throws expected exception or returns expected error)
 

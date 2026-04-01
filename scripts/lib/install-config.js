@@ -51,7 +51,7 @@ function loadInstallConfig(configPath) {
   try {
     raw = JSON.parse(fs.readFileSync(resolved, 'utf8'));
   } catch (err) {
-    throw new Error(`Invalid JSON in config ${resolved}: ${err.message}`);
+    throw new Error(`Invalid JSON in config ${resolved}: ${err.message}`, { cause: err });
   }
 
   // Validate against schema

@@ -7,7 +7,7 @@ This guide covers how to create new agents, skills, and rules for Salesforce Cla
 - **File naming**: Use lowercase with hyphens (kebab-case). Example: `sf-apex-reviewer.md`, `sf-tdd-workflow`.
 - **Salesforce-specific prefix**: All Salesforce-specific content uses the `sf-` prefix. Platform-agnostic content omits the prefix (e.g., `strategic-compact`, `continuous-agent-loop`).
 - **CommonJS throughout**: All Node.js scripts use `require()` and `module.exports`.
-- **Origin tag**: All SCC content uses `origin: SCC` in frontmatter to distinguish from upstream ECC content.
+- **Origin tag**: All SCC content uses `origin: SCC` in frontmatter.
 
 ## Agent Authoring
 
@@ -18,7 +18,7 @@ Agents are specialized subagents that Claude Code delegates to for specific task
 ```markdown
 ---
 name: sf-my-agent
-description: A clear description of what this agent does, when to use it, and what expertise it brings. Must be at least 20 characters.
+description: "Use when [trigger] for Salesforce [domain]. Do NOT use for [exclusions]. (100-250 chars, 3+ SF keywords)"
 tools: ["Read", "Grep", "Glob", "Bash", "Edit", "Write"]
 model: sonnet
 origin: SCC
@@ -69,6 +69,7 @@ When reviewing [content type], verify:
 
 - **Skills**: `skill-name-1`, `skill-name-2`
 - **Skills**: `/skill-name` (user-invocable)
+
 ```
 
 ### YAML Frontmatter Fields
@@ -76,10 +77,10 @@ When reviewing [content type], verify:
 | Field | Required | Type | Description |
 |---|---|---|---|
 | `name` | Yes | string | Unique agent identifier. Use `sf-` prefix for Salesforce-specific agents. |
-| `description` | Yes | string (20+ chars) | Clear description of the agent's purpose and expertise. |
+| `description` | Yes | string (100-250 chars) | Clear description with "Use when" clause, "Do NOT" clause, and 3+ SF keywords. |
 | `tools` | Yes | array | List of tools the agent can use: `Read`, `Grep`, `Glob`, `Bash`, `Edit`, `Write`. |
-| `model` | Yes | string | Model to use: `opus` (complex analysis), `sonnet` (most agents), `haiku` (lightweight tasks). |
-| `origin` | Recommended | string | Set to `SCC` for all Salesforce Claude Code content. |
+| `model` | Yes | string | Model to use: `opus` (complex), `sonnet` (most agents), `haiku` (lightweight), `inherit` (caller decides). |
+| `origin` | Yes | string | Must be `SCC` for all Salesforce Claude Code content. |
 
 ### Agent Content Guidelines
 
@@ -102,6 +103,7 @@ Skills are workflow/domain-knowledge modules that provide reference information 
 ### Skill Directory Structure
 
 ```
+
 skills/
   sf-apex-testing/
     SKILL.md
@@ -109,6 +111,7 @@ skills/
     SKILL.md
   sf-lwc-development/
     SKILL.md
+
 ```
 
 ### SKILL.md Format
@@ -165,6 +168,7 @@ public with sharing class ExampleService {
 
 - **Agent**: `sf-agent-name` -- For interactive guidance
 - **Skills**: `/sf-skill-name` -- Quick access via slash command (user-invocable)
+
 ```
 
 ### Skill Frontmatter Fields
@@ -187,8 +191,8 @@ public with sharing class ExampleService {
 
 SCC includes two categories of skills:
 
-- **Salesforce-specific** (32 skills, `sf-` prefix): `sf-apex-testing`, `sf-governor-limits`, `sf-lwc-development`, `sf-security`, `sf-trigger-frameworks`, etc.
-- **Platform skills** (7 skills, no prefix): `configure-scc`, `continuous-agent-loop`, `mcp-server-patterns`, `prompt-optimizer`, `search-first`, `security-scan`, `strategic-compact`.
+- **Salesforce-specific** (40 skills, `sf-` prefix): `sf-apex-testing`, `sf-governor-limits`, `sf-lwc-development`, `sf-security`, `sf-trigger-frameworks`, `sf-apex-constraints`, etc.
+- **Platform skills** (15 skills, no prefix): `configure-scc`, `continuous-agent-loop`, `mcp-server-patterns`, `prompt-optimizer`, `search-first`, `security-scan`, `strategic-compact`, `checkpoint`, `aside`, `model-route`, `sessions`, `save-session`, `resume-session`, `refactor-clean`, `update-docs`.
 
 Platform skills are Salesforce-adapted patterns for AI-assisted development workflows (loops, research, verification, evaluation).
 
@@ -205,7 +209,7 @@ User-invocable skills follow the same directory structure as regular skills (`sk
 ```markdown
 ---
 name: sf-my-skill
-description: A clear description of what this skill does when invoked. Must be at least 30 characters.
+description: "Use when [trigger] for Salesforce [domain]. Do NOT use for [exclusions]. (100-250 chars, 3+ SF keywords)"
 origin: SCC
 user-invocable: true
 ---
@@ -253,6 +257,7 @@ sf apex run test --class-names MyTest --target-org <alias>
 
 - **Agent**: `sf-agent-name` -- For interactive guidance
 - **Skills**: `/sf-other-skill` -- Complementary skill
+
 ```
 
 ### User-Invocable Skill Frontmatter
@@ -260,7 +265,7 @@ sf apex run test --class-names MyTest --target-org <alias>
 | Field | Required | Type | Description |
 |---|---|---|---|
 | `name` | Yes | string | Unique skill identifier matching the directory name. |
-| `description` | Yes | string (30+ chars) | Clear description of the skill's purpose when invoked. |
+| `description` | Yes | string (100-250 chars) | Clear description with "Use when" clause, "Do NOT" clause, and 3+ SF keywords. |
 | `origin` | Yes | string | Set to `SCC` for all Salesforce Claude Code content. |
 | `user-invocable` | Yes | boolean | Must be `true` to enable slash command invocation. |
 
@@ -289,8 +294,8 @@ Every content type has a corresponding CI validator in `scripts/ci/`. These run 
 
 | Validator | What It Checks |
 |---|---|
-| `validate-agents.js` | Frontmatter has `name` (non-empty), `description` (20+ chars), `tools` (array), `model` (opus/sonnet/haiku). Body content is non-empty. |
-| `validate-skills.js` | Each skill directory has a `SKILL.md`. Frontmatter has `name` and `description`. User-invocable skills have `user-invocable: true` and `description` (30+ chars). |
+| `validate-agents.js` | Frontmatter: `name` (matches filename), `description` (100-250 chars, 3+ SF keywords, "Use when" clause), `tools` (array), `model` (opus/sonnet/haiku/inherit), `origin` (SCC). Body: `## When to Use`, `## Workflow`, 2+ steps, `## Escalation` for write agents. |
+| `validate-skills.js` | Each skill directory has a `SKILL.md`. Frontmatter: `name`, `description` (100-250 chars, 3+ SF keywords), `origin` (SCC). Constraint skills: read-only tools, @reference required. |
 | `validate-hooks.js` | `hooks.json` is valid JSON conforming to `schemas/hooks.schema.json`. All referenced scripts exist. Each entry has a `description`. |
 | `validate-install-manifests.js` | Manifest files reference real files. No broken paths. |
 | `validate-no-personal-paths.js` | No hardcoded personal paths (like `/Users/username/`) in any source files. |
@@ -316,7 +321,7 @@ Before submitting a pull request that adds new content, verify:
 ### For New Agents
 
 - [ ] File is in `agents/` directory with `.md` extension
-- [ ] YAML frontmatter has `name`, `description` (20+ chars), `tools` (array), `model`
+- [ ] YAML frontmatter has `name`, `description` (100-250 chars, 3+ SF keywords), `tools` (array), `model`, `origin: SCC`
 - [ ] `origin: SCC` is set
 - [ ] Agent name uses `sf-` prefix for Salesforce-specific agents
 - [ ] File uses kebab-case naming matching the frontmatter `name`
@@ -339,7 +344,7 @@ Before submitting a pull request that adds new content, verify:
 ### For New User-Invocable Skills
 
 - [ ] Skill is in its own directory under `skills/` (e.g., `skills/sf-my-skill/SKILL.md`)
-- [ ] YAML frontmatter has `name`, `description` (30+ chars), `origin: SCC`, `user-invocable: true`
+- [ ] YAML frontmatter has `name`, `description` (100-250 chars, 3+ SF keywords), `origin: SCC`, `user-invocable: true`
 - [ ] Skill name uses `sf-` prefix for Salesforce-specific skills
 - [ ] "When to Use" section is present with bullet points
 - [ ] Workflow steps are numbered and actionable

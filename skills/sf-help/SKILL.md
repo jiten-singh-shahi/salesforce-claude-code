@@ -11,9 +11,9 @@ user-invocable: true
 
 Show available SCC commands, skills, and agents organized by Salesforce workflow. Answers "what can I do?" and "which command/skill should I use?"
 
-SCC provides **58 skills** (39 user-invocable) for deep domain knowledge and core workflows, and **27 specialized agents** for complex multi-step work.
+SCC provides **55 skills** (35 user-invocable) for deep domain knowledge and core workflows, and **25 specialized agents** for complex multi-step work.
 
-> **Note:** All workflows are now available as **skills**. Skills activate automatically when relevant, and 39 of them can also be invoked directly by name. See the categorized list below.
+> **Note:** All workflows are now available as **skills**. Skills activate automatically when relevant, and 35 of them can also be invoked directly by name. See the categorized list below.
 
 ## When to Use
 
@@ -71,7 +71,7 @@ sf-help <keyword>          # Search commands and skills by keyword
 | `/aside` | Start a side conversation without affecting main context |
 | `/model-route` | Route to the best model for a task |
 
-## Salesforce Domain Skills (26)
+## Salesforce Domain Skills (24)
 
 These skills can be invoked directly by name (e.g., "use sf-tdd-workflow" or "apply sf-security"):
 
@@ -115,7 +115,6 @@ These skills can be invoked directly by name (e.g., "use sf-tdd-workflow" or "ap
 | Skill | What It Does |
 |-------|-------------|
 | `sf-deployment` | Guided deployment workflow |
-| `sf-scratch-org-workflow` | Scratch org setup and management |
 | `sf-debugging` | Debug log analysis and troubleshooting |
 
 ### Platform Skills
@@ -134,37 +133,37 @@ These skills can be invoked directly by name (e.g., "use sf-tdd-workflow" or "ap
 | `sf-verification-runner` | Pre-deployment verification loop |
 | `learning-engine` | Instinct-based learning from sessions |
 | `eval-runner` | Evaluate and benchmark SCC performance |
-| `sf-harness-optimizer` | Audit and inventory installed skills (merged from skill-stocktake) |
 
-## Additional Skills (19)
+## Additional Skills (20)
 
 These skills activate automatically when relevant context is detected. They do not need to be invoked directly:
 
 | Skill Category | Skills |
 |---------------|--------|
-| Salesforce | `sf-integration`, `sf-api-design`, `sf-metadata-management`, `sf-package-development`, `sf-devops-ci-cd`, `sf-metadata-migrations`, `sf-docker-patterns`, `sf-approval-processes`, `sf-experience-cloud`, `sf-reporting-dashboards`, `sf-apex-enterprise-patterns`, `sf-apex-cursor`, `sf-lwc-testing`, `sf-apex-async-patterns` |
-| Platform | `configure-scc`, `mcp-server-patterns`, `search-first`, `security-scan`, `strategic-compact` |
+| Salesforce | `sf-integration`, `sf-api-design`, `sf-metadata-management`, `sf-devops-ci-cd`, `sf-approval-processes`, `sf-experience-cloud`, `sf-apex-enterprise-patterns`, `sf-apex-cursor`, `sf-lwc-testing`, `sf-apex-async-patterns`, `sf-apex-constraints`, `sf-soql-constraints`, `sf-security-constraints`, `sf-trigger-constraints`, `sf-testing-constraints`, `sf-lwc-constraints`, `sf-deployment-constraints` |
+| Platform | `mcp-server-patterns`, `security-scan`, `strategic-compact` |
 
 ## Available Agents
 
-For complex multi-step work, SCC provides 27 specialized agents. Key agents (10 of 27) are listed below. These are invoked automatically when relevant, but you can also reference them directly:
+For complex multi-step work, SCC provides 25 specialized agents. Key agents (10 of 25) are listed below. These are invoked automatically when relevant, but you can also reference them directly:
 
 | Agent | Specialty |
 |-------|-----------|
 | `sf-trigger-architect` | Trigger framework design (FFLIB, pragmatic handler) |
-| `sf-soql-optimizer` | SOQL query optimization and selectivity |
+| `sf-code-reviewer` | Comprehensive cross-domain Salesforce code review |
 | `sf-apex-reviewer` | Enterprise Apex code review |
 | `sf-lwc-reviewer` | Lightning Web Component review |
 | `sf-security-reviewer` | Security audit (CRUD/FLS, sharing, injection) |
 | `sf-flow-reviewer` | Flow design and automation review |
 | `sf-agentforce-builder` | Agentforce agent and action development |
-| `sf-data-architect` | Data model and relationship design |
+| `sf-architect` | Solution architecture and data model design |
 | `sf-integration-architect` | Integration pattern design |
 | `sf-performance-optimizer` | Performance bottleneck analysis |
 
 ## Quick Start Recommendations
 
 **New to a Salesforce project?** Start with:
+
 1. `/sf-quickstart` — detect your project and configure SCC
 2. Use `sf-tdd-workflow` skill — write tests first
 3. Use `sf-apex-best-practices` skill — review before committing

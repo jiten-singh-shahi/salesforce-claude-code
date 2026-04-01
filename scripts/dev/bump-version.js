@@ -52,7 +52,7 @@ function updateFile(filePath, oldVersion, newVersion) {
   const fullPath = path.join(ROOT, filePath);
   if (!fs.existsSync(fullPath)) return false;
 
-  let content = fs.readFileSync(fullPath, 'utf8');
+  const content = fs.readFileSync(fullPath, 'utf8');
   const updated = content.replace(
     new RegExp(`"version":\\s*"${oldVersion.replace(/\./g, '\\.')}"`, 'g'),
     `"version": "${newVersion}"`

@@ -208,6 +208,7 @@ public with sharing class ProjectSharingService {
 Objects with >100,000 records require special attention.
 
 **Schema design:**
+
 - Add external ID fields on objects queried by non-Id values
 - Request custom indexes on fields used in WHERE clauses
 - Consider skinny tables for frequently-accessed field subsets
@@ -269,5 +270,5 @@ External Objects have no triggers, Flows, or Validation Rules. Use Apex callouts
 
 ## Related
 
-- **Agent**: `sf-data-architect` — For interactive, in-depth guidance
+- **Agent**: `sf-architect` — For interactive, in-depth guidance
 - **Constraints**: `sf-apex-constraints` — Governor limits and Apex safety rules

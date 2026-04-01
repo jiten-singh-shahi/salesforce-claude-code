@@ -10,9 +10,14 @@ dist/
 npm-debug.log*
 .env
 .env.local
+.env.*.local
 *.swp
 *.swo
 .idea/
 .vscode/settings.json
 .claude/
 workspace/
+*.pem
+*.key
+credentials.json
+.npmrc

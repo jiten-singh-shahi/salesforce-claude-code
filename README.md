@@ -6,7 +6,7 @@
 
 > The complete AI development system for Salesforce — expert agents, automated quality gates, and institutional knowledge, powered by @salesforce/mcp
 
-SCC is a Claude Code plugin that supercharges your Salesforce development workflow with specialized AI agents, domain skills, lifecycle hooks, and always-on coding rules. Built for Apex, LWC, SOQL, Flow, Visualforce, Aura, DevOps, and Agentforce — covering every layer of the Salesforce platform.
+SCC (`scc-universal` on npm) is a Claude Code plugin that supercharges your Salesforce development workflow with specialized AI agents, domain skills, lifecycle hooks, and always-on coding rules. Built for Apex, LWC, SOQL, Flow, Visualforce, Aura, DevOps, and Agentforce — covering every layer of the Salesforce platform.
 
 ---
 
@@ -20,7 +20,7 @@ SCC is a unified system where each layer serves a distinct role:
 | **25 Agents** | Expert routing — each agent specializes in one Salesforce domain | `sf-apex-reviewer`, `sf-performance-optimizer`, `sf-trigger-architect`, `sf-security-reviewer` |
 | **55 Skills** | Institutional knowledge + workflows — 35 user-invocable via `/skill-name`, 20 auto-activating | `/sf-apex-best-practices`, `/sf-deployment`, `/sf-soql-optimization`, `/sf-security` |
 | **7 Constraint Skills** | Always-on governance via auto-activating skills | `sf-apex-constraints`, `sf-soql-constraints`, `sf-security-constraints`, `sf-trigger-constraints` |
-| **28 Hooks** | Automated enforcement — quality gates run on every code change | SOQL-in-loop detection, PMD via sf scanner, privilege escalation checks |
+| **29 Hooks** | Automated enforcement — quality gates run on every code change | SOQL-in-loop detection, PMD via sf scanner, privilege escalation checks |
 
 **Together:** `@salesforce/mcp` gives Claude the hands to work with Salesforce. SCC gives Claude the brain to work well.
 
@@ -30,10 +30,9 @@ SCC is a unified system where each layer serves a distinct role:
 
 | Category | Count | Description |
 |---|---|---|
-| Agents | 32 | Specialized Salesforce subagents |
-| Skills | 52 | Domain knowledge + workflow modules (33 user-invocable, 19 auto-activating) |
-| Rules | 28 | Always-on guidelines (Apex / LWC / SOQL / Flow / Visualforce / Aura / common) |
-| Hooks | 28 | Lifecycle hooks (SessionStart, PreToolUse, PostToolUse, PostToolUseFailure, PreCompact, Stop, SessionEnd) |
+| Agents | 25 | Specialized Salesforce subagents |
+| Skills | 55 | Domain knowledge + workflow modules (35 user-invocable, 20 auto-activating) |
+| Hooks | 29 | Lifecycle hooks (SessionStart, PreToolUse, PostToolUse, PostToolUseFailure, PreCompact, Stop, SessionEnd) |
 | Harnesses | 2 | Claude Code, Cursor |
 
 ---
@@ -64,6 +63,51 @@ npx scc install devops
 npx scc doctor
 npx scc repair
 ```
+
+### CLI Reference
+
+| Command | Description |
+|---|---|
+| `scc install <target>` | Install SCC content (apex, lwc, all) |
+| `scc plan` | Preview install manifest (dry run) |
+| `scc list-installed` | Show currently installed SCC files |
+| `scc doctor` | Diagnose missing or drifted files |
+| `scc repair` | Restore drifted files |
+| `scc status` | Query JSON state store |
+| `scc sessions` | List saved sessions |
+| `scc session-inspect` | Inspect a specific session's details |
+| `scc uninstall` | Remove SCC-managed files |
+
+**Install flags:**
+
+| Flag | Description |
+|---|---|
+| `--profile <name>` | Install profile: `apex`, `lwc`, or `full` (default) |
+| `--target <harness>` | Target harness: `claude` (default) or `cursor` |
+| `--config <path>` | Custom install manifest path |
+| `--dry-run` | Preview changes without applying (works with repair, uninstall) |
+| `--json` | Output in JSON format |
+| `--yes` | Skip confirmation prompts |
+
+### Install Modules
+
+SCC content is organized into 7 modules. Profiles compose subsets:
+
+| Module | Description | Depends On |
+|---|---|---|
+| `core` | Essential agents, core skills, lifecycle hooks | — |
+| `apex` | Apex agents, skills, SOQL, constraints | core |
+| `lwc` | LWC agent, skills, constraints | core |
+| `platform` | Cross-domain agents, universal skills, debugging, integration | core |
+| `devops` | CI/CD, deployment, scratch orgs | core |
+| `security` | Security agent, CRUD/FLS, governor limits, SOQL optimization | core |
+| `extended` | Flow, Visualforce, Aura, Agentforce, Admin, Events, API design | core |
+
+| Profile | Modules Included |
+|---|---|
+| `apex` | core + apex + platform + devops + security |
+| `lwc` | core + lwc + platform + devops + security |
+| `full` | All 7 modules (default) |
 
 ### Harness-Specific Instructions
 
@@ -211,17 +255,13 @@ All content is structured for use across multiple AI harnesses:
 | `sf-lwc-development` | Component composition, lifecycle, reactivity |
 | `sf-lwc-testing` | LWC Jest testing and component test patterns |
 | `sf-metadata-management` | Metadata API and source format management |
-| `sf-package-development` | Managed and unlocked package development |
 | `sf-data-modeling` | Object model, relationships, and data design |
 | `sf-debugging` | Debug logs, checkpoints, and trace flags |
 | `sf-deployment` | Deployment validation, partial deploys, rollback |
 | `sf-integration` | REST/SOAP callouts, named credentials, auth |
 | `sf-security` | CRUD/FLS, sharing, stripInaccessible patterns |
-| `sf-scratch-org-workflow` | Scratch org creation, pooling, and lifecycle |
 | `sf-api-design` | Salesforce API design and best practices |
-| `sf-docker-patterns` | Docker patterns for Salesforce CI/CD |
 | `sf-e2e-testing` | End-to-end testing for Salesforce apps |
-| `sf-metadata-migrations` | Metadata migration strategies |
 | `sf-tdd-workflow` | Test-driven development for Salesforce |
 | `sf-soql-optimization` | Index strategies, selective queries, bulkification |
 | `strategic-compact` | Strategic context compaction patterns |
@@ -236,13 +276,33 @@ All content is structured for use across multiple AI harnesses:
 | `sf-platform-events-cdc` | Platform Events and Change Data Capture patterns |
 | `sf-approval-processes` | Approval process design and automation patterns |
 | `sf-experience-cloud` | Experience Cloud site development and customization |
-| `sf-reporting-dashboards` | Salesforce reporting and dashboard development |
+| `sf-docs-lookup` | Official Salesforce documentation lookup |
+| `sf-help` | Discover SCC skills, agents, and workflows |
+| `sf-quickstart` | Interactive onboarding and project detection |
+| `sf-build-fix` | Build error resolution and dependency fixes |
+| `sf-harness-audit` | Audit SCC harness configuration |
+| `update-platform-docs` | Update platform reference documentation |
+| `aside` | Quick Salesforce answer mid-task without losing context |
+| `checkpoint` | Save a development checkpoint via git stash for rollback |
+| `model-route` | Route tasks to optimal Claude model tier by complexity |
+| `refactor-clean` | Dead code removal and consolidation via PMD/Code Analyzer |
+| `resume-session` | Resume a saved Salesforce development session |
+| `save-session` | Persist session state for future resumption |
+| `sessions` | List, load, and inspect saved sessions |
+| `update-docs` | Sync documentation after Apex code changes |
+| `sf-apex-constraints` | Always-on: governor limits, naming, bulkification rules |
+| `sf-deployment-constraints` | Always-on: deploy safety, validation-only first, rollback readiness |
+| `sf-lwc-constraints` | Always-on: LWC naming, security, accessibility, performance |
+| `sf-security-constraints` | Always-on: CRUD/FLS, sharing, SOQL injection, XSS |
+| `sf-soql-constraints` | Always-on: query safety, selectivity, governor compliance |
+| `sf-testing-constraints` | Always-on: 75% coverage minimum, test isolation, assertions |
+| `sf-trigger-constraints` | Always-on: one-trigger-per-object, handler delegation, recursion |
 
 ---
 
 ## Skills (User-Invocable)
 
-33 skills are user-invocable via `/skill-name`. 19 are auto-activating context skills. Key skills by category:
+35 skills are user-invocable via `/skill-name`. 20 are auto-activating context skills. Key skills by category:
 
 ### Salesforce Development
 
@@ -255,7 +315,6 @@ All content is structured for use across multiple AI harnesses:
 | `/sf-trigger-frameworks` | Trigger framework patterns — One-Trigger-Per-Object, handler base class |
 | `/sf-security` | Security audit — CRUD/FLS, sharing, SOQL injection, XSS |
 | `/sf-deployment` | Deployment workflow — validate, test, deploy to sandbox or production |
-| `/sf-scratch-org-workflow` | Create and configure a Salesforce scratch org |
 | `/sf-apex-testing` | Run and analyze Apex test results with coverage |
 | `/sf-flow-development` | Review Flows for best practices and anti-patterns |
 | `/sf-agentforce-development` | Design and configure an Agentforce AI agent |
@@ -286,6 +345,43 @@ All content is structured for use across multiple AI harnesses:
 | `/aside` | Quick side investigation without losing context |
 | `/model-route` | Route tasks to optimal model by complexity |
 | `/sf-harness-audit` | Audit SCC harness configuration |
+| `/configure-scc` | Interactive SCC setup wizard for profiles, modules, and org config |
+| `/search-first` | Research existing tools and patterns before writing custom code |
+| `/update-platform-docs` | Update platform reference docs with latest release features |
+
+### Auto-Activating Skills
+
+20 skills activate automatically during development — no `/` invocation needed.
+
+**Constraint Skills (always-on governance):**
+
+| Skill | Enforces |
+|---|---|
+| `sf-apex-constraints` | Governor limits, naming conventions, bulkification, security |
+| `sf-deployment-constraints` | Validation-only first, test coverage gates, metadata ordering |
+| `sf-lwc-constraints` | LWC naming, security, accessibility, performance rules |
+| `sf-security-constraints` | CRUD/FLS, sharing model, SOQL injection, XSS protection |
+| `sf-soql-constraints` | Query safety, selectivity, governor limit compliance |
+| `sf-testing-constraints` | 75% coverage minimum, test isolation, assertion requirements |
+| `sf-trigger-constraints` | One-trigger-per-object, handler delegation, recursion prevention |
+
+**Context Skills (activate when relevant):**
+
+| Skill | Activates When |
+|---|---|
+| `sf-apex-async-patterns` | Choosing or implementing async processing (@future, Queueable, Batch) |
+| `sf-apex-cursor` | Paginating large SOQL results or migrating from OFFSET |
+| `sf-apex-enterprise-patterns` | Implementing FFLIB Selector, Domain, Service, Unit of Work |
+| `sf-api-design` | Designing custom REST endpoints or Composite API usage |
+| `sf-approval-processes` | Building multi-step approvals or Flow-integrated submissions |
+| `sf-devops-ci-cd` | Setting up CI/CD pipelines, JWT auth, scratch org workflows |
+| `sf-experience-cloud` | Building portals, partner communities, or public-facing sites |
+| `sf-integration` | Building REST/SOAP callouts, Named Credentials, External Services |
+| `sf-lwc-testing` | Writing or debugging LWC Jest tests |
+| `sf-metadata-management` | Working with package.xml, .forceignore, source vs metadata format |
+| `mcp-server-patterns` | Building MCP servers for Salesforce integration |
+| `security-scan` | Scanning Claude Code config for vulnerabilities and misconfigurations |
+| `strategic-compact` | Managing context during long development sessions |
 
 ---
 
@@ -299,13 +395,14 @@ Control which hooks run via the `SCC_HOOK_PROFILE` environment variable:
 | `standard` | Recommended — session start + pre-tool validation + post-write reminders (default) |
 | `strict` | All hooks enabled with additional enforcement and stop-hook summaries |
 
-```bash
-# Set in your shell or .env
-SCC_HOOK_PROFILE=standard
+### Environment Variables
 
-# Disable specific hooks
-SCC_DISABLED_HOOKS=session-start,auto-format
-```
+| Variable | Values | Description |
+|---|---|---|
+| `SCC_HOOK_PROFILE` | `minimal`, `standard`, `strict` | Controls which hooks run (default: `standard`) |
+| `SCC_DISABLED_HOOKS` | Comma-separated names | Disable specific hooks (e.g., `session-start,auto-format`) |
+| `SF_ORG_ALIAS` | Any org alias | Default Salesforce target org for session context |
+| `CLAUDE_PACKAGE_MANAGER` | `npm`, `pnpm`, `yarn`, `bun` | Override auto-detected package manager |
 
 ---
 
@@ -371,6 +468,7 @@ sf org create scratch --alias feature-scratch
 | [Token Optimization](docs/token-optimization.md) | Settings and habits to reduce token consumption |
 | [Security Guide](the-security-guide.md) | CRUD/FLS, injection prevention, encryption, session security |
 | [Troubleshooting](TROUBLESHOOTING.md) | Common issues and solutions |
+| [Changelog](CHANGELOG.md) | Version history and release notes |
 
 ---
 

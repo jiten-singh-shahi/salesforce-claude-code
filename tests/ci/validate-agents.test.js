@@ -42,6 +42,26 @@ function writeAgent(agentsDir, filename, content) {
   fs.writeFileSync(path.join(agentsDir, filename), content);
 }
 
+// Valid description: 100+ chars, 3+ SF keywords, "Use when" clause, "Do NOT" clause
+const VALID_DESC = 'Use when reviewing Apex classes, triggers, or SOQL queries in a Salesforce org for governor limit compliance. Do NOT use for LWC.';
+const VALID_BODY = [
+  '## When to Use',
+  '',
+  'Use this agent when reviewing Salesforce code for quality.',
+  '',
+  '## Workflow',
+  '',
+  '### Step 1 — Scan',
+  'Read all Apex files.',
+  '',
+  '### Step 2 — Report',
+  'Generate findings report.',
+  '',
+  '## Escalation',
+  '',
+  'Ask user before modifying production code.',
+].join('\n');
+
 // ── Existing tests (happy path with real data) ──────────────────────────────
 
 test('validate-agents.js: runs successfully', () => {
@@ -97,20 +117,18 @@ test('passes for a valid agent file', () => {
   const tmp = makeTmpDir();
   try {
     const agentsDir = path.join(tmp, 'agents');
-    writeAgent(agentsDir, 'test-agent.md', [
+    writeAgent(agentsDir, 'sf-test-agent.md', [
       '---',
-      'name: Test Agent',
-      'description: A test agent that does many useful things for testing',
-      'tools: ["Read", "Grep"]',
+      'name: sf-test-agent',
+      `description: "${VALID_DESC}"`,
+      'tools: ["Read", "Grep", "Edit"]',
       'model: sonnet',
       'origin: SCC',
       '---',
-      '# Test Agent',
-      '',
-      'This is the body content for the test agent.',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
-    assert.strictEqual(result.status, 0);
+    assert.strictEqual(result.status, 0, `Expected pass but got: ${result.stderr || result.stdout}`);
     assert.ok(result.stdout.includes('PASSED'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
@@ -126,7 +144,8 @@ test('fails when agent has no frontmatter', () => {
     writeAgent(agentsDir, 'bad-agent.md', '# Just a heading\n\nNo frontmatter here.');
     const result = runValidator(tmp);
     assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('missing YAML frontmatter'));
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('missing YAML frontmatter'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -140,15 +159,17 @@ test('fails when frontmatter.name is missing', () => {
     const agentsDir = path.join(tmp, 'agents');
     writeAgent(agentsDir, 'no-name.md', [
       '---',
-      'description: A valid description that is long enough for testing purposes',
+      `description: "${VALID_DESC}"`,
       'tools: ["Read"]',
       'model: sonnet',
+      'origin: SCC',
       '---',
-      '# Agent body content here',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
     assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('name is required'));
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('name is required'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -162,15 +183,17 @@ test('fails when frontmatter.description is missing', () => {
     const agentsDir = path.join(tmp, 'agents');
     writeAgent(agentsDir, 'no-desc.md', [
       '---',
-      'name: Test',
+      'name: no-desc',
       'tools: ["Read"]',
       'model: sonnet',
+      'origin: SCC',
       '---',
-      '# Agent body content here',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
     assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('description is required'));
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('description is required'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -178,22 +201,24 @@ test('fails when frontmatter.description is missing', () => {
 
 // ── Branch: description too short ───────────────────────────────────────────
 
-test('fails when description is too short', () => {
+test('fails when description is too short (< 100 chars)', () => {
   const tmp = makeTmpDir();
   try {
     const agentsDir = path.join(tmp, 'agents');
     writeAgent(agentsDir, 'short-desc.md', [
       '---',
-      'name: Test',
+      'name: short-desc',
       'description: Too short',
       'tools: ["Read"]',
       'model: sonnet',
+      'origin: SCC',
       '---',
-      '# Agent body content here',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
     assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('at least 20 characters'));
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('description too short'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -207,21 +232,23 @@ test('fails when frontmatter.tools is missing', () => {
     const agentsDir = path.join(tmp, 'agents');
     writeAgent(agentsDir, 'no-tools.md', [
       '---',
-      'name: Test Agent',
-      'description: A valid description that is long enough for testing',
+      'name: no-tools',
+      `description: "${VALID_DESC}"`,
       'model: sonnet',
+      'origin: SCC',
       '---',
-      '# Agent body content here',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
     assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('tools is required'));
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('tools is required'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
 
-// ── Branch: tools is not an array (parsed as string) → error ────────────────
+// ── Branch: tools is not an array → error ───────────────────────────────────
 
 test('fails when tools is a plain string (not array syntax)', () => {
   const tmp = makeTmpDir();
@@ -229,17 +256,18 @@ test('fails when tools is a plain string (not array syntax)', () => {
     const agentsDir = path.join(tmp, 'agents');
     writeAgent(agentsDir, 'string-tools.md', [
       '---',
-      'name: Test Agent',
-      'description: A valid description that is long enough for testing',
+      'name: string-tools',
+      `description: "${VALID_DESC}"`,
       'tools: some-string-value',
       'model: sonnet',
       'origin: SCC',
       '---',
-      '# Agent body content here',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
     assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('tools must be an array'));
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('tools must be an array'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -253,15 +281,17 @@ test('fails when frontmatter.model is missing', () => {
     const agentsDir = path.join(tmp, 'agents');
     writeAgent(agentsDir, 'no-model.md', [
       '---',
-      'name: Test Agent',
-      'description: A valid description that is long enough for testing',
+      'name: no-model',
+      `description: "${VALID_DESC}"`,
       'tools: ["Read"]',
+      'origin: SCC',
       '---',
-      '# Agent body content here',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
     assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('model is required'));
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('model is required'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -275,102 +305,82 @@ test('fails when model is an invalid value', () => {
     const agentsDir = path.join(tmp, 'agents');
     writeAgent(agentsDir, 'bad-model.md', [
       '---',
-      'name: Test Agent',
-      'description: A valid description that is long enough for testing',
+      'name: bad-model',
+      `description: "${VALID_DESC}"`,
       'tools: ["Read"]',
       'model: gpt4',
+      'origin: SCC',
       '---',
-      '# Agent body content here',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
     assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('must be one of'));
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('must be one of'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
 
-// ── Branch: valid extended model names (claude-opus-4, etc.) ────────────────
+// ── Branch: origin missing → error ──────────────────────────────────────────
 
-test('passes for extended model names like claude-sonnet-4', () => {
-  const tmp = makeTmpDir();
-  try {
-    const agentsDir = path.join(tmp, 'agents');
-    writeAgent(agentsDir, 'extended-model.md', [
-      '---',
-      'name: Test Agent',
-      'description: A valid description that is long enough for testing',
-      'tools: ["Read"]',
-      'model: claude-sonnet-4',
-      'origin: SCC',
-      '---',
-      '# Agent body content here with enough text',
-    ].join('\n'));
-    const result = runValidator(tmp);
-    assert.strictEqual(result.status, 0);
-  } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
-  }
-});
-
-// ── Branch: origin warning — missing ────────────────────────────────────────
-
-test('warns when origin is missing', () => {
+test('fails when origin is missing', () => {
   const tmp = makeTmpDir();
   try {
     const agentsDir = path.join(tmp, 'agents');
     writeAgent(agentsDir, 'no-origin.md', [
       '---',
-      'name: Test Agent',
-      'description: A valid description that is long enough for testing',
+      'name: no-origin',
+      `description: "${VALID_DESC}"`,
       'tools: ["Read"]',
       'model: sonnet',
       '---',
-      '# Agent body content here',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
-    // Missing origin is a warning, not an error
-    assert.strictEqual(result.status, 0);
-    assert.ok(result.stderr.includes('origin is missing'));
+    assert.strictEqual(result.status, 1);
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('origin is required'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
 
-// ── Branch: origin warning — wrong value ────────────────────────────────────
+// ── Branch: origin wrong value → error ──────────────────────────────────────
 
-test('warns when origin is not SCC', () => {
+test('fails when origin is not SCC', () => {
   const tmp = makeTmpDir();
   try {
     const agentsDir = path.join(tmp, 'agents');
     writeAgent(agentsDir, 'wrong-origin.md', [
       '---',
-      'name: Test Agent',
-      'description: A valid description that is long enough for testing',
+      'name: wrong-origin',
+      `description: "${VALID_DESC}"`,
       'tools: ["Read"]',
       'model: sonnet',
       'origin: OTHER',
       '---',
-      '# Agent body content here',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
-    assert.strictEqual(result.status, 0);
-    assert.ok(result.stderr.includes('expected "SCC"'));
+    assert.strictEqual(result.status, 1);
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('must be "SCC"'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
 
-// ── Branch: body content too short → warning ────────────────────────────────
+// ── Branch: body too short → error ──────────────────────────────────────────
 
-test('warns when agent body content is very short', () => {
+test('fails when agent body content is too short', () => {
   const tmp = makeTmpDir();
   try {
     const agentsDir = path.join(tmp, 'agents');
     writeAgent(agentsDir, 'short-body.md', [
       '---',
-      'name: Test Agent',
-      'description: A valid description that is long enough for testing',
+      'name: short-body',
+      `description: "${VALID_DESC}"`,
       'tools: ["Read"]',
       'model: sonnet',
       'origin: SCC',
@@ -378,8 +388,9 @@ test('warns when agent body content is very short', () => {
       'Short.',
     ].join('\n'));
     const result = runValidator(tmp);
-    assert.strictEqual(result.status, 0);
-    assert.ok(result.stderr.includes('body content is very short'));
+    assert.strictEqual(result.status, 1);
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('body too short'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }

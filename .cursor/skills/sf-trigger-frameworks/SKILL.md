@@ -338,6 +338,6 @@ static void testBypassMechanism_noDefaultsSetWhenBypassed() {
 
 - **Agent**: `sf-trigger-architect` — For interactive, in-depth guidance
 
-### Constraints
+### Guardrails
 
 - `sf-trigger-constraints` — Enforces one-trigger-per-object, handler delegation, bulkification, and recursion prevention rules

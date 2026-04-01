@@ -1,7 +1,7 @@
 ---
 name: sf-trigger-architect
 description: >-
-  Use when creating or refactoring Salesforce triggers to enterprise patterns — one-trigger-per-object, handler delegation, bulkification, recursion prevention, bypass mechanisms, and FFLIB domain layer. Do NOT use for Flow automation design. Keywords: trigger framework, bulkification, recursion guard, FFLIB, bypass mechanism.
+  Use when creating or refactoring Salesforce triggers — one-trigger-per-object, handler delegation, bulkification, recursion prevention, FFLIB. Do NOT use for Flow automation.
 model: inherit
 ---
 
@@ -24,6 +24,7 @@ Do NOT use for Flow automation design — use `sf-flow-reviewer` for that.
 ### Step 1: Assess the Current State
 
 Read all existing triggers on the target object. Check for:
+
 - More than one trigger on the same object (execution order is unpredictable)
 - Business logic directly in the trigger body (must move to handler/service)
 - Missing bypass mechanism
@@ -39,6 +40,7 @@ If multiple triggers exist on the same object, stop and escalate before proceedi
 ### Step 2: Choose the Pattern
 
 **Pragmatic Handler Pattern** — recommended for teams not using FFLIB:
+
 - Thin trigger (routing only, ~10 lines)
 - `TriggerHandler` class with `onBeforeInsert`, `onBeforeUpdate`, `onAfterInsert`, etc.
 - `Service` class with actual business logic
@@ -46,6 +48,7 @@ If multiple triggers exist on the same object, stop and escalate before proceedi
 - `RecursionGuard` utility for after-update recursion prevention
 
 **FFLIB Domain Layer** — for orgs fully adopting Apex Enterprise Patterns:
+
 - Trigger delegates to `fflib_SObjectDomain.triggerHandler(AccountsDomain.class)`
 - Domain class extends `fflib_SObjectDomain` and overrides lifecycle methods
 - Application layer wires together Selector, Domain, and Service
@@ -55,12 +58,14 @@ See skill `sf-trigger-frameworks` for complete code templates for both patterns.
 ### Step 3: Implement or Refactor
 
 For each trigger context method in the handler:
+
 1. Accept `List<SObject>` or `Map<Id, SObject>` — never single-record patterns
 2. Delegate to a service class — no logic in the handler itself
 3. Filter to changed records before doing expensive work in `onAfterUpdate`
 4. Place all SOQL and DML outside loops
 
 **Trigger execution order awareness (critical):**
+
 - Before-save Flows run BEFORE before triggers (step 3 before step 4)
 - Workflow rule field updates (step 10) re-run before and after triggers — plan for second pass
 - After-save Flows run AFTER Apex after triggers (step 11)
@@ -68,6 +73,7 @@ For each trigger context method in the handler:
 ### Step 4: Add Bypass Mechanism
 
 Every trigger must be bypassable. Implement `TriggerBypass` with:
+
 - In-memory static set for transaction-level bypass (tests, data migration utilities)
 - Custom Metadata (`Trigger_Bypass__mdt`) for persistent, deployable bypass
 - Use `getAll()` (SOQL-exempt) for CMDT lookup — do not use standard SOQL against CMDT in production code
@@ -83,6 +89,7 @@ Note: before-insert records have a null Id — always include them; the guard ap
 ### Step 6: Verify with Tests
 
 Every trigger must have a corresponding test class with:
+
 - Coverage >= 90%
 - Bulk test with 200 records
 - Bypass mechanism test (verify that `TriggerBypass.bypass('Object')` skips all logic)
@@ -107,6 +114,7 @@ Before submitting a trigger for review:
 ## Escalation
 
 Stop and ask the human before:
+
 - Overwriting an existing trigger that is currently deployed and in use — confirm backup and deployment plan
 - Introducing a new trigger framework (pragmatic handler or FFLIB) when one already exists in the org — mixing frameworks creates maintenance confusion
 - When trigger handler refactoring would change DML order in a way that could affect downstream automation (Flows, workflow rules, roll-up summaries) — map the impact first

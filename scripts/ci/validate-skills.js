@@ -57,7 +57,8 @@ function parseArgs() {
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
-const MIN_DESCRIPTION_LENGTH = 50;
+const MIN_DESCRIPTION_LENGTH = 100;
+const MAX_DESCRIPTION_LENGTH = 250;
 const MIN_SF_KEYWORDS = 3;
 const MIN_BODY_LENGTH = 50;
 const BUDGET_WARN_CHARS = 12000;  // 75% of ~16K — warn
@@ -119,7 +120,7 @@ function countSFKeywords(text) {
 
 function detectSkillType(name, body) {
   if (name && name.includes('-constraints')) return 'constraint';
-  if (body && /##\s*(never do|always do|never|constraints)/i.test(body)) return 'constraint';
+  if (body && /^##\s+(never do|always do|never rules|prohibited|required)\b/im.test(body)) return 'constraint';
   return 'action';
 }
 
@@ -194,8 +195,11 @@ function validateSkill(skillDir, file) {
         'Add WHEN + WHEN NOT clauses with Salesforce keywords.'
       );
     }
-    if (desc.length > 300) {
-      warn(label, `description is ${desc.length} chars — keep tight, ideally under 200`);
+    if (desc.length > MAX_DESCRIPTION_LENGTH) {
+      fileErrors.push(
+        `description too long: ${desc.length} chars (maximum ${MAX_DESCRIPTION_LENGTH}). ` +
+        'Shorten the WHEN + WHEN NOT contract.'
+      );
     }
 
     const kwCount = countSFKeywords(desc);
@@ -212,7 +216,7 @@ function validateSkill(skillDir, file) {
       );
     }
 
-    if (!/do not|don\'t|not for|except|excluding/i.test(desc)) {
+    if (!/do not|don't|not for|except|excluding/i.test(desc)) {
       warn(label, 'description missing WHEN NOT clause — add "Do NOT use for [exclusions]"');
     }
   }
@@ -247,10 +251,10 @@ function validateSkill(skillDir, file) {
     if (userInvocable === true) {
       fileErrors.push('constraint skill must NOT be user-invocable — remove user-invocable: true');
     }
-    if (body && !/@[A-Z_]+\.md/.test(body)) {
+    if (body && !/@(\.\.\/(_reference\/)?)?[A-Z_]+\.md/.test(body)) {
       fileErrors.push(
         'constraint skill has no @reference file usage — ' +
-        'must reference at least one _reference/*.md file'
+        'must reference at least one _reference/*.md file (e.g. @../_reference/FILE.md or @FILE.md)'
       );
     }
     if (body && !/##\s*(never|always|constraints|prohibited|required)/i.test(body)) {
@@ -292,7 +296,7 @@ function validateSkill(skillDir, file) {
 
   // ── disable-model-invocation for destructive skills ───────────────────────
   const disableModelInvocation = parseBool(frontmatter['disable-model-invocation']);
-  const isDestructive = name && /deploy|commit|push|release|publish|send|delete|drop|migrate/i.test(name);
+  const isDestructive = name && /deploy|commit|push|release|publish|send|delete|drop|migrate|upsert|remove/i.test(name);
   if (isDestructive && disableModelInvocation !== true) {
     fileErrors.push(
       `destructive skill "${name}" is missing disable-model-invocation: true`
@@ -437,9 +441,9 @@ function checkContextBudget() {
   }
 
   for (const { name: n, chars } of breakdown) {
-    if (chars > 300) {
+    if (chars > MAX_DESCRIPTION_LENGTH) {
       warn(`${targetSkillFolder}/${n}/SKILL.md`,
-        `description is ${chars} chars — keep the WHEN + WHEN NOT contract tight (ideally under 200)`
+        `description is ${chars} chars — must be under ${MAX_DESCRIPTION_LENGTH}`
       );
     }
   }
@@ -480,7 +484,7 @@ function checkReferenceIntegrity() {
     if (!fs.existsSync(skillMd)) continue;
 
     const content = fs.readFileSync(skillMd, 'utf8');
-    const refs = [...content.matchAll(/@([A-Z_]+\.md)/g)].map(m => m[1]);
+    const refs = [...content.matchAll(/@(?:\.\.\/(?:_reference\/)?)?([A-Z_]+\.md)/g)].map(m => m[1]);
 
     for (const ref of refs) {
       const refPath = path.join(referenceDir, ref);

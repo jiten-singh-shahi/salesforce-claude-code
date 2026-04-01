@@ -341,6 +341,7 @@ Use the Developer Console Query Plan to understand query execution before deploy
 | `Cost` | Estimated relative cost — lower is better |
 
 If you see `TableScan` on a large object:
+
 1. Add a more selective condition using an indexed field
 2. Request a custom index from Salesforce Support
 3. Restructure the query to use SOSL
@@ -349,5 +350,5 @@ If you see `TableScan` on a large object:
 
 ## Related
 
-- **Agent**: `sf-soql-optimizer` — For interactive, in-depth guidance
+- **Agent**: `sf-performance-optimizer` — For interactive, in-depth guidance
 - **Constraints**: `sf-soql-constraints` — Hard rules for SOQL safety and compliance

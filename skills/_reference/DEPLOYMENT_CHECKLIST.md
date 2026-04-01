@@ -1,7 +1,7 @@
 # Deployment Checklist — Salesforce Reference
 
 > Last verified: API v66.0 (Spring '26)
-> Source: https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_deploy.htm
+> Source: <https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_deploy.htm>
 
 ## Test Levels
 

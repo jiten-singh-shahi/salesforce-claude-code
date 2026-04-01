@@ -48,6 +48,7 @@ Group errors by type and fix in this dependency order:
 ### Step 3 — Fix One at a Time
 
 For each error:
+
 1. Read the file at the reported line number
 2. Understand the context (class, method, trigger)
 3. Apply the minimal fix
@@ -56,6 +57,7 @@ For each error:
 ### Step 4 — Re-validate
 
 After all fixes:
+
 ```bash
 sf project deploy validate --target-org <alias> --test-level RunLocalTests
 ```

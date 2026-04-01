@@ -15,7 +15,7 @@ Salesforce Claude Code (SCC) — production-ready AI agent harness for Salesforc
 
 ```bash
 npm install -g scc-universal
-npx scc install full
+npx scc install all
 ```
 
 ### From Source
@@ -24,15 +24,14 @@ npx scc install full
 git clone <repo-url> salesforce-claude-code
 cd salesforce-claude-code
 npm install
-npx scc install full
+npx scc install all
 ```
 
 ## What's Included
 
-- **27 agents** for Salesforce development (Apex, LWC, SOQL, Flows, Visualforce, Aura, DevOps, Security)
-- **58 skills** for domain knowledge, workflows, and patterns (39 user-invocable via `/skill-name`, 19 auto-activating)
-- **28 rules** for coding standards and best practices
-- **28 hooks** for quality gates and automation
+- **25 agents** for Salesforce development (Apex, LWC, SOQL, Flows, Visualforce, Aura, DevOps, Security)
+- **55 skills** for domain knowledge, workflows, and patterns (35 user-invocable via `/skill-name`, 20 auto-activating)
+- **29 hooks** for quality gates and automation
 - **8 schemas** for configuration validation
 
 ## Configuration

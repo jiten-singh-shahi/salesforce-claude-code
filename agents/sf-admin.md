@@ -29,12 +29,15 @@ Do NOT use this agent for Apex class review, LWC component review, or SOQL query
 ## Analysis Process
 
 ### Step 1 — Discover
+
 Read all relevant org configuration files using Glob and Read. Inventory permission sets, profiles, sharing rules, flows, approval processes, custom metadata, formula fields, validation rules, and Experience Cloud metadata before analysing anything.
 
 ### Step 2 — Analyse Access Model
+
 Apply the sf-security skill to each permission set and profile. Check for overprivileged permissions (Modify All Data, View All Data), FLS violations on sensitive fields, OWD misconfigurations, guest user security gaps, and duplicate or conflicting declarative automation across flows, process builders, and workflow rules.
 
 ### Step 3 — Report Findings
+
 Produce findings using the Severity Matrix below. Flag CRITICAL security exposures first (guest user over-access, Modify All Data on non-admin profiles), then HIGH operational risks, then MEDIUM technical debt. Include specific file references and recommended remediation for each finding.
 
 ## Severity Matrix
@@ -53,12 +56,14 @@ Produce findings using the Severity Matrix below. Flag CRITICAL security exposur
 Use minimal profiles for login/layout only; all feature access via Permission Sets and Permission Set Groups. Muting Permission Sets subtract conflicting access within groups. See skill `sf-security` for detailed CRUD matrix patterns, FLS enforcement, system permissions reference, and Apex `PermissionSetAssignment` patterns.
 
 **Key audit flags:**
+
 - CRITICAL: Modify All Data or View All Data on non-admin Permission Sets
 - CRITICAL: Sensitive fields (SSN, salary, PCI data) visible to wrong personas
 - HIGH: Permission Set Group missing muting PS for conflicting permissions
 - MEDIUM: Bloated profiles with object/field permissions instead of Permission Sets
 
 **Audit commands:**
+
 ```bash
 grep -rn "PermissionsModifyAllData" force-app/main/default/permissionsets/ --include="*.permissionset-meta.xml" -l
 grep -rn "PermissionsViewAllData" force-app/main/default/profiles/ --include="*.profile-meta.xml" -l
@@ -71,6 +76,7 @@ grep -rn "PermissionsViewAllData" force-app/main/default/profiles/ --include="*.
 Each approval process needs entry criteria, initial/final approve/reject actions, email alerts, and recall actions. For Apex programmatic submission (`Approval.ProcessSubmitRequest`, `Approval.ProcessWorkitemRequest`, `Approval.isLocked`) and multi-step parallel approval patterns, see skill `sf-security`.
 
 **Common issues:**
+
 - CRITICAL: No rejection actions — record stays locked with no forward path
 - HIGH: No recall actions — submitters cannot retract submissions
 - MEDIUM: Hardcoded approver user IDs instead of hierarchy or related user fields
@@ -90,6 +96,7 @@ Use Custom Metadata Types for all new deployable configuration (feature flags, t
 **Validation rules:** Use `$Permission.Bypass_Validation` Custom Permissions for bypass (never `$Profile.Name` — breaks on profile renames). Always include user-friendly error messages. Deploy dependent fields and picklist values before the rule.
 
 **Common patterns:**
+
 - Email format: `NOT(REGEX(Email__c, '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'))`
 - Stage-required fields: `ISPICKVAL(StageName, 'Closed Won') && ISBLANK(Amount)`
 
@@ -100,6 +107,7 @@ Use Custom Metadata Types for all new deployable configuration (feature flags, t
 Guest users represent the highest security risk — every permission granted is publicly accessible. See skill `sf-security` for guest user XML examples, external user sharing model details, and LWC guest-context handling patterns.
 
 **Guest user security checklist (CRITICAL):**
+
 - [ ] Guest user profile has NO CRUD on standard objects
 - [ ] No View All / Modify All on any object for guest user
 - [ ] OWD for sensitive objects is Private
@@ -122,6 +130,7 @@ Choose report types: Tabular (list), Summary (grouped), Matrix (cross-tabulated)
 **First step: inventory all automation.** Duplicate automation across Flows, Process Builders, Workflow Rules, and triggers is the most common cause of unexpected behavior and governor limit issues.
 
 **Inventory commands:**
+
 ```bash
 find force-app/main/default/flows/ -name "*.flow-meta.xml" 2>/dev/null | wc -l
 grep -rli "processType.*Workflow" force-app/main/default/flows/ 2>/dev/null | wc -l

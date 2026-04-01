@@ -3,6 +3,7 @@ name: sf-deployment-constraints
 description: "Enforce deployment safety — validation-only first, test coverage gates, metadata ordering, rollback readiness. Use when deploying or packaging ANY Salesforce metadata. Do NOT use for local dev or scratch org pushes."
 origin: SCC
 user-invocable: false
+disable-model-invocation: true
 allowed-tools: Read, Grep, Glob
 ---
 
@@ -46,6 +47,7 @@ Reference: @../_reference/DEPLOYMENT_CHECKLIST.md
 5. **Never deploy destructive changes without a pre-deploy snapshot.**
    Before any `--post-destructive-changes` or `--pre-destructive-changes`
    deployment, retrieve the current state of affected components:
+
    ```bash
    sf project retrieve start \
        --manifest manifest/package.xml \
@@ -62,6 +64,7 @@ Reference: @../_reference/DEPLOYMENT_CHECKLIST.md
 ## Always
 
 1. **Always validate before deploy.**
+
    ```bash
    sf project deploy validate \
        --source-dir force-app \
@@ -69,9 +72,11 @@ Reference: @../_reference/DEPLOYMENT_CHECKLIST.md
        --target-org <org> \
        --wait 60
    ```
+
    Then quick-deploy using the returned job ID.
 
 2. **Always specify an appropriate test level.**
+
    | Target Environment | Required Test Level |
    |---|---|
    | Developer sandbox (no Apex) | `NoTestRun` acceptable |
@@ -96,6 +101,7 @@ Reference: @../_reference/DEPLOYMENT_CHECKLIST.md
    11. Profile (always last)
 
 4. **Always have a rollback plan before production deploy.**
+
    | Strategy | When |
    |---|---|
    | `git revert` + full redeploy | Coupled multi-file changes |

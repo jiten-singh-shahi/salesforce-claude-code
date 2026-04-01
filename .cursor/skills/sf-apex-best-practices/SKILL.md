@@ -416,6 +416,6 @@ public with sharing class CreditLimitService {
 
 - **Agent**: `sf-apex-reviewer` — For interactive, in-depth guidance
 
-### Constraints
+### Guardrails
 
 - `sf-apex-constraints` — Enforces governor limits, naming rules, security requirements, and bulkification rules that apply to all Apex code

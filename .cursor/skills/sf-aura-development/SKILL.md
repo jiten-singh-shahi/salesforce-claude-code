@@ -251,7 +251,7 @@ setTimeout($A.getCallback(function() {
 
 ## Related
 
-### Constraints
+### Guardrails
 
 - **sf-lwc-constraints** — Enforced rules for LWC (relevant for interop and migration targets)
 

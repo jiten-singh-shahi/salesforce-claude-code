@@ -4,6 +4,7 @@
   "description": "Production-ready AI agents, skills, and hooks for Salesforce development",
   "author": {
     "name": "Jiten Singh",
+    "email": "jitencseng@gmail.com",
     "url": "https://github.com/jiten-singh-shahi"
   },
   "homepage": "https://github.com/jiten-singh-shahi/salesforce-claude-code",

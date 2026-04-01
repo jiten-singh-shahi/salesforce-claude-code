@@ -37,6 +37,21 @@ function makeTmpDir() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'scc-test-skills-'));
 }
 
+function writeSkill(skillsDir, skillName, content) {
+  const dir = path.join(skillsDir, skillName);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'SKILL.md'), content);
+}
+
+// Valid description: 100+ chars, 3+ SF keywords, "Use when" clause, "Do NOT" clause
+const VALID_DESC = 'Use when writing Apex classes, triggers, or SOQL queries in a Salesforce org for governor limit compliance. Do NOT use for LWC.';
+const VALID_BODY = [
+  '## When to Use',
+  '',
+  'Use this skill when you need to do something specific and important for Salesforce development.',
+  'This body content is long enough to pass the 50-character minimum requirement for skill body.',
+].join('\n');
+
 // ── Existing test (happy path with real data) ───────────────────────────────
 
 test('validate-skills.js: runs successfully', () => {
@@ -55,21 +70,21 @@ test('exits 1 when skills/ directory does not exist', () => {
   try {
     const result = runValidator(tmp);
     assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('skills/ directory not found'));
+    assert.ok(result.stderr.includes('not found') || result.stdout.includes('not found'),
+      'Expected "not found" in output');
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
 
-// ── Branch: no skill files found → exit(0) with warning ────────────────────
+// ── Branch: skills/ is empty → exit(0) ────────────────────────────────────
 
-test('exits 0 with warning when skills/ is empty', () => {
+test('exits 0 when skills/ is empty', () => {
   const tmp = makeTmpDir();
   try {
     fs.mkdirSync(path.join(tmp, 'skills'), { recursive: true });
     const result = runValidator(tmp);
     assert.strictEqual(result.status, 0);
-    assert.ok(result.stderr.includes('No skill files found'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -80,28 +95,24 @@ test('exits 0 with warning when skills/ is empty', () => {
 test('passes for a valid directory-based skill with SKILL.md', () => {
   const tmp = makeTmpDir();
   try {
-    const skillDir = path.join(tmp, 'skills', 'my-skill');
-    fs.mkdirSync(skillDir, { recursive: true });
-    fs.writeFileSync(path.join(skillDir, 'SKILL.md'), [
+    const skillsDir = path.join(tmp, 'skills');
+    writeSkill(skillsDir, 'sf-test-skill', [
       '---',
-      'name: My Skill',
-      'description: A comprehensive test skill that does many useful things for validation',
+      'name: sf-test-skill',
+      `description: "${VALID_DESC}"`,
       'origin: SCC',
       '---',
-      '## When to Use',
-      '',
-      'Use this skill when you need to do something specific and important.',
-      'This body content is long enough to pass the 50-character minimum requirement for skill body.',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
-    assert.strictEqual(result.status, 0);
+    assert.strictEqual(result.status, 0, `Expected pass but got: ${result.stderr || result.stdout}`);
     assert.ok(result.stdout.includes('PASSED'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
 
-// ── Branch: valid flat .md skill ────────────────────────────────────────────
+// ── Branch: valid flat .md skill (warns but passes) ─────────────────────────
 
 test('passes for a valid flat .md skill', () => {
   const tmp = makeTmpDir();
@@ -111,111 +122,14 @@ test('passes for a valid flat .md skill', () => {
     fs.writeFileSync(path.join(skillsDir, 'flat-skill.md'), [
       '---',
       'name: Flat Skill',
-      'description: A comprehensive flat skill that does many useful things for validation',
+      `description: "${VALID_DESC}"`,
       'origin: SCC',
       '---',
-      '## When to Use',
-      '',
-      'Use this skill when you need to do something specific and important.',
-      'This body content is long enough to pass the 50-character minimum requirement for skill body.',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
+    // Flat files get a warning but pass (0 skills validated = no errors)
     assert.strictEqual(result.status, 0);
-    assert.ok(result.stdout.includes('PASSED'));
-  } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
-  }
-});
-
-// ── Branch: directory with index.md instead of SKILL.md → warning ───────────
-
-test('warns when skill directory uses index.md instead of SKILL.md', () => {
-  const tmp = makeTmpDir();
-  try {
-    const skillDir = path.join(tmp, 'skills', 'index-skill');
-    fs.mkdirSync(skillDir, { recursive: true });
-    fs.writeFileSync(path.join(skillDir, 'index.md'), [
-      '---',
-      'name: Index Skill',
-      'description: A comprehensive index skill that does many useful things for validation',
-      'origin: SCC',
-      '---',
-      '## When to Use',
-      '',
-      'Use this skill when you need to do something specific and important.',
-      'This body content is long enough to pass the 50-character minimum requirement for skill body.',
-    ].join('\n'));
-    const result = runValidator(tmp);
-    assert.strictEqual(result.status, 0);
-    assert.ok(result.stderr.includes('uses index.md instead of SKILL.md'));
-  } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
-  }
-});
-
-// ── Branch: directory with README.md ────────────────────────────────────────
-
-test('accepts skill directory with README.md', () => {
-  const tmp = makeTmpDir();
-  try {
-    const skillDir = path.join(tmp, 'skills', 'readme-skill');
-    fs.mkdirSync(skillDir, { recursive: true });
-    fs.writeFileSync(path.join(skillDir, 'README.md'), [
-      '---',
-      'name: Readme Skill',
-      'description: A comprehensive readme skill that does many useful things for validation',
-      'origin: SCC',
-      '---',
-      '## Usage',
-      '',
-      'Use this skill when you need to do something specific and important.',
-      'This body content is long enough to pass the 50-character minimum requirement for skill body.',
-    ].join('\n'));
-    const result = runValidator(tmp);
-    assert.strictEqual(result.status, 0);
-  } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
-  }
-});
-
-// ── Branch: directory with one arbitrary .md file (no SKILL.md) → warning ───
-
-test('warns when skill directory has a single non-SKILL.md file', () => {
-  const tmp = makeTmpDir();
-  try {
-    const skillDir = path.join(tmp, 'skills', 'other-skill');
-    fs.mkdirSync(skillDir, { recursive: true });
-    fs.writeFileSync(path.join(skillDir, 'guide.md'), [
-      '---',
-      'name: Other Skill',
-      'description: A comprehensive other skill that does many useful things for validation',
-      'origin: SCC',
-      '---',
-      '## When to Use',
-      '',
-      'Use this skill when you need to do something specific and important.',
-      'This body content is long enough to pass the 50-character minimum requirement for skill body.',
-    ].join('\n'));
-    const result = runValidator(tmp);
-    assert.strictEqual(result.status, 0);
-    assert.ok(result.stderr.includes('no SKILL.md found, using guide.md'));
-  } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
-  }
-});
-
-// ── Branch: directory with multiple .md files but no SKILL.md → error ───────
-
-test('fails when skill directory has multiple .md files but no SKILL.md', () => {
-  const tmp = makeTmpDir();
-  try {
-    const skillDir = path.join(tmp, 'skills', 'multi-skill');
-    fs.mkdirSync(skillDir, { recursive: true });
-    fs.writeFileSync(path.join(skillDir, 'a.md'), 'file a');
-    fs.writeFileSync(path.join(skillDir, 'b.md'), 'file b');
-    const result = runValidator(tmp);
-    assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('multiple .md files found but no SKILL.md'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -231,7 +145,8 @@ test('fails when skill directory has no .md files', () => {
     fs.writeFileSync(path.join(skillDir, 'data.json'), '{}');
     const result = runValidator(tmp);
     assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('directory has no .md files'));
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('no .md files'), `Expected "no .md files" in output`);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -243,20 +158,17 @@ test('fails when skill frontmatter.name is missing', () => {
   const tmp = makeTmpDir();
   try {
     const skillsDir = path.join(tmp, 'skills');
-    fs.mkdirSync(skillsDir, { recursive: true });
-    fs.writeFileSync(path.join(skillsDir, 'no-name.md'), [
+    writeSkill(skillsDir, 'sf-no-name', [
       '---',
-      'description: A comprehensive skill that does many useful things for validation',
+      `description: "${VALID_DESC}"`,
       'origin: SCC',
       '---',
-      '## When to Use',
-      '',
-      'Use this skill when you need to do something specific and important.',
-      'This body content is long enough to pass the 50-character minimum requirement for skill body.',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
-    assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('name is required'));
+    assert.strictEqual(result.status, 1, `Expected fail but got: ${result.stdout}`);
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('name is required'), `Expected "name is required" in: ${output}`);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -268,20 +180,17 @@ test('fails when skill frontmatter.description is missing', () => {
   const tmp = makeTmpDir();
   try {
     const skillsDir = path.join(tmp, 'skills');
-    fs.mkdirSync(skillsDir, { recursive: true });
-    fs.writeFileSync(path.join(skillsDir, 'no-desc.md'), [
+    writeSkill(skillsDir, 'sf-no-desc', [
       '---',
-      'name: No Desc Skill',
+      'name: sf-no-desc',
       'origin: SCC',
       '---',
-      '## When to Use',
-      '',
-      'Use this skill when you need to do something specific and important.',
-      'This body content is long enough to pass the 50-character minimum requirement for skill body.',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
-    assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('description is required'));
+    assert.strictEqual(result.status, 1, `Expected fail but got: ${result.stdout}`);
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('description is required'), `Expected "description is required" in: ${output}`);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -289,25 +198,22 @@ test('fails when skill frontmatter.description is missing', () => {
 
 // ── Branch: description too short ───────────────────────────────────────────
 
-test('fails when description is too short (< 30 chars)', () => {
+test('fails when description is too short (< 100 chars)', () => {
   const tmp = makeTmpDir();
   try {
     const skillsDir = path.join(tmp, 'skills');
-    fs.mkdirSync(skillsDir, { recursive: true });
-    fs.writeFileSync(path.join(skillsDir, 'short-desc.md'), [
+    writeSkill(skillsDir, 'sf-short-desc', [
       '---',
-      'name: Short Desc',
+      'name: sf-short-desc',
       'description: Too short desc',
       'origin: SCC',
       '---',
-      '## When to Use',
-      '',
-      'Use this skill when you need to do something specific and important.',
-      'This body content is long enough to pass the 50-character minimum requirement for skill body.',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
-    assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('at least 30 characters'));
+    assert.strictEqual(result.status, 1, `Expected fail but got: ${result.stdout}`);
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('description too short'), `Expected "description too short" in: ${output}`);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -319,18 +225,18 @@ test('fails when skill body is too short', () => {
   const tmp = makeTmpDir();
   try {
     const skillsDir = path.join(tmp, 'skills');
-    fs.mkdirSync(skillsDir, { recursive: true });
-    fs.writeFileSync(path.join(skillsDir, 'short-body.md'), [
+    writeSkill(skillsDir, 'sf-short-body', [
       '---',
-      'name: Short Body Skill',
-      'description: A comprehensive skill that does many useful things for validation',
+      'name: sf-short-body',
+      `description: "${VALID_DESC}"`,
       'origin: SCC',
       '---',
       'Short.',
     ].join('\n'));
     const result = runValidator(tmp);
-    assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('body content is too short'));
+    assert.strictEqual(result.status, 1, `Expected fail but got: ${result.stdout}`);
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('body is too short'), `Expected body too short error in: ${output}`);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
@@ -338,15 +244,14 @@ test('fails when skill body is too short', () => {
 
 // ── Branch: no "When to Use" section ────────────────────────────────────────
 
-test('fails when skill has no "When to Use" or "Usage" section', () => {
+test('fails when skill has no "When to Use" section', () => {
   const tmp = makeTmpDir();
   try {
     const skillsDir = path.join(tmp, 'skills');
-    fs.mkdirSync(skillsDir, { recursive: true });
-    fs.writeFileSync(path.join(skillsDir, 'no-usage.md'), [
+    writeSkill(skillsDir, 'sf-no-usage', [
       '---',
-      'name: No Usage Skill',
-      'description: A comprehensive skill that does many useful things for validation',
+      'name: sf-no-usage',
+      `description: "${VALID_DESC}"`,
       'origin: SCC',
       '---',
       '## Overview',
@@ -355,59 +260,78 @@ test('fails when skill has no "When to Use" or "Usage" section', () => {
       'This body content is long enough to pass the 50-character minimum requirement for skill body validation.',
     ].join('\n'));
     const result = runValidator(tmp);
-    assert.strictEqual(result.status, 1);
-    assert.ok(result.stderr.includes('no "When to Use" section found'));
+    assert.strictEqual(result.status, 1, `Expected fail but got: ${result.stdout}`);
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('When to Use'), `Expected "When to Use" error in: ${output}`);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
 
-// ── Branch: origin warning — missing ────────────────────────────────────────
+// ── Branch: origin missing → error ──────────────────────────────────────────
 
-test('warns when origin is missing', () => {
+test('fails when origin is missing', () => {
   const tmp = makeTmpDir();
   try {
     const skillsDir = path.join(tmp, 'skills');
-    fs.mkdirSync(skillsDir, { recursive: true });
-    fs.writeFileSync(path.join(skillsDir, 'no-origin.md'), [
+    writeSkill(skillsDir, 'sf-no-origin', [
       '---',
-      'name: No Origin Skill',
-      'description: A comprehensive skill that does many useful things for validation',
+      'name: sf-no-origin',
+      `description: "${VALID_DESC}"`,
       '---',
-      '## When to Use',
-      '',
-      'Use this skill when you need to do something specific and important.',
-      'This body content is long enough to pass the 50-character minimum requirement for skill body.',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
-    assert.strictEqual(result.status, 0);
-    assert.ok(result.stderr.includes('origin is missing'));
+    assert.strictEqual(result.status, 1, `Expected fail but got: ${result.stdout}`);
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('origin is required'), `Expected "origin is required" in: ${output}`);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
 
-// ── Branch: origin wrong value → warning ────────────────────────────────────
+// ── Branch: origin wrong value → error ──────────────────────────────────────
 
-test('warns when origin is not SCC', () => {
+test('fails when origin is not SCC', () => {
   const tmp = makeTmpDir();
   try {
     const skillsDir = path.join(tmp, 'skills');
-    fs.mkdirSync(skillsDir, { recursive: true });
-    fs.writeFileSync(path.join(skillsDir, 'bad-origin.md'), [
+    writeSkill(skillsDir, 'sf-bad-origin', [
       '---',
-      'name: Bad Origin Skill',
-      'description: A comprehensive skill that does many useful things for validation',
+      'name: sf-bad-origin',
+      `description: "${VALID_DESC}"`,
       'origin: OTHER',
       '---',
-      '## When to Use',
-      '',
-      'Use this skill when you need to do something specific and important.',
-      'This body content is long enough to pass the 50-character minimum requirement for skill body.',
+      VALID_BODY,
     ].join('\n'));
     const result = runValidator(tmp);
-    assert.strictEqual(result.status, 0);
-    assert.ok(result.stderr.includes('expected "SCC"'));
+    assert.strictEqual(result.status, 1, `Expected fail but got: ${result.stdout}`);
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('must be "SCC"'), `Expected 'must be "SCC"' in: ${output}`);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+// ── Branch: description too long ────────────────────────────────────────────
+
+test('fails when description exceeds 250 chars', () => {
+  const tmp = makeTmpDir();
+  try {
+    const skillsDir = path.join(tmp, 'skills');
+    const longDesc = 'Use when writing Salesforce Apex classes and triggers for governor limit compliance and SOQL optimization in production orgs. Do NOT use for LWC. ' + 'x'.repeat(150);
+    writeSkill(skillsDir, 'sf-long-desc', [
+      '---',
+      'name: sf-long-desc',
+      `description: "${longDesc}"`,
+      'origin: SCC',
+      '---',
+      VALID_BODY,
+    ].join('\n'));
+    const result = runValidator(tmp);
+    assert.strictEqual(result.status, 1, `Expected fail but got: ${result.stdout}`);
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('description too long'), `Expected "description too long" in: ${output}`);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }

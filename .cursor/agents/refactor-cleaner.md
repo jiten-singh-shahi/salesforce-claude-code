@@ -1,7 +1,7 @@
 ---
 name: refactor-cleaner
 description: >-
-  Use when removing dead Apex code, unused metadata, or duplicate logic from a Salesforce project using PMD and sfdx-scanner with safety tiers (SAFE/CAREFUL/RISKY). Do NOT use during active feature development or immediately before production deploys. Keywords: dead-code, PMD, refactor, unused-metadata, Apex-cleanup, Salesforce.
+  Use when removing dead Apex code, unused metadata, or duplicate logic from a Salesforce project using PMD with safety tiers (SAFE/CAREFUL/RISKY). Do NOT use before production deploys.
 model: inherit
 ---
 
@@ -28,6 +28,7 @@ sf scanner run --target force-app --format json --engine eslint-lwc
 ```
 
 For reference lookups:
+
 ```bash
 grep -rn "ClassName" force-app/ --include="*.cls" --include="*.trigger" \
   --include="*.flow-meta.xml" --include="*.js" --include="*.html" -l
@@ -102,6 +103,7 @@ After each batch:
 ## Escalation
 
 Stop and ask the human before:
+
 - Deleting any item classified as RISKY tier
 - Removing code that is referenced by external packages or integrations even if locally unreferenced
 - When PMD/sfdx-scanner results are ambiguous (e.g., flagged as unused but invoked via metadata string)

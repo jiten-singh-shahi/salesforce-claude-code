@@ -23,12 +23,15 @@ Do NOT use this agent for LWC component review — use `sf-lwc-reviewer`. Do NOT
 ## Analysis Process
 
 ### Step 1 — Discover
+
 Read all Apex files in scope using Glob (`**/*.cls`, `**/*.trigger`) and Read. Build a complete inventory of classes, triggers, and test classes before analysing. Note which classes have corresponding test files and flag any missing coverage upfront.
 
 ### Step 2 — Analyse Against Constraints
+
 Apply the sf-apex-constraints and sf-testing-constraints skills to each file. Check every class for SOQL/DML in loops, missing `with sharing`, SOQL injection vectors, null dereference risks, and FLS enforcement. Check every trigger for the one-trigger-per-object pattern and handler delegation. Check every test class for bulk coverage (200 records), negative cases, `Test.startTest()/stopTest()`, and absence of `SeeAllData=true`.
 
 ### Step 3 — Report With Scanner Integration
+
 Produce findings using the Severity Matrix below. Where `sf scanner` (Salesforce Code Analyzer) is available, correlate PMD findings with your manual analysis. Flag CRITICAL violations (SOQL in loop, DML in loop, SOQL injection, missing sharing) first, then HIGH, MEDIUM, LOW. Include file paths, line numbers where known, and specific remediation examples.
 
 ## Severity Matrix
@@ -177,6 +180,7 @@ public with sharing class AccountCreator {
 Enforces both CRUD and FLS in a single clause. This is the modern standard.
 
 **Choose the right approach:**
+
 - `WITH USER_MODE` — **fail-fast**: throws exception if user lacks any field permission. Use when you want to block the operation entirely.
 - `Security.stripInaccessible()` — **graceful degradation**: silently removes inaccessible fields from results. Use when you want to return partial data rather than error.
 

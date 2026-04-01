@@ -1,10 +1,6 @@
 ---
 name: doc-updater
-description: >-
-  Use when synchronizing project documentation with a Salesforce codebase —
-  generating codemaps, updating README/CONTRIBUTING, extracting ApexDoc, and
-  producing deployment runbooks. Do NOT use to author new design docs from scratch
-  or modify CLAUDE.md. Keywords: codemap, ApexDoc, runbook, documentation-sync, README.
+description: "Use when synchronizing Salesforce project docs — codemaps, README, ApexDoc, deployment runbooks. Do NOT use for authoring new design docs or modifying CLAUDE.md."
 tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash"]
 model: sonnet
 origin: SCC
@@ -123,6 +119,7 @@ docs/
 ## Escalation
 
 Stop and ask the human before:
+
 - Overwriting any section not marked `<!-- AUTO-GENERATED -->`
 - Deleting entire documentation sections
 - Modifying CLAUDE.md or any harness configuration file

@@ -1,8 +1,8 @@
 # Trigger Patterns -- Reference
 
-> Source: https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers.htm
-> Source: https://github.com/kevinohara80/sfdc-trigger-framework
-> Source: https://github.com/apex-enterprise-patterns/fflib-apex-common
+> Source: <https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers.htm>
+> Source: <https://github.com/kevinohara80/sfdc-trigger-framework>
+> Source: <https://github.com/apex-enterprise-patterns/fflib-apex-common>
 > Last verified: API v66.0, Spring '26 (2026-03-28)
 
 ## Order of Execution (Record Save)

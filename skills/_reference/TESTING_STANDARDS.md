@@ -1,7 +1,7 @@
 # Testing Standards — Salesforce Reference
 
 > Last verified: API v66.0 (Spring '26)
-> Source: https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_testing.htm
+> Source: <https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_testing.htm>
 
 ## Coverage Requirements
 
@@ -43,6 +43,7 @@ Coverage measures **lines executed**, not branches tested. 100% line coverage ca
 ## TestDataFactory Pattern
 
 A central `@IsTest` factory class that creates test records consistently across the test suite. Benefits:
+
 - Prevents duplicated record-creation logic across test classes
 - Ensures valid test data with all required fields populated
 - Supports override maps for scenario-specific field values
@@ -53,6 +54,7 @@ A central `@IsTest` factory class that creates test records consistently across 
 Format: `test{MethodName}_{scenario}_{expectedResult}`
 
 Examples:
+
 - `testCalculateDiscount_premiumTier_returns20Percent()`
 - `testCreateAccount_duplicateName_throwsException()`
 - `testProcessOrders_emptyList_noExceptionThrown()`

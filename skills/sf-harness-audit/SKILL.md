@@ -39,6 +39,7 @@ If using SCC CLI: `npx scc status`
 Rate each category 0-10 using these rubrics:
 
 **Hook Coverage (0-10)**
+
 | Score | Criteria |
 |-------|----------|
 | 0-3 | No hooks or only SessionStart |
@@ -50,16 +51,18 @@ Check: `cat .claude/hooks/hooks.json | grep -c '"command"'` to count active hook
 Check: `echo $SCC_HOOK_PROFILE` to verify profile level.
 
 **Agent Coverage (0-10)**
+
 | Score | Criteria |
 |-------|----------|
 | 0-3 | Only generic agents (planner, code-reviewer) |
 | 4-6 | Core Salesforce agents (sf-apex-reviewer, sf-lwc-reviewer) |
-| 7-8 | Domain-specific agents (sf-trigger-architect, sf-soql-optimizer, sf-security-reviewer) |
-| 9-10 | Full coverage including sf-agentforce-builder, sf-flow-reviewer, sf-data-architect |
+| 7-8 | Domain-specific agents (sf-trigger-architect, sf-performance-optimizer, sf-security-reviewer) |
+| 9-10 | Full coverage including sf-agentforce-builder, sf-flow-reviewer, sf-architect |
 
 Check: `ls .claude/agents/sf-*.md 2>/dev/null | wc -l`
 
 **Skill Coverage (0-10)**
+
 | Score | Criteria |
 |-------|----------|
 | 0-3 | Less than 10 skills |
@@ -70,6 +73,7 @@ Check: `ls .claude/agents/sf-*.md 2>/dev/null | wc -l`
 Check: `find .claude/skills/ -name "SKILL.md" | wc -l`
 
 **Skill Coverage (User-Invocable) (0-10)**
+
 | Score | Criteria |
 |-------|----------|
 | 0-3 | Only basic skills (sf-blueprint-planner agent, sf-apex-best-practices) |
@@ -80,6 +84,7 @@ Check: `find .claude/skills/ -name "SKILL.md" | wc -l`
 Check: `ls .claude/skills/sf-*/SKILL.md 2>/dev/null | wc -l`
 
 **Security Posture (0-10)**
+
 | Score | Criteria |
 |-------|----------|
 | 0-3 | No security hooks or rules |
@@ -134,4 +139,4 @@ sf-harness-audit Score the security posture of the current SCC installation
 
 ## Related
 
-- **Agent**: `sf-harness-optimizer` — For automated harness configuration optimization based on audit findings
+- **Skill**: `/sf-harness-audit` — This skill is the audit tool; no separate agent exists

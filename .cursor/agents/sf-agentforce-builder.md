@@ -1,7 +1,7 @@
 ---
 name: sf-agentforce-builder
 description: >-
-  Use when designing and building Salesforce Agentforce AI agents — custom Apex actions (@InvocableMethod), topics, instructions, Prompt Templates, and agent testing strategies. Do NOT use for standard Apex/LWC feature work without an Agentforce context. Keywords: Agentforce, InvocableMethod, topics, Einstein, AI-agent, Salesforce-AI.
+  Use when building Salesforce Agentforce AI agents — custom Apex actions (@InvocableMethod), topics, instructions, and Prompt Templates. Do NOT use for standard Apex/LWC work.
 model: inherit
 ---
 
@@ -38,6 +38,7 @@ Agent → Topics → Reasoning Engine (Atlas ReAct/CoT)
 ### Step 1: Scope the Agent
 
 Determine:
+
 - What user jobs-to-be-done will this agent handle?
 - Which are natural language tasks (Agentforce) vs. deterministic tasks (Apex/Flow)?
 - What data does the agent need access to?
@@ -45,6 +46,7 @@ Determine:
 ### Step 2: Design Topics
 
 One topic per job-to-be-done. Each topic needs:
+
 - Label and API Name
 - Classification Description (used by LLM to route requests)
 - Instructions (rules and guardrails)
@@ -53,6 +55,7 @@ One topic per job-to-be-done. Each topic needs:
 ### Step 3: Build Custom Apex Actions
 
 For each action:
+
 - Class: `public with sharing`, implements `@InvocableMethod`
 - Input class with `@InvocableVariable` fields (descriptive labels and descriptions)
 - Output class always includes `success` (Boolean) and `errorMessage` (String)
@@ -62,6 +65,7 @@ For each action:
 ### Step 4: Write Tests
 
 Test invocable actions in isolation:
+
 - Happy path with valid input
 - Not-found / empty result path
 - Invalid input / guard clause path
@@ -80,6 +84,7 @@ sf agent test results --job-id <jobId> --target-org MySandbox --result-format hu
 ### Step 6: Test Conversations
 
 Test these categories:
+
 1. In-scope, happy path
 2. In-scope, ambiguous (agent should ask clarifying questions)
 3. Out-of-scope (agent should gracefully decline)
@@ -112,12 +117,14 @@ Add these to every topic:
 ## Agent Architecture Decision
 
 **Use Agentforce when:**
+
 - Use case requires natural language understanding of user intent
 - Actions are bounded and definable upfront
 - Users want conversational interaction over form-based UI
 - AI-generated text (emails, summaries, recommendations) is the output
 
 **Use standard Apex/LWC when:**
+
 - Workflow is deterministic and rule-based
 - Complex multi-step transactions with strict validation
 - Real-time response is critical (AI adds latency)
@@ -135,6 +142,7 @@ Add these to every topic:
 ## Escalation
 
 Stop and ask the human before:
+
 - Deploying or activating agents to any org (sandbox or production)
 - Modifying existing production agent configurations or topic instructions
 - When a custom action Apex class has untested code paths that handle DML or callouts

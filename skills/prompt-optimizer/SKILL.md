@@ -27,7 +27,7 @@ and output a complete optimized prompt the user can paste and run.
 - User wants the task done directly (just execute it)
 - User says "optimize this code", "optimize performance" — these are refactoring tasks, not prompt optimization
 - User is asking about SCC configuration (use `configure-scc` instead)
-- User wants a skill inventory (use `sf-harness-optimizer` agent instead)
+- User wants a skill inventory (use `/sf-harness-audit` skill instead)
 - User says "just do it"
 
 ## How It Works
@@ -96,14 +96,14 @@ Map intent + scope + tech stack (from Phase 0) to specific SCC components.
 
 | Intent | Invocable Skills | Skills | Agents |
 |--------|----------|--------|--------|
-| New Feature | /sf-tdd-workflow, /sf-apex-best-practices | sf-apex-best-practices, sf-apex-enterprise-patterns | sf-planner, sf-tdd-guide, sf-code-reviewer, sf-blueprint-planner |
+| New Feature | /sf-tdd-workflow, /sf-apex-best-practices | sf-apex-best-practices, sf-apex-enterprise-patterns | sf-blueprint-planner, sf-tdd-guide, sf-code-reviewer |
 | Bug Fix | /sf-tdd-workflow, /sf-build-fix | sf-apex-testing, sf-debugging | sf-build-resolver, sf-tdd-guide |
 | Refactor | /refactor-clean, /sf-apex-best-practices | sf-trigger-frameworks, sf-apex-enterprise-patterns | refactor-cleaner, sf-code-reviewer |
 | Testing | /sf-tdd-workflow, /sf-apex-testing, /sf-e2e-testing | sf-apex-testing, sf-tdd-workflow | sf-tdd-guide |
 | Review | /sf-apex-best-practices, /sf-lwc-development, /sf-security | sf-security | sf-apex-reviewer, sf-security-reviewer |
 | Documentation | /update-docs | — | doc-updater, deep-researcher |
-| Infrastructure | /sf-deployment, /sf-scratch-org-workflow | sf-devops-ci-cd, sf-deployment | sf-devops-guide |
-| Design (EPIC) | — | — | sf-planner, sf-architect, sf-blueprint-planner |
+| Infrastructure | /sf-deployment | sf-devops-ci-cd, sf-deployment | sf-devops-deployment |
+| Design (EPIC) | — | — | sf-blueprint-planner, sf-architect |
 
 #### By Tech Stack
 
@@ -111,12 +111,12 @@ Map intent + scope + tech stack (from Phase 0) to specific SCC components.
 |------------|--------------|-------|
 | Apex | sf-apex-best-practices, sf-apex-testing, sf-security | sf-apex-reviewer |
 | LWC | sf-lwc-development, sf-lwc-testing | sf-lwc-reviewer |
-| SOQL | sf-soql-optimization | sf-soql-optimizer |
+| SOQL | sf-soql-optimization | sf-performance-optimizer |
 | Flow | sf-flow-development | sf-flow-reviewer |
 | Agentforce | sf-agentforce-development | sf-agentforce-builder |
-| DevOps | sf-devops-ci-cd, sf-deployment, sf-scratch-org-workflow | sf-devops-guide |
+| DevOps | sf-devops-ci-cd, sf-deployment | sf-devops-deployment |
 | Security | sf-security | sf-security-reviewer |
-| EPIC | — | sf-planner, sf-architect, sf-blueprint-planner |
+| EPIC | — | sf-blueprint-planner, sf-architect |
 
 ### Phase 4: Missing Context Detection
 
@@ -362,7 +362,7 @@ Recommended: Opus for blueprint planning, Sonnet for phase execution.
 | Component | When to Reference |
 |-----------|------------------|
 | `configure-scc` | User hasn't set up SCC yet |
-| `sf-harness-optimizer` (agent) | Audit which components are installed (use instead of hardcoded catalog) |
+| `/sf-harness-audit` (skill) | Audit which components are installed (use instead of hardcoded catalog) |
 | `search-first` | Research phase in optimized prompts |
 | `sf-blueprint-planner` (agent) | EPIC-scope optimized prompts |
 | `strategic-compact` | Long session context management |

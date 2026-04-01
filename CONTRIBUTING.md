@@ -10,7 +10,6 @@ Thanks for wanting to contribute! This repo is a community resource for Salesfor
 - [Contributing Agents](#contributing-agents)
 - [Contributing Hooks](#contributing-hooks)
 - [Contributing User-Invocable Skills](#contributing-user-invocable-skills)
-- [Contributing Rules](#contributing-rules)
 - [Pull Request Process](#pull-request-process)
 
 ---
@@ -49,7 +48,7 @@ Useful Salesforce automations:
 
 Skills with `user-invocable: true` that users invoke via `/skill-name`:
 
-- Deployment skills (`/sf-deployment`, `/sf-scratch-org-workflow`)
+- Deployment skills (`/sf-deployment`, `/sf-devops-ci-cd`)
 - Testing skills (`/sf-tdd-workflow`, `/sf-apex-testing`, `/sf-e2e-testing`)
 - Security skills (`/sf-security`, `/sf-governor-limits`)
 - Platform skills (`/continuous-agent-loop`, `/prompt-optimizer`, `/strategic-compact`)
@@ -97,7 +96,7 @@ skills/
 ```markdown
 ---
 name: your-skill-name
-description: Brief description shown in skill list
+description: "Use when [trigger] for Salesforce [domain]. Do NOT use for [exclusions]. (100-250 chars, 3+ SF keywords)"
 origin: SCC
 ---
 
@@ -149,9 +148,10 @@ agents/your-agent-name.md
 ```markdown
 ---
 name: your-agent-name
-description: What this agent does and when Claude should invoke it.
+description: "Use when [trigger]. Do NOT use for [exclusions]. 100-250 chars with 3+ Salesforce keywords."
 tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
 model: sonnet
+origin: SCC
 ---
 
 You are a [role] specialist for Salesforce development.
@@ -185,7 +185,8 @@ What you return to the user.
 | `name` | Lowercase, hyphenated | `sf-apex-reviewer` |
 | `description` | Used to decide when to invoke | Be specific! |
 | `tools` | Only what's needed | `Read, Write, Edit, Bash, Grep, Glob, WebFetch, Task` |
-| `model` | Complexity level | `haiku` (simple), `sonnet` (coding), `opus` (complex) |
+| `model` | Complexity level | `haiku` (simple), `sonnet` (coding), `opus` (complex), `inherit` (caller decides) |
+| `origin` | Must be SCC | `SCC` |
 
 ---
 
@@ -247,7 +248,7 @@ skills/your-skill-name/SKILL.md
 ```markdown
 ---
 name: your-skill-name
-description: Brief description of what this skill does (minimum 30 characters)
+description: "Use when [trigger] for Salesforce [domain]. Do NOT use for [exclusions]. (100-250 chars, 3+ SF keywords)"
 origin: SCC
 user-invocable: true
 ---
@@ -293,7 +294,6 @@ What you're adding and why.
 - [ ] Skill
 - [ ] Agent
 - [ ] Hook
-- [ ] Rule
 
 ## Testing
 How you tested this with Salesforce projects.

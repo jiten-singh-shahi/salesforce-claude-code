@@ -293,7 +293,7 @@ Expose components as Flow screen actions via `lightning__FlowScreen` target. Imp
 
 ## Related
 
-### Constraints
+### Guardrails
 
 - **sf-lwc-constraints** — Enforced rules for LWC naming, reactivity, security, and accessibility
 

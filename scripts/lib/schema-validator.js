@@ -3,7 +3,6 @@
 /**
  * schema-validator.js — Shared AJV schema validation for SCC.
  *
- * Follows ECC's pattern:
  * - Graceful AJV import with fallback when not installed
  * - Cached schema, AJV instance, and compiled validators
  * - Consistent error formatting: `${instancePath || '/'} ${message}`

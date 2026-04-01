@@ -1,6 +1,6 @@
 # SOQL Patterns — Reference
 
-> Source: https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql.htm
+> Source: <https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql.htm>
 > Last verified: API v66.0, Spring '26 (2026-03-28)
 
 ## Query Selectivity
