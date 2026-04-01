@@ -240,7 +240,7 @@ Publish via Experience Builder UI or Apex: `ConnectApi.Communities.publishCommun
 
 ## Related
 
-### Constraints
+### Guardrails
 
 - **sf-security-constraints** — Enforced rules for guest user permissions, sharing, and CRUD/FLS
 

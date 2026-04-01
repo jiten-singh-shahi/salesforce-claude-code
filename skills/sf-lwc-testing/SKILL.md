@@ -379,7 +379,7 @@ it('dispatches typed custom event', () => {
 
 ## Related
 
-### Constraints
+### Guardrails
 
 - **sf-testing-constraints** — Enforced rules for test coverage, assertions, and test data patterns
 

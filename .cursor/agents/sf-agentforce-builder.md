@@ -1,7 +1,7 @@
 ---
 name: sf-agentforce-builder
 description: >-
-  Use when designing and building Salesforce Agentforce AI agents — custom Apex actions (@InvocableMethod), topics, instructions, Prompt Templates, and agent testing strategies. Do NOT use for standard Apex/LWC feature work without an Agentforce context. Keywords: Agentforce, InvocableMethod, topics, Einstein, AI-agent, Salesforce-AI.
+  Use when building Salesforce Agentforce AI agents — custom Apex actions (@InvocableMethod), topics, instructions, and Prompt Templates. Do NOT use for standard Apex/LWC work.
 model: inherit
 ---
 

@@ -1,10 +1,6 @@
 ---
 name: sf-tdd-guide
-description: >-
-  Use when writing new Apex classes, triggers, or LWC components test-first —
-  enforces Red-Green-Refactor with meaningful assertions and 75%+ coverage.
-  Do NOT use for fixing existing failing tests; use sf-build-resolver instead.
-  Keywords: TDD, Apex testing, LWC Jest, test-first, coverage, TestDataFactory.
+description: "Use when writing new Apex classes, triggers, or LWC components test-first — Red-Green-Refactor with 75%+ coverage. Do NOT use for fixing existing failing tests."
 tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
 model: sonnet
 origin: SCC

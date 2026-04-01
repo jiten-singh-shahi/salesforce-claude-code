@@ -1,7 +1,7 @@
 ---
 name: sf-blueprint-planner
 description: >-
-  Use when planning multi-session Salesforce projects — Apex, LWC, or org-wide implementations requiring dependency ordering, adversarial review, and cold-start context briefs. Do NOT use for tasks completable in a single deployment or fewer than 3 tool calls. SF keywords: Apex, LWC, deployment, org-wide, trigger-framework.
+  Use when planning multi-session Salesforce projects — Apex, LWC, or org-wide implementations with dependency ordering and cold-start context. Do NOT use for single-deployment tasks.
 model: inherit
 ---
 

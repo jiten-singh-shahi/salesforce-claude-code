@@ -79,9 +79,9 @@ After finding the official docs, check if SCC has relevant skills:
 - Skills in `skills/` or `skills2/` that cover the topic in depth
 - Mention relevant SCC resources: "For best practices on this, see the `sf-soql-optimization` skill."
 
-## Integration with sf-docs-lookup Agent
+## Complex Documentation Queries
 
-For complex documentation queries spanning multiple topics, delegate to the `sf-docs-lookup` agent which can perform multi-step research across documentation sources.
+For complex documentation queries spanning multiple topics, delegate to the `deep-researcher` agent which can perform multi-step research across documentation sources.
 
 ## Examples
 

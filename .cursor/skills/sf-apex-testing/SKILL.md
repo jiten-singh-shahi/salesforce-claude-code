@@ -402,6 +402,6 @@ private class AccountServiceTest {
 - **Agent**: `sf-tdd-guide` — For interactive, in-depth guidance
 - **Skills**: `sf-tdd-workflow` — TDD workflow for Apex
 
-### Constraints
+### Guardrails
 
 - `sf-testing-constraints` — Enforces test isolation, assertion requirements, SeeAllData prohibition, and coverage thresholds

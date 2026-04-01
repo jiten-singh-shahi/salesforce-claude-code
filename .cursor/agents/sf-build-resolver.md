@@ -1,7 +1,7 @@
 ---
 name: sf-build-resolver
 description: >-
-  Use when Salesforce build or deployment fails — fixes Apex compilation errors, metadata conflicts, dependency issues, and test failures with minimal diffs. Do NOT use for refactoring, architecture changes, or new feature work. Keywords: deployment, Apex compilation, test failure, governor limits, metadata.
+  Use when Salesforce build or deployment fails — fixes Apex compilation errors, metadata conflicts, and test failures with minimal diffs. Do NOT use for refactoring or new features.
 model: inherit
 ---
 

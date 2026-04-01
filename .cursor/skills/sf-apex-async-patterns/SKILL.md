@@ -319,6 +319,6 @@ static void testBatchUpdatesReviewDate() {
 
 - **Agents**: `sf-apex-reviewer`, `sf-performance-optimizer` — For interactive guidance
 
-### Constraints
+### Guardrails
 
 - `sf-apex-constraints` — Governs limits, bulkification rules, and naming conventions for all Apex code including async

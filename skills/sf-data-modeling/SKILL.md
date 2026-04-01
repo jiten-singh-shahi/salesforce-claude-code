@@ -273,5 +273,5 @@ External Objects have no triggers, Flows, or Validation Rules. Use Apex callouts
 
 ## Related
 
-- **Agent**: `sf-data-architect` — For interactive, in-depth guidance
+- **Agent**: `sf-architect` — For interactive, in-depth guidance
 - **Constraints**: `sf-apex-constraints` — Governor limits and Apex safety rules

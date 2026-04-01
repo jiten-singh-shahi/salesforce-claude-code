@@ -1,7 +1,7 @@
 ---
 name: sf-trigger-architect
 description: >-
-  Use when creating or refactoring Salesforce triggers to enterprise patterns — one-trigger-per-object, handler delegation, bulkification, recursion prevention, bypass mechanisms, and FFLIB domain layer. Do NOT use for Flow automation design. Keywords: trigger framework, bulkification, recursion guard, FFLIB, bypass mechanism.
+  Use when creating or refactoring Salesforce triggers — one-trigger-per-object, handler delegation, bulkification, recursion prevention, FFLIB. Do NOT use for Flow automation.
 model: inherit
 ---
 

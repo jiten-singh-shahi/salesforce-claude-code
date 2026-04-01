@@ -1,10 +1,6 @@
 ---
 name: sf-devops-deployment
-description: >-
-  Salesforce DevOps and deployment specialist — SF CLI deploy commands, CI/CD
-  pipelines, sandbox management, metadata migrations, rollback strategies.
-  Use when planning deployments or migrating metadata. Do NOT use for Apex
-  code review or LWC development.
+description: "Salesforce DevOps specialist — SF CLI deploy, CI/CD pipelines, sandbox management, metadata migrations, rollback. Use when planning deployments. Do NOT use for Apex review or LWC."
 tools: ["Read", "Bash", "Grep", "Glob"]
 model: sonnet
 origin: SCC

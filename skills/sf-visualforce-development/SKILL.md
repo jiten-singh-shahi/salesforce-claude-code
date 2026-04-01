@@ -251,7 +251,7 @@ $Lightning.use("c:lwcOutApp", function() {
 
 ## Related
 
-### Constraints
+### Guardrails
 
 - **sf-security-constraints** — Enforced rules for XSS prevention, SOQL injection, CRUD/FLS enforcement
 

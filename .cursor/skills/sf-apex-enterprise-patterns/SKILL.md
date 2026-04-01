@@ -338,6 +338,6 @@ sf project deploy start --source-dir fflib-apex-mocks/sfdx-source --target-org m
 
 - **Agents**: `sf-apex-reviewer`, `sf-architect` — For interactive guidance
 
-### Constraints
+### Guardrails
 
 - `sf-apex-constraints` — Governs all Apex code including enterprise pattern implementations

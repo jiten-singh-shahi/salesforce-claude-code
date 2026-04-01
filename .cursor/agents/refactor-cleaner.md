@@ -1,7 +1,7 @@
 ---
 name: refactor-cleaner
 description: >-
-  Use when removing dead Apex code, unused metadata, or duplicate logic from a Salesforce project using PMD and sfdx-scanner with safety tiers (SAFE/CAREFUL/RISKY). Do NOT use during active feature development or immediately before production deploys. Keywords: dead-code, PMD, refactor, unused-metadata, Apex-cleanup, Salesforce.
+  Use when removing dead Apex code, unused metadata, or duplicate logic from a Salesforce project using PMD with safety tiers (SAFE/CAREFUL/RISKY). Do NOT use before production deploys.
 model: inherit
 ---
 

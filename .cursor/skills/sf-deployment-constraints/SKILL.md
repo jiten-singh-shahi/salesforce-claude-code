@@ -2,6 +2,7 @@
 name: sf-deployment-constraints
 description: >-
   Enforce deployment safety — validation-only first, test coverage gates, metadata ordering, rollback readiness. Use when deploying or packaging ANY Salesforce metadata. Do NOT use for local dev or scratch org pushes.
+disable-model-invocation: true
 ---
 
 # Salesforce Deployment Constraints

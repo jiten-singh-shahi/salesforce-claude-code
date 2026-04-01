@@ -330,7 +330,7 @@ private class CursorPaginationTest {
 
 - **Skills**: `sf-apex-async-patterns` — For Queueable chaining patterns
 
-### Constraints
+### Guardrails
 
 - `sf-apex-constraints` — Governs SOQL and DML usage in cursor-processing code
 - `sf-soql-constraints` — Governs query structure and selectivity requirements

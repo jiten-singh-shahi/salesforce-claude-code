@@ -54,8 +54,8 @@ Check: `echo $SCC_HOOK_PROFILE` to verify profile level.
 |-------|----------|
 | 0-3 | Only generic agents (planner, code-reviewer) |
 | 4-6 | Core Salesforce agents (sf-apex-reviewer, sf-lwc-reviewer) |
-| 7-8 | Domain-specific agents (sf-trigger-architect, sf-soql-optimizer, sf-security-reviewer) |
-| 9-10 | Full coverage including sf-agentforce-builder, sf-flow-reviewer, sf-data-architect |
+| 7-8 | Domain-specific agents (sf-trigger-architect, sf-performance-optimizer, sf-security-reviewer) |
+| 9-10 | Full coverage including sf-agentforce-builder, sf-flow-reviewer, sf-architect |
 
 Check: `ls .claude/agents/sf-*.md 2>/dev/null | wc -l`
 
@@ -134,4 +134,4 @@ sf-harness-audit Score the security posture of the current SCC installation
 
 ## Related
 
-- **Agent**: `sf-harness-optimizer` — For automated harness configuration optimization based on audit findings
+- **Skill**: `/sf-harness-audit` — This skill is the audit tool; no separate agent exists

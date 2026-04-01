@@ -1,10 +1,6 @@
 ---
 name: sf-e2e-runner
-description: >-
-  Use when creating, maintaining, or running end-to-end tests for Salesforce
-  applications — Apex E2E suites, LWC integration tests, scratch org test runs.
-  Do NOT use for unit tests on isolated classes or pure UI automation tasks.
-  Keywords: E2E testing, Apex test suite, LWC Jest, scratch org, code coverage.
+description: "Use when creating or running end-to-end tests for Salesforce — Apex E2E suites, LWC integration tests, scratch org test runs. Do NOT use for unit tests or pure UI automation."
 tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
 model: sonnet
 origin: SCC

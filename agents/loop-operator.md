@@ -1,10 +1,6 @@
 ---
 name: loop-operator
-description: >-
-  Use when running autonomous agent loops over Salesforce Apex or LWC — iterating
-  refactors, coverage improvements, or migration tasks with checkpoints and safety gates.
-  Do NOT use for single-pass tasks or one-off changes. Keywords: loop, iteration,
-  autonomous, checkpoint, safety-gate, Salesforce-automation.
+description: "Use when running autonomous loops over Salesforce Apex or LWC — iterating refactors, coverage improvements, or migration tasks with safety gates. Do NOT use for single-pass tasks."
 tools: ["Read", "Grep", "Glob", "Bash", "Edit"]
 model: sonnet
 origin: SCC
