@@ -191,8 +191,8 @@ public with sharing class ExampleService {
 
 SCC includes two categories of skills:
 
-- **Salesforce-specific** (40 skills, `sf-` prefix): `sf-apex-testing`, `sf-governor-limits`, `sf-lwc-development`, `sf-security`, `sf-trigger-frameworks`, `sf-apex-constraints`, etc.
-- **Platform skills** (15 skills, no prefix): `configure-scc`, `continuous-agent-loop`, `mcp-server-patterns`, `prompt-optimizer`, `search-first`, `security-scan`, `strategic-compact`, `checkpoint`, `aside`, `model-route`, `sessions`, `save-session`, `resume-session`, `refactor-clean`, `update-docs`.
+- **Salesforce-specific** (39 skills, `sf-` prefix): `sf-apex-testing`, `sf-governor-limits`, `sf-lwc-development`, `sf-security`, `sf-trigger-frameworks`, `sf-apex-constraints`, etc.
+- **Platform skills** (16 skills, no prefix): `configure-scc`, `continuous-agent-loop`, `mcp-server-patterns`, `prompt-optimizer`, `search-first`, `security-scan`, `strategic-compact`, `checkpoint`, `aside`, `model-route`, `sessions`, `save-session`, `resume-session`, `refactor-clean`, `update-docs`, `update-platform-docs`.
 
 Platform skills are Salesforce-adapted patterns for AI-assisted development workflows (loops, research, verification, evaluation).
 
