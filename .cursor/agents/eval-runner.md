@@ -27,6 +27,9 @@ Stop and ask the user before:
 - **Running evals that invoke external APIs** — deployment evals against a scratch org, callout evals, or any eval that incurs org API consumption require explicit approval.
 - **Reporting a regression** — when results show a metric drop vs. baseline, stop and present a diff before taking corrective action.
 - **Running pipeline evals** — these invoke multiple agents and can be expensive; confirm scope and budget.
+- **Updating baseline after first run** — when no prior `baseline.json` exists, confirm the initial results are acceptable before writing the baseline.
+- **Overriding grader thresholds** — if an eval consistently fails at the configured threshold, ask before lowering the bar rather than silently adjusting.
+- **Modifying shared eval definitions** — changes to `.claude/evals/` files that pipeline evals or other agents depend on require confirmation.
 
 ## Coordination Plan
 

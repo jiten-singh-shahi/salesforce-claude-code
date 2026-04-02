@@ -58,7 +58,7 @@ Do NOT use for Apex code, LWC components, Flows, or deployment pipelines.
 
 ### Phase 3 — Configure
 
-Create/modify metadata XML files in `force-app/main/default/`. Follow naming conventions from `sf-naming-conventions` skill:
+Create/modify metadata XML files in `force-app/main/default/`. Follow naming conventions:
 
 **Naming Rules:**
 
@@ -123,5 +123,5 @@ Stop and ask before:
 
 ## Related
 
-- **Pattern skills**: `sf-data-modeling`, `sf-experience-cloud`, `sf-metadata-management`, `sf-naming-conventions`
+- **Pattern skills**: `sf-data-modeling`, `sf-experience-cloud`, `sf-metadata-management`
 - **Agents**: sf-architect (planning — receive task plans from here), sf-apex-agent (Apex that uses configured objects), sf-review-agent (after configuring, route here for review)

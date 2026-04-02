@@ -1,7 +1,7 @@
 ---
 name: loop-operator
 description: >-
-  Run autonomous loops over Salesforce Apex and LWC tasks — iterating refactors, coverage improvements, migrations, or multi-agent pipeline execution with safety gates. Use when running repeated or multi-step tasks. Do NOT use for single-pass.
+  Run autonomous loops over Salesforce tasks — iterating Apex refactors, test coverage improvements, deploy validations, or multi-agent pipeline execution with safety gates. Use when running repeated or multi-step tasks. Do NOT use for single-pass.
 model: inherit
 ---
 

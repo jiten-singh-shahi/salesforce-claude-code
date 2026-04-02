@@ -43,11 +43,14 @@ Infer the work type from the user's request. Do NOT ask — state your assumptio
 | "error", "broken", "not working", "exception", "failing" | **Bug Fix** | Minimal — route to sf-bugfix-agent |
 | References existing feature + "add", "change", "modify", "extend" | **Enhancement** | Full — impact analysis critical |
 | Describes something that doesn't exist yet | **New Feature** | Full — complete design cycle |
+| Single class/component, no cross-object impact, well-defined scope | **Simple Task** | Lite — Phase 1 scan only, then single task |
 | "refactor", "clean up", "migrate", "technical debt" | **Tech Debt** | Medium — scan → propose target → plan |
 
 Output: `CLASSIFICATION: [type] | Confidence: [High/Medium] | Reasoning: [one sentence]`
 
 **Bug Fix shortcut:** If Bug Fix + High confidence, skip to Phase 6 with a single task for sf-bugfix-agent.
+
+**Simple Task shortcut:** If classified as Simple Task in Phase 0 (single component, no cross-object impact, well-defined scope), run Phase 1 discovery scan only (to confirm low density and no conflicts), then skip directly to Phase 6 with a single task for the appropriate domain agent. Still ask one clarifying question if there is genuine ambiguity (e.g., custom object vs platform object). Do NOT skip Phase 1 — even simple tasks need an automation density check. If Phase 1 reveals hidden complexity (high density, cross-object dependencies, integration needed), upgrade to full New Feature planning.
 
 ---
 
@@ -427,6 +430,6 @@ Stop and ask before: architecture decisions with multiple valid approaches, sche
 
 ## Related
 
-- **Pattern skills**: `sf-data-modeling`, `sf-integration`, `sf-platform-events-cdc`, `sf-api-design`, `sf-flow-development`, `sf-apex-async-patterns`, `sf-experience-cloud`, `sf-agentforce-development`, `sf-metadata-management`, `sf-deployment`, `sf-devops-ci-cd`, `sf-governor-limits`, `sf-tdd-workflow`, `sf-apex-best-practices`
+- **Pattern skills**: `sf-data-modeling`, `sf-integration`, `sf-platform-events-cdc`, `sf-api-design`, `sf-flow-development`, `sf-apex-async-patterns`, `sf-experience-cloud`, `sf-agentforce-development`, `sf-metadata-management`, `sf-deployment`, `sf-devops-ci-cd`, `sf-governor-limits`, `sf-tdd-workflow`, `sf-apex-best-practices`, `sf-security`, `sf-trigger-frameworks`, `sf-soql-optimization`
 - **Domain agents**: sf-apex-agent, sf-lwc-agent, sf-flow-agent, sf-admin-agent, sf-integration-agent, sf-agentforce-agent
 - **Quality agents**: sf-review-agent, sf-bugfix-agent

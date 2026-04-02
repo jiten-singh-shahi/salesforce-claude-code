@@ -1,7 +1,7 @@
 ---
 name: sf-review-agent
 description: >-
-  Final quality gate — validate Apex implementation against architect plan, audit governor limits, order-of-execution, tests, and deploy readiness. Use PROACTIVELY when reviewing as LAST agent before deploy. Do NOT use for writing or fixing code.
+  Final Salesforce quality gate — validate Apex, LWC, Flow against architect plan; audit security, governor limits, tests, and deploy readiness. Use PROACTIVELY when reviewing as LAST agent before deploy. Do NOT use for writing/fixing.
 model: inherit
 readonly: true
 ---
