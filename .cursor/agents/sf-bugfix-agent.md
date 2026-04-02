@@ -65,4 +65,4 @@ Stop and ask before:
 ## Related
 
 - **Pattern skills**: `sf-debugging`, `sf-build-fix`
-- **Agents**: sf-apex-agent (if fix requires new code), sf-review-agent (post-fix review)
+- **Agents**: sf-apex-agent (if fix requires new code), sf-review-agent (after fixing, route here for re-review)

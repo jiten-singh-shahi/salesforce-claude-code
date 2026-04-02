@@ -414,7 +414,7 @@ public with sharing class CreditLimitService {
 
 ## Related
 
-- **Agent**: `sf-apex-reviewer` — For interactive, in-depth guidance
+- **Agent**: `sf-review-agent` — For interactive, in-depth guidance
 
 ### Guardrails
 

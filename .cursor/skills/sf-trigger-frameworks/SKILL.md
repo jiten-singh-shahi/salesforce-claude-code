@@ -336,7 +336,7 @@ static void testBypassMechanism_noDefaultsSetWhenBypassed() {
 
 ## Related
 
-- **Agent**: `sf-trigger-architect` — For interactive, in-depth guidance
+- **Agent**: `sf-architect` — For interactive, in-depth guidance
 
 ### Guardrails
 

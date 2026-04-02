@@ -474,6 +474,6 @@ public class RetryCalloutQueueable implements Queueable, Database.AllowsCallouts
 
 ## Related
 
-- Agent: `sf-integration-architect` -- for interactive, in-depth guidance
+- Agent: `sf-integration-agent` -- for interactive, in-depth guidance
 - Constraints: sf-apex-constraints, sf-security-constraints
 - Reference: @../_reference/INTEGRATION_PATTERNS.md

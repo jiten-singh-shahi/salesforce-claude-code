@@ -1,7 +1,7 @@
 ---
 name: sf-apex-agent
 description: >-
-  Design, build, test, and review Apex classes, triggers, batch jobs, async patterns, and callout services following TDD. Use PROACTIVELY when writing or modifying ANY Apex code. Do NOT use for LWC, Flow, or org configuration.
+  Build, test, and review Apex classes, triggers, batch, async, and callouts via TDD. Use PROACTIVELY when modifying Apex. For new features, use sf-architect first. Do NOT use for LWC, Flow, or org config.
 model: inherit
 ---
 
@@ -90,4 +90,4 @@ Stop and ask before:
 ## Related
 
 - **Pattern skills** (consult as needed): `sf-apex-best-practices`, `sf-trigger-frameworks`, `sf-apex-async-patterns`, `sf-apex-enterprise-patterns`, `sf-apex-testing`, `sf-soql-optimization`, `sf-apex-cursor`, `sf-governor-limits`
-- **Agents**: sf-architect (planning), sf-review-agent (cross-domain review), sf-bugfix-agent (build failures)
+- **Agents**: sf-architect (planning first), sf-review-agent (after implementing, route here for review), sf-bugfix-agent (build failures)

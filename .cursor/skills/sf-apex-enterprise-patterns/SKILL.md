@@ -337,7 +337,7 @@ sf project deploy start --source-dir fflib-apex-mocks/sfdx-source --target-org m
 
 ## Related
 
-- **Agents**: `sf-apex-reviewer`, `sf-architect` — For interactive guidance
+- **Agents**: `sf-review-agent`, `sf-architect` — For interactive guidance
 
 ### Guardrails
 

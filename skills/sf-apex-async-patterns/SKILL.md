@@ -319,7 +319,7 @@ static void testBatchUpdatesReviewDate() {
 
 ## Related
 
-- **Agents**: `sf-apex-reviewer`, `sf-performance-optimizer` — For interactive guidance
+- **Agents**: `sf-review-agent`, `sf-apex-agent` — For interactive guidance
 
 ### Guardrails
 

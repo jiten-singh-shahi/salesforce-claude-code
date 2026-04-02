@@ -73,7 +73,7 @@ Check: `find .claude/skills/ -name "SKILL.md" | wc -l`
 
 | Score | Criteria |
 |-------|----------|
-| 0-3 | Only basic skills (sf-blueprint-planner agent, sf-apex-best-practices) |
+| 0-3 | Only basic skills (sf-architect agent, sf-apex-best-practices) |
 | 4-6 | Core workflow skills (sf-deployment, sf-debugging, sf-security) |
 | 7-8 | Testing and security skills (sf-tdd-workflow, sf-governor-limits) |
 | 9-10 | Full suite including discovery (/sf-help, /sf-quickstart) |

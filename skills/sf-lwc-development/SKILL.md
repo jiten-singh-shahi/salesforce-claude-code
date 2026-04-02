@@ -300,4 +300,4 @@ Expose components as Flow screen actions via `lightning__FlowScreen` target. Imp
 
 ### Agents
 
-- **sf-lwc-reviewer** — For interactive, in-depth LWC review guidance
+- **sf-lwc-agent** — For interactive, in-depth LWC review guidance

@@ -239,7 +239,7 @@ Is the task a single focused Salesforce change?
 
 1. **Sequential + De-Sloppify** — Most common. Every Apex implement step gets a cleanup pass.
 2. **Continuous Claude + De-Sloppify** — Add `--review-prompt` with de-sloppify directive.
-3. **Any loop + Quality Gates** — Use the `sf-verification-runner` agent as a gate before commits.
+3. **Any loop + Quality Gates** — Use the `sf-review-agent` agent as a gate before commits.
 4. **Model routing** — `--model haiku` for simple fixes, `--model opus` for architecture.
 
 ## Anti-Patterns

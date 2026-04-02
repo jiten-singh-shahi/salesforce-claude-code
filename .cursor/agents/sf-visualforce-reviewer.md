@@ -460,6 +460,6 @@ Produce a per-page findings report using the Output Format. Assign CRITICAL/HIGH
 
 ## Related
 
-- **Agent**: `sf-security-reviewer` — Deep Apex security review beyond Visualforce scope
-- **Agent**: `sf-performance-optimizer` — SOQL query performance in Visualforce controllers
-- **Skill**: `sf-visualforce-development` — Quick reference (invoke via `/sf-visualforce-development`)
+- **Agent**: `sf-review-agent` — Deep Apex security review beyond Visualforce scope
+- **Agent**: `sf-apex-agent` — SOQL query performance in Visualforce controllers
+- **Skill**: `sf-visualforce-development` — Quick reference (preloaded)

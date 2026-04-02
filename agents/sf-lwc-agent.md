@@ -1,9 +1,6 @@
 ---
 name: sf-lwc-agent
-description: >-
-  Design, build, Jest test, and review Lightning Web Components with SLDS,
-  accessibility, wire service, and events. Use PROACTIVELY when writing or
-  modifying ANY LWC component. Do NOT use for Apex, Aura, or Visualforce.
+description: "Build, Jest test, and review LWC with SLDS, accessibility, wire, and events. Use PROACTIVELY when modifying LWC. For new features, use sf-architect first. Do NOT use for Apex, Aura, or Visualforce."
 tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
 model: sonnet
 origin: SCC
@@ -78,4 +75,4 @@ Stop and ask before:
 ## Related
 
 - **Pattern skills**: `sf-lwc-development`, `sf-lwc-testing`
-- **Agents**: sf-architect (planning), sf-review-agent (cross-domain review), sf-apex-agent (Apex controllers)
+- **Agents**: sf-architect (planning first), sf-review-agent (after implementing, route here for review), sf-apex-agent (Apex controllers)

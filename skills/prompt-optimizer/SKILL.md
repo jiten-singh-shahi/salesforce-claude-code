@@ -84,9 +84,9 @@ from the prompt description alone and mark the estimate as uncertain.
 |-------|-----------|---------------|
 | TRIVIAL | Single file, < 50 lines | Direct execution |
 | LOW | Single component or module | Single command or skill |
-| MEDIUM | Multiple components, same domain | Command chain + sf-verification-runner agent |
-| HIGH | Cross-domain, 5+ files | Use sf-blueprint-planner agent first, then phased execution |
-| EPIC | Multi-session, multi-PR, architectural shift | Use sf-blueprint-planner agent for multi-session plan |
+| MEDIUM | Multiple components, same domain | Command chain + sf-review-agent agent |
+| HIGH | Cross-domain, 5+ files | Use sf-architect agent first, then phased execution |
+| EPIC | Multi-session, multi-PR, architectural shift | Use sf-architect agent for multi-session plan |
 
 ### Phase 3: SCC Component Matching
 
@@ -96,27 +96,27 @@ Map intent + scope + tech stack (from Phase 0) to specific SCC components.
 
 | Intent | Invocable Skills | Skills | Agents |
 |--------|----------|--------|--------|
-| New Feature | /sf-tdd-workflow, /sf-apex-best-practices | sf-apex-best-practices, sf-apex-enterprise-patterns | sf-blueprint-planner, sf-tdd-guide, sf-code-reviewer |
-| Bug Fix | /sf-tdd-workflow, /sf-build-fix | sf-apex-testing, sf-debugging | sf-build-resolver, sf-tdd-guide |
-| Refactor | /refactor-clean, /sf-apex-best-practices | sf-trigger-frameworks, sf-apex-enterprise-patterns | refactor-cleaner, sf-code-reviewer |
-| Testing | /sf-tdd-workflow, /sf-apex-testing, /sf-e2e-testing | sf-apex-testing, sf-tdd-workflow | sf-tdd-guide |
-| Review | /sf-apex-best-practices, /sf-lwc-development, /sf-security | sf-security | sf-apex-reviewer, sf-security-reviewer |
+| New Feature | /sf-tdd-workflow, /sf-apex-best-practices | sf-apex-best-practices, sf-apex-enterprise-patterns | sf-architect, sf-apex-agent, sf-review-agent |
+| Bug Fix | /sf-tdd-workflow, /sf-build-fix | sf-apex-testing, sf-debugging | sf-bugfix-agent, sf-apex-agent |
+| Refactor | /refactor-clean, /sf-apex-best-practices | sf-trigger-frameworks, sf-apex-enterprise-patterns | refactor-cleaner, sf-review-agent |
+| Testing | /sf-tdd-workflow, /sf-apex-testing, /sf-e2e-testing | sf-apex-testing, sf-tdd-workflow | sf-apex-agent |
+| Review | /sf-apex-best-practices, /sf-lwc-development, /sf-security | sf-security | sf-review-agent, sf-review-agent |
 | Documentation | /update-docs | — | doc-updater, deep-researcher |
-| Infrastructure | /sf-deployment | sf-devops-ci-cd, sf-deployment | sf-devops-deployment |
-| Design (EPIC) | — | — | sf-blueprint-planner, sf-architect |
+| Infrastructure | /sf-deployment | sf-devops-ci-cd, sf-deployment | sf-architect |
+| Design (EPIC) | — | — | sf-architect, sf-architect |
 
 #### By Tech Stack
 
 | Tech Stack | Skills to Add | Agent |
 |------------|--------------|-------|
-| Apex | sf-apex-best-practices, sf-apex-testing, sf-security | sf-apex-reviewer |
-| LWC | sf-lwc-development, sf-lwc-testing | sf-lwc-reviewer |
-| SOQL | sf-soql-optimization | sf-performance-optimizer |
-| Flow | sf-flow-development | sf-flow-reviewer |
-| Agentforce | sf-agentforce-development | sf-agentforce-builder |
-| DevOps | sf-devops-ci-cd, sf-deployment | sf-devops-deployment |
-| Security | sf-security | sf-security-reviewer |
-| EPIC | — | sf-blueprint-planner, sf-architect |
+| Apex | sf-apex-best-practices, sf-apex-testing, sf-security | sf-review-agent |
+| LWC | sf-lwc-development, sf-lwc-testing | sf-lwc-agent |
+| SOQL | sf-soql-optimization | sf-apex-agent |
+| Flow | sf-flow-development | sf-flow-agent |
+| Agentforce | sf-agentforce-development | sf-agentforce-agent |
+| DevOps | sf-devops-ci-cd, sf-deployment | sf-architect |
+| Security | sf-security | sf-review-agent |
+| EPIC | — | sf-architect, sf-architect |
 
 ### Phase 4: Missing Context Detection
 
@@ -147,7 +147,7 @@ Determine where this prompt sits in the development lifecycle:
 Research → Plan → Implement (TDD) → Review → Verify → Commit
 ```
 
-For MEDIUM+ tasks, always start with the sf-blueprint-planner agent. For EPIC tasks, use the sf-blueprint-planner agent.
+For MEDIUM+ tasks, always start with the sf-architect agent. For EPIC tasks, use the sf-architect agent.
 
 **Model recommendation** (include in output):
 
@@ -156,14 +156,14 @@ For MEDIUM+ tasks, always start with the sf-blueprint-planner agent. For EPIC ta
 | TRIVIAL-LOW | Sonnet | Fast, cost-efficient for simple tasks |
 | MEDIUM | Sonnet | Best coding model for standard work |
 | HIGH | Sonnet (main) + Opus (planning) | Opus for architecture, Sonnet for implementation |
-| EPIC | Opus (sf-blueprint-planner) + Sonnet (execution) | Deep reasoning for multi-session planning |
+| EPIC | Opus (sf-architect) + Sonnet (execution) | Deep reasoning for multi-session planning |
 
 **Multi-prompt splitting** (for HIGH/EPIC scope):
 
 For tasks that exceed a single session, split into sequential prompts:
 
-- Prompt 1: Research + Plan (use search-first skill, then sf-blueprint-planner agent)
-- Prompt 2-N: Implement one phase per prompt (each ends with sf-verification-runner agent)
+- Prompt 1: Research + Plan (use search-first skill, then sf-architect agent)
+- Prompt 2-N: Implement one phase per prompt (each ends with sf-review-agent agent)
 - Final Prompt: Integration test + /sf-apex-best-practices across all phases
 - Use /save-session and /resume-session to preserve context between sessions
 
@@ -193,7 +193,7 @@ If Phase 0 auto-detected the answer, state it instead of asking.
 |------|-----------|---------|
 | Command | /sf-tdd-workflow | TDD workflow for Apex |
 | Skill | sf-apex-best-practices | Apex coding standards |
-| Agent | sf-apex-reviewer | Post-implementation review |
+| Agent | sf-review-agent | Post-implementation review |
 | Model | Sonnet | Recommended for this scope |
 
 ### Section 3: Optimized Prompt — Full Version
@@ -208,8 +208,8 @@ The prompt must be self-contained and ready to copy-paste. Include:
 - Verification steps
 - Scope boundaries (what NOT to do)
 
-For items that reference blueprint, write: "Use the sf-blueprint-planner agent to..."
-(not `/blueprint`, since sf-blueprint-planner is an agent, not a command).
+For items that reference blueprint, write: "Use the sf-architect agent to..."
+(not `/blueprint`, since sf-architect is an agent, not a command).
 
 ### Section 4: Optimized Prompt — Quick Version
 
@@ -217,14 +217,14 @@ A compact version for experienced SCC users. Vary by intent type:
 
 | Intent | Quick Pattern |
 |--------|--------------|
-| New Feature | `Use sf-blueprint-planner agent for [feature]. /sf-tdd-workflow to implement. /sf-apex-best-practices. Use sf-verification-runner agent.` |
-| Bug Fix | `/sf-tdd-workflow — write failing test for [bug]. Fix to green. Use sf-verification-runner agent.` |
-| Refactor | `/refactor-clean [scope]. /sf-apex-best-practices. Use sf-verification-runner agent.` |
-| Research | `Use search-first skill for [topic]. Use sf-blueprint-planner agent based on findings.` |
+| New Feature | `Use sf-architect agent for [feature]. /sf-tdd-workflow to implement. /sf-apex-best-practices. Use sf-review-agent agent.` |
+| Bug Fix | `/sf-tdd-workflow — write failing test for [bug]. Fix to green. Use sf-review-agent agent.` |
+| Refactor | `/refactor-clean [scope]. /sf-apex-best-practices. Use sf-review-agent agent.` |
+| Research | `Use search-first skill for [topic]. Use sf-architect agent based on findings.` |
 | Testing | `/sf-tdd-workflow [class]. /sf-e2e-testing for critical flows. /sf-apex-testing.` |
-| Review | `/sf-apex-best-practices. Then use sf-security-reviewer agent.` |
+| Review | `/sf-apex-best-practices. Then use sf-review-agent agent.` |
 | Docs | `/update-docs. Use deep-researcher agent.` |
-| EPIC | `Use sf-blueprint-planner agent for "[objective]". Execute phases with sf-verification-runner agent gates.` |
+| EPIC | `Use sf-architect agent for "[objective]". Execute phases with sf-review-agent agent gates.` |
 
 ### Section 5: Enhancement Rationale
 
@@ -269,11 +269,11 @@ Technical requirements:
 - Follow Salesforce governor limits best practices
 
 Workflow:
-1. Use sf-blueprint-planner agent to plan trigger handler structure and business logic
+1. Use sf-architect agent to plan trigger handler structure and business logic
 2. /sf-tdd-workflow — write failing test class first (use @TestSetup and test data factory)
 3. Implement AccountTrigger and AccountTriggerHandler
 4. /sf-apex-best-practices to review implementation
-5. Use sf-verification-runner agent to verify all tests pass and coverage reaches 75%+
+5. Use sf-review-agent agent to verify all tests pass and coverage reaches 75%+
 
 Security requirements:
 - Use WITH USER_MODE for SOQL queries
@@ -311,12 +311,12 @@ Requirements:
 - Return 403 for insufficient permissions
 
 Workflow:
-1. Use sf-blueprint-planner agent for the endpoint structure, validation logic, and error response envelope
+1. Use sf-architect agent for the endpoint structure, validation logic, and error response envelope
 2. /sf-tdd-workflow — write tests for success, validation failure, permission failure
 3. Implement AccountAPI class following existing REST patterns
 4. /sf-security — verify CRUD/FLS enforcement
 5. /sf-apex-best-practices
-6. Use sf-verification-runner agent — run full test suite, confirm no regressions
+6. Use sf-review-agent agent — run full test suite, confirm no regressions
 
 Do not:
 - Modify existing Account fields or validation rules
@@ -334,7 +334,7 @@ Migrate our legacy Apex triggers to a trigger framework
 **Optimized Prompt (Full):**
 
 ```
-Use the sf-blueprint-planner agent to plan: "Migrate all legacy Apex triggers to trigger framework"
+Use the sf-architect agent to plan: "Migrate all legacy Apex triggers to trigger framework"
 
 Before executing, answer these questions in the blueprint:
 1. Which trigger framework is preferred (custom TriggerHandler, Apex Commons, or other)?
@@ -349,7 +349,7 @@ The blueprint should produce phases like:
 - Phase 4: Migrate remaining triggers
 - Phase N: Remove legacy trigger code, run full regression
 
-Each phase = 1 deployment unit, with sf-verification-runner agent gates between phases.
+Each phase = 1 deployment unit, with sf-review-agent agent gates between phases.
 Use /save-session between phases. Use /resume-session to continue.
 
 Recommended: Opus for blueprint planning, Sonnet for phase execution.
@@ -364,6 +364,6 @@ Recommended: Opus for blueprint planning, Sonnet for phase execution.
 | `configure-scc` | User hasn't set up SCC yet |
 | `/sf-harness-audit` (skill) | Audit which components are installed (use instead of hardcoded catalog) |
 | `search-first` | Research phase in optimized prompts |
-| `sf-blueprint-planner` (agent) | EPIC-scope optimized prompts |
+| `sf-architect` (agent) | EPIC-scope optimized prompts |
 | `strategic-compact` | Long session context management |
 | `strategic-compact` (token tips) | Token optimization recommendations |

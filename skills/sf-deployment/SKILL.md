@@ -292,4 +292,4 @@ sf package install \
 ## Related
 
 - **Constraints**: `sf-deployment-constraints` -- deployment safety rules
-- **Agent**: `sf-devops-deployment` -- interactive, in-depth guidance
+- **Agent**: `sf-architect` -- interactive, in-depth guidance

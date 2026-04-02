@@ -319,5 +319,5 @@ static void testService_queriesStayWithinLimits() {
 
 ## Related
 
-- **Agent**: `sf-performance-optimizer` — For interactive, in-depth guidance
+- **Agent**: `sf-apex-agent` — For interactive, in-depth guidance
 - **Constraints**: `sf-apex-constraints` — Hard rules for Apex governor compliance

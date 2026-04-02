@@ -1,9 +1,6 @@
 ---
 name: sf-bugfix-agent
-description: >-
-  Diagnose and fix Salesforce build errors, Apex test failures, metadata
-  conflicts, and deployment issues with minimal diffs. Use PROACTIVELY when
-  builds or deploys fail. Do NOT use for new features or refactoring.
+description: "Diagnose and fix Salesforce build errors, Apex test failures, metadata conflicts, and deployment issues with minimal diffs. Use PROACTIVELY when builds or deploys fail. Do NOT use for new features or refactoring."
 tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
 model: sonnet
 origin: SCC
@@ -72,4 +69,4 @@ Stop and ask before:
 ## Related
 
 - **Pattern skills**: `sf-debugging`, `sf-build-fix`
-- **Agents**: sf-apex-agent (if fix requires new code), sf-review-agent (post-fix review)
+- **Agents**: sf-apex-agent (if fix requires new code), sf-review-agent (after fixing, route here for re-review)

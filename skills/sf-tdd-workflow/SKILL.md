@@ -328,7 +328,7 @@ private class OpportunityFlowTest {
 
 ## Related
 
-- **Agent**: `sf-tdd-guide` — For interactive, in-depth guidance
+- **Agent**: `sf-apex-agent` — For interactive, in-depth guidance
 - **Skills**: `sf-apex-testing` — Test implementation patterns
 
 ### Guardrails

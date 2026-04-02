@@ -318,5 +318,5 @@ Real-time threat detection: block large data exports, enforce MFA for sensitive 
 
 ## Related
 
-- **Agent**: `sf-security-reviewer` — For interactive, in-depth guidance
+- **Agent**: `sf-review-agent` — For interactive, in-depth guidance
 - **Constraints**: `sf-security-constraints` — Hard rules for security compliance

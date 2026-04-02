@@ -24,8 +24,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added install smoke test job to CI pipeline
 - Added SECURITY.md, PR template, hardened .gitignore
 - Pre-commit hook now mirrors CI: build + ESLint + markdownlint + validators + tests
-
-### Removed
-
-- 8 agents absorbed into new lean agents: sf-blueprint-planner, sf-tdd-guide, sf-verification-runner, sf-devops-deployment, sf-trigger-architect, sf-security-reviewer, sf-performance-optimizer, sf-e2e-runner
-- 6 agents renamed: sf-apex-reviewer → sf-apex-agent, sf-lwc-reviewer → sf-lwc-agent, sf-flow-reviewer → sf-flow-agent, sf-admin → sf-admin-agent, sf-integration-architect → sf-integration-agent, sf-code-reviewer → sf-review-agent

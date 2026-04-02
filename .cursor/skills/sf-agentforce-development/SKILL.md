@@ -444,6 +444,6 @@ public with sharing class SecureAgentAction {
 
 ## Related
 
-- Agent: `sf-agentforce-builder` -- for interactive, in-depth guidance
+- Agent: `sf-agentforce-agent` -- for interactive, in-depth guidance
 - Constraints: sf-apex-constraints
 - Reference: @../_reference/AGENTFORCE_PATTERNS.md

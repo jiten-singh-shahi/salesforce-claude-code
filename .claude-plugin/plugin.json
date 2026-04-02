@@ -20,7 +20,25 @@
     "devops"
   ],
   "logo": "assets/logo.svg",
-  "agents": "./agents/",
+  "agents": [
+    "./agents/deep-researcher.md",
+    "./agents/doc-updater.md",
+    "./agents/eval-runner.md",
+    "./agents/learning-engine.md",
+    "./agents/loop-operator.md",
+    "./agents/refactor-cleaner.md",
+    "./agents/sf-admin-agent.md",
+    "./agents/sf-agentforce-agent.md",
+    "./agents/sf-apex-agent.md",
+    "./agents/sf-architect.md",
+    "./agents/sf-aura-reviewer.md",
+    "./agents/sf-bugfix-agent.md",
+    "./agents/sf-flow-agent.md",
+    "./agents/sf-integration-agent.md",
+    "./agents/sf-lwc-agent.md",
+    "./agents/sf-review-agent.md",
+    "./agents/sf-visualforce-reviewer.md"
+  ],
   "skills": "./skills/",
   "mcpServers": "./mcp-configs/mcp-servers.json"
 }
