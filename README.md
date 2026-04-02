@@ -30,7 +30,7 @@ SCC is a unified system where each layer serves a distinct role:
 
 | Category | Count | Description |
 |---|---|---|
-| Agents | 25 | Specialized Salesforce subagents |
+| Agents | 17 | Specialized Salesforce subagents (11 domain + 6 platform) |
 | Skills | 55 | Domain knowledge + workflow modules (35 user-invocable, 20 auto-activating) |
 | Hooks | 29 | Lifecycle hooks (SessionStart, PreToolUse, PostToolUse, PostToolUseFailure, PreCompact, Stop, SessionEnd) |
 | Harnesses | 2 | Claude Code, Cursor |

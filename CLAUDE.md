@@ -109,7 +109,7 @@ Conventional commit types drive version bumps: `feat:` → minor, `fix:` → pat
 - **Target Salesforce API version: 66.0 (Spring '26)**. When referencing API-version-specific features (SOQL Cursors, RunRelevantTests, @testFor), always note the minimum version required.
 - **Node.js >= 20** required. Pinned: Node 20.19.0, Python 3.12.8 (`.tool-versions`).
 - **CommonJS throughout** — all scripts use `require()`/`module.exports`.
-- **File naming** — lowercase with hyphens (e.g., `sf-apex-reviewer.md`, `sf-trigger-frameworks`).
+- **File naming** — lowercase with hyphens (e.g., `sf-apex-agent.md`, `sf-trigger-frameworks`).
 - **Hook profiles** — `SCC_HOOK_PROFILE=minimal|standard|strict` controls which hooks run. `SCC_DISABLED_HOOKS=...` disables specific hooks.
 - **Package manager** — auto-detects npm/pnpm/yarn/bun. Override via `CLAUDE_PACKAGE_MANAGER` env var.
 - **Commit format** — Conventional commits: `<type>: <description>`. Max header: 100 chars. Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`, `revert`.
