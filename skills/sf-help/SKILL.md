@@ -153,3 +153,7 @@ Agents read these for domain knowledge when the task matches. Not user-invocable
 **Fixing build errors?** Describe the error — sf-bugfix-agent activates.
 
 **Need docs?** `/sf-docs-lookup <topic>`
+
+## Related
+
+- **Pattern skills**: `sf-quickstart`, `sf-docs-lookup`, `sf-harness-audit`

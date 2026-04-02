@@ -49,6 +49,30 @@ Choose the right approach based on the task.
 
 Apply constraint skills (preloaded): governor limits, trigger rules, security, testing standards.
 
+**Async processing decision matrix:**
+
+| Scenario | Pattern | Why |
+|---|---|---|
+| >50K records to process | Batch | Splits into 200-record chunks, governor resets per batch |
+| Fire-and-forget, <200 records | Queueable | Chainable, supports callouts, better than @future |
+| Simple callout from trigger | @future(callout=true) | Lightweight, but no chaining or complex state |
+| Recurring schedule | Schedulable → Batch | Schedulable invokes batch at cron intervals |
+| Real-time event response | Platform Event trigger | Decouples publisher from subscriber, retries built in |
+| CPU limit approaching in trigger | Queueable (offload) | Moves heavy logic outside trigger transaction |
+
+**Class role suffixes:**
+
+| Suffix | Purpose | Example |
+|---|---|---|
+| `Service` | Business logic orchestration | `OrderService` |
+| `Selector` | SOQL queries (encapsulated) | `AccountSelector` |
+| `TriggerHandler` | Trigger delegation | `AccountTriggerHandler` |
+| `Batch` | Batchable implementation | `DataCleanupBatch` |
+| `Job` | Queueable implementation | `ERPSyncJob` |
+| `Scheduler` | Schedulable implementation | `DailyCleanupScheduler` |
+| `Controller` | Aura/VF controller | `AccountListController` |
+| `Test` | Test class (suffix, not prefix) | `OrderServiceTest` |
+
 ### Phase 3 — Test First (TDD)
 
 Write the test class BEFORE the production class.

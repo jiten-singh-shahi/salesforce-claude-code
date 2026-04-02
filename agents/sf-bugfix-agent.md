@@ -39,12 +39,45 @@ Consult `sf-debugging` skill for log analysis and diagnostic patterns.
 
 Consult `sf-build-fix` skill for common error patterns and fixes.
 
+**Error categorization decision tree:**
+
+```
+Error type?
+├─ Compilation error
+│  ├─ "Variable does not exist"    → Missing import, typo, or deleted dependency
+│  ├─ "Method does not exist"      → Wrong class, renamed method, missing @AuraEnabled
+│  └─ "Invalid type"               → Missing custom object/field, needs deploy of dependency first
+├─ Test failure
+│  ├─ Assertion failure            → Logic bug in production code (or test expectation wrong)
+│  ├─ DML exception in test        → Missing TestSetup data, validation rule conflict
+│  ├─ Governor limit in test       → Bulkification issue, SOQL/DML in loop
+│  └─ UNABLE_TO_LOCK_ROW          → Parallel test isolation issue, use @TestSetup
+├─ Metadata deploy failure
+│  ├─ "Cannot find dependency"     → Deploy missing component first, check package.xml
+│  ├─ "Duplicate value"            → Conflicting metadata across branches
+│  └─ "Test failure blocks deploy" → Fix failing tests before deploying
+└─ LWC build error
+   ├─ "Module not found"           → Wrong import path, missing @salesforce/* module
+   └─ "Template compilation error" → Invalid HTML, unclosed tag, wrong directive syntax
+```
+
 ### Phase 3 — Fix (Minimal Diff)
 
 1. Apply the smallest change that fixes the error
 2. Do NOT refactor surrounding code
 3. Do NOT add features or "improvements"
 4. Do NOT change code style or formatting
+
+**Common fix patterns:**
+
+| Error | Typical Fix |
+|---|---|
+| SOQL in loop (governor) | Extract query before loop, use Map for lookup |
+| Missing `with sharing` | Add `with sharing` keyword to class declaration |
+| Test: MIXED_DML_OPERATION | Wrap non-setup DML in `System.runAs()` |
+| Test: UNABLE_TO_LOCK_ROW | Move shared data to `@TestSetup`, avoid concurrent DML on same record |
+| Deploy: missing dependency | Add dependency to `package.xml` or deploy dependency first |
+| LWC: wire returns undefined | Add null check / `if` guard in template before accessing wire data |
 
 ### Phase 4 — Verify
 

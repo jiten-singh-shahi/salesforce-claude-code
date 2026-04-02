@@ -1,6 +1,6 @@
 ---
 name: sf-lwc-agent
-description: "Build, Jest test, and review LWC with SLDS, accessibility, wire, and events. Use PROACTIVELY when modifying LWC. For new features, use sf-architect first. Do NOT use for Apex, Aura, or Visualforce."
+description: "Build, test, and review LWC with SLDS, accessibility, wire, and events. Use built in lightning components first otherwise build own using SLDS. Use PROACTIVELY when modifying LWC. For new features, use sf-architect first. Do NOT use for Apex/Aura/VF."
 tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
 model: sonnet
 origin: SCC
@@ -45,8 +45,41 @@ Write Jest test BEFORE the component.
 3. Test: rendering, user interaction, error states, accessibility
 4. Run to confirm failure (RED phase)
 
+```javascript
+// __tests__/accountList.test.js
+import { createElement } from 'lwc';
+import AccountList from 'c/accountList';
+import getAccounts from '@salesforce/apex/AccountController.getAccounts';
+import { createApexTestWireAdapter } from '@salesforce/sfdx-lwc-jest';
+
+// Mock wire adapter
+const getAccountsAdapter = createApexTestWireAdapter(getAccounts);
+
+describe('c-account-list', () => {
+    afterEach(() => { while (document.body.firstChild) document.body.removeChild(document.body.firstChild); });
+
+    it('renders accounts when wire returns data', async () => {
+        const element = createElement('c-account-list', { is: AccountList });
+        document.body.appendChild(element);
+        getAccountsAdapter.emit([{ Id: '001xx', Name: 'Acme' }]);
+        await Promise.resolve();
+        const items = element.shadowRoot.querySelectorAll('lightning-datatable');
+        expect(items).toHaveLength(1);
+    });
+
+    it('shows error when wire fails', async () => {
+        const element = createElement('c-account-list', { is: AccountList });
+        document.body.appendChild(element);
+        getAccountsAdapter.error();
+        await Promise.resolve();
+        const error = element.shadowRoot.querySelector('[data-id="error"]');
+        expect(error).not.toBeNull();
+    });
+});
+```
+
 ```bash
-npx lwc-jest -- --testPathPattern="componentName"
+npx lwc-jest -- --testPathPattern="accountList"
 ```
 
 ### Phase 4 — Build
@@ -56,6 +89,13 @@ npx lwc-jest -- --testPathPattern="componentName"
 3. Add `@api` properties with JSDoc, proper lifecycle hooks
 4. Run Jest — stay GREEN
 
+**SLDS patterns:**
+
+- Use `lightning-*` base components first (datatable, card, input, combobox) — they handle SLDS, accessibility, and responsiveness
+- Only use raw SLDS classes (`slds-grid`, `slds-col`, `slds-p-around_medium`) for layout and spacing
+- Never override `lightning-*` component internal CSS — use design tokens (`--lwc-*`) for theming
+- Import SLDS static resource only when needed outside Lightning context
+
 ### Phase 5 — Self-Review
 
 1. All constraint skills satisfied (naming, security, accessibility)
@@ -63,6 +103,15 @@ npx lwc-jest -- --testPathPattern="componentName"
 3. `connectedCallback` has cleanup in `disconnectedCallback`
 4. No direct DOM manipulation outside `lwc:dom="manual"`
 5. All public `@api` properties documented
+
+**Accessibility checklist (WCAG 2.1 AA):**
+
+- All interactive elements keyboard-navigable (Tab, Enter, Escape)
+- `aria-label` or `aria-labelledby` on custom interactive elements
+- Error messages linked via `aria-describedby` to form inputs
+- Color is never the sole indicator (use icons or text alongside)
+- Use `lightning-*` base components — they handle ARIA roles automatically
+- Test with keyboard-only navigation (no mouse)
 
 ## Escalation
 
