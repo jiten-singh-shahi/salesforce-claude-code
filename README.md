@@ -371,23 +371,15 @@ Agents read these on demand for domain knowledge. Not directly invocable via `/`
 | `sf-testing-constraints` | 75% coverage minimum, test isolation, assertion requirements |
 | `sf-trigger-constraints` | One-trigger-per-object, handler delegation, recursion prevention |
 
-**Context Skills (activate when relevant):**
+**Platform Context Skills (3):**
 
 | Skill | Activates When |
 |---|---|
-| `sf-apex-async-patterns` | Choosing or implementing async processing (@future, Queueable, Batch) |
-| `sf-apex-cursor` | Paginating large SOQL results or migrating from OFFSET |
-| `sf-apex-enterprise-patterns` | Implementing FFLIB Selector, Domain, Service, Unit of Work |
-| `sf-api-design` | Designing custom REST endpoints or Composite API usage |
-| `sf-approval-processes` | Building multi-step approvals or Flow-integrated submissions |
-| `sf-devops-ci-cd` | Setting up CI/CD pipelines, JWT auth, scratch org workflows |
-| `sf-experience-cloud` | Building portals, partner communities, or public-facing sites |
-| `sf-integration` | Building REST/SOAP callouts, Named Credentials, External Services |
-| `sf-lwc-testing` | Writing or debugging LWC Jest tests |
-| `sf-metadata-management` | Working with package.xml, .forceignore, source vs metadata format |
 | `mcp-server-patterns` | Building MCP servers for Salesforce integration |
 | `security-scan` | Scanning Claude Code config for vulnerabilities and misconfigurations |
 | `strategic-compact` | Managing context during long development sessions |
+
+Pattern skills (28, listed above) also activate contextually when their domain is relevant.
 
 ---
 
