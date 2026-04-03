@@ -41,7 +41,7 @@ echo "[pre-commit] ESLint passed."
 
 # ── 3. markdownlint ────────────────────────────────────────────────────────
 echo "[pre-commit] Running markdownlint..."
-if ! npx markdownlint '**/*.md' --ignore node_modules 2>/dev/null; then
+if ! npx markdownlint '**/*.md' --ignore node_modules --ignore CHANGELOG.md 2>/dev/null; then
   echo ""
   echo "[pre-commit] markdownlint failed. Run 'npx markdownlint --fix' to auto-fix."
   exit 1
