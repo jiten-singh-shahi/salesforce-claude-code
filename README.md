@@ -39,44 +39,57 @@ SCC is a unified system where each layer serves a distinct role:
 
 ## Requirements
 
-- **Node.js >= 20** — required to run the `npx scc` CLI
+- **Node.js >= 20** — required to run the `npx scc-universal` CLI
 - **Python 3.x** — required for learning-engine agent (instinct CLI)
 
 ---
 
 ## Quick Install
 
+### For Claude Code
+
 ```bash
-# Install everything
-npx scc install all
+# Install everything (agents → .claude/agents/, skills → .claude/skills/, hooks → .claude/settings.json)
+npx scc-universal install
 
-# Install only Apex
-npx scc install apex
+# Install only Apex-focused content
+npx scc-universal install apex
 
-# Install only LWC
-npx scc install lwc
+# Install only LWC-focused content
+npx scc-universal install lwc
+```
 
-# Install only DevOps
-npx scc install devops
+### For Cursor
 
-# Diagnose / repair installed files
-npx scc doctor
-npx scc repair
+```bash
+# Install everything (agents → .cursor/agents/, skills → .cursor/skills/, hooks → .cursor/hooks.json)
+npx scc-universal install --target cursor
+
+# Install only Apex-focused content
+npx scc-universal install apex --target cursor
+```
+
+### Diagnose and Repair
+
+```bash
+npx scc-universal doctor       # Check for missing/drifted files
+npx scc-universal repair       # Restore drifted files
+npx scc-universal status       # View installed components
+npx scc-universal uninstall    # Remove SCC-managed files
 ```
 
 ### CLI Reference
 
 | Command | Description |
 |---|---|
-| `scc install <target>` | Install SCC content (apex, lwc, all) |
-| `scc plan` | Preview install manifest (dry run) |
-| `scc list-installed` | Show currently installed SCC files |
-| `scc doctor` | Diagnose missing or drifted files |
-| `scc repair` | Restore drifted files |
-| `scc status` | Query JSON state store |
-| `scc sessions` | List saved sessions |
-| `scc session-inspect` | Inspect a specific session's details |
-| `scc uninstall` | Remove SCC-managed files |
+| `scc-universal install [profile]` | Install SCC content (default: full profile, claude target) |
+| `scc-universal plan` | Preview install manifest (dry run) |
+| `scc-universal list-installed` | Show currently installed SCC files |
+| `scc-universal doctor` | Diagnose missing or drifted files |
+| `scc-universal repair` | Restore drifted files |
+| `scc-universal status` | Query JSON state store |
+| `scc-universal sessions` | List saved sessions |
+| `scc-universal uninstall` | Remove SCC-managed files |
 
 **Install flags:**
 
@@ -84,12 +97,19 @@ npx scc repair
 |---|---|
 | `--profile <name>` | Install profile: `apex`, `lwc`, or `full` (default) |
 | `--target <harness>` | Target harness: `claude` (default) or `cursor` |
-| `--config <path>` | Custom install manifest path |
-| `--dry-run` | Preview changes without applying (works with repair, uninstall) |
+| `--dry-run` | Preview changes without applying |
 | `--json` | Output in JSON format |
-| `--yes` | Skip confirmation prompts |
 
-### Install Modules
+### What Gets Installed
+
+| Component | Claude Code (`--target claude`) | Cursor (`--target cursor`) |
+|---|---|---|
+| Agents | `.claude/agents/*.md` | `.cursor/agents/*.md` |
+| Skills | `.claude/skills/*/SKILL.md` | `.cursor/skills/*/SKILL.md` |
+| Hooks | Merged into `.claude/settings.json` | `.cursor/hooks.json` |
+| MCP config | `.mcp.json` (project root) | `.cursor/mcp.json` |
+
+### Install Profiles
 
 SCC content is organized into 7 modules. Profiles compose subsets:
 
@@ -108,12 +128,6 @@ SCC content is organized into 7 modules. Profiles compose subsets:
 | `apex` | core + apex + platform + devops + security |
 | `lwc` | core + lwc + platform + devops + security |
 | `full` | All 7 modules (default) |
-
-### Harness-Specific Instructions
-
-**Claude Code** — files are auto-installed via `npx scc install all`. Agents, skills, commands, rules, and hooks are all activated.
-
-**Cursor** — run `npx scc install all --target cursor`. Agents, skills, rules, and MCP config are auto-installed to `.cursor/` directory.
 
 ---
 
@@ -175,11 +189,11 @@ SCC is designed to complement the official [Salesforce MCP server](https://githu
 - **@salesforce/mcp** provides: org management, metadata deployment, SOQL queries, Apex test execution, code analysis, LWC tools, DevOps operations
 - **SCC provides**: domain expertise to use those tools correctly, quality gates to catch mistakes, and institutional knowledge to follow best practices
 
-MCP config is auto-installed by `npx scc install`:
+MCP config is auto-installed by `npx scc-universal install`:
 
 ```bash
-npx scc install all --target claude   # Installs .mcp.json at project root
-npx scc install all --target cursor   # Installs .cursor/mcp.json
+npx scc-universal install all --target claude   # Installs .mcp.json at project root
+npx scc-universal install all --target cursor   # Installs .cursor/mcp.json
 ```
 
 ### Enhanced Quality Gates

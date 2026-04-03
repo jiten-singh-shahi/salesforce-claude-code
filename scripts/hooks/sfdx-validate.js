@@ -100,7 +100,9 @@ rl.on('close', () => {
     process.exit(0);
   }
 
-  const command = (input.tool_input && input.tool_input.command) || '';
+  const { normalizeInput } = require('../lib/hook-input');
+  const ctx = normalizeInput(input);
+  const command = ctx.command;
   const warnings = validateCommand(command);
 
   if (warnings.length === 0) {

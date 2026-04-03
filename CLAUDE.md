@@ -48,13 +48,13 @@ npm run coverage
 bash scripts/ci/smoke-test.sh
 
 # SCC CLI
-npx scc install <target>     # Install SCC content (apex, lwc, all)
-npx scc doctor               # Diagnose missing/drifted files
-npx scc repair               # Restore drifted files
-npx scc status               # Query JSON state store
-npx scc uninstall            # Remove SCC-managed files
-npx scc plan                 # Preview files to be installed (dry run)
-npx scc list-installed       # Show currently installed SCC files
+npx scc-universal install <target>     # Install SCC content (apex, lwc, all)
+npx scc-universal doctor               # Diagnose missing/drifted files
+npx scc-universal repair               # Restore drifted files
+npx scc-universal status               # Query JSON state store
+npx scc-universal uninstall            # Remove SCC-managed files
+npx scc-universal plan                 # Preview files to be installed (dry run)
+npx scc-universal list-installed       # Show currently installed SCC files
 ```
 
 ## Architecture
@@ -73,7 +73,7 @@ The project is a **plugin system** — mostly Markdown/JSON content consumed by 
 
 ### Script Infrastructure (Node.js, CommonJS)
 
-- **scripts/scc.js** — Main CLI entry point (`npx scc`).
+- **scripts/scc.js** — Main CLI entry point (`npx scc-universal`).
 - **scripts/cli/** — End-user CLI commands (install, uninstall).
 - **scripts/dev/** — Contributor/dev tools (doctor, repair, status, build-cursor, harness-audit).
 - **scripts/lib/** — Shared utilities (package-manager detection, install executor, JSON state store, adapters).

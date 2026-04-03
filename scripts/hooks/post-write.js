@@ -153,7 +153,9 @@ rl.on('close', () => {
     process.exit(0);
   }
 
-  const filePath = (input.tool_input && input.tool_input.file_path) || '';
+  const { normalizeInput } = require('../lib/hook-input');
+  const ctx = normalizeInput(input);
+  const filePath = ctx.filePath;
   if (!filePath) process.exit(0);
 
   const fileType = classifyFile(filePath);

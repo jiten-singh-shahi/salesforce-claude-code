@@ -185,13 +185,13 @@ sf project reset tracking --target-org my-scratch
 
 ```bash
 # Check SCC installation status
-npx scc doctor
+npx scc-universal doctor
 
 # Verify agents are installed
 ls .claude/agents/
 
 # Check installed files
-npx scc list-installed
+npx scc-universal list-installed
 ```
 
 ### Agent Returns Incomplete Results
@@ -267,13 +267,13 @@ cat sfdx-project.json
 npm install -g scc-universal
 
 # Verify installation
-npx scc doctor
+npx scc-universal doctor
 
 # Check for drifted files
-npx scc status
+npx scc-universal status
 
 # Repair installation
-npx scc repair
+npx scc-universal repair
 ```
 
 ### Package Manager Detection Fails
@@ -364,7 +364,7 @@ If you're still experiencing issues:
 1. **Run diagnostics:**
 
    ```bash
-   npx scc doctor
+   npx scc-universal doctor
    sf doctor
    ```
 
@@ -380,7 +380,7 @@ If you're still experiencing issues:
    ```bash
    sf --version
    node --version
-   npx scc status
+   npx scc-universal status
    sf org list
    ```
 

@@ -22,8 +22,9 @@ process.stdin.on('data', chunk => {
 process.stdin.on('end', () => {
   try {
     const input = JSON.parse(raw);
-    const cmd = String(input.tool_input?.command || '');
-    if (/(sf\s+project\s+deploy|sf\s+deploy|sfdx\s+force:source:deploy|npm run build|pnpm build|yarn build)/.test(cmd)) {
+    const { normalizeInput } = require('../lib/hook-input');
+    const ctx = normalizeInput(input);
+    if (/(sf\s+project\s+deploy|sf\s+deploy|sfdx\s+force:source:deploy|npm run build|pnpm build|yarn build)/.test(ctx.command)) {
       console.error('[Hook] Build/deploy completed - review results above');
     }
   } catch {

@@ -24,8 +24,10 @@
           "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
         },
         {
-          "paths": ["hooks/hooks.json", "scripts/hooks/"],
-          "targets": { "claude": ".claude/hooks/", "cursor": null }
+          "paths": ["scripts/hooks/"],
+          "targets": { "claude": ".claude/", "cursor": null },
+          "installType": "hooks",
+          "hooksSource": "hooks/hooks.json"
         }
       ],
       "dependencies": [],

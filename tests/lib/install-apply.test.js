@@ -52,14 +52,14 @@ test('install-apply.js: script exists', () => {
 
 test('install-apply.js: --help prints usage and exits 0', () => {
   const output = run(['--help']);
-  assert.ok(output.includes('scc install'), 'Should print usage');
+  assert.ok(output.includes('scc-universal install'), 'Should print usage');
   assert.ok(output.includes('--profile'), 'Should mention --profile option');
   assert.ok(output.includes('--dry-run'), 'Should mention --dry-run option');
 });
 
 test('install-apply.js: -h prints usage', () => {
   const output = run(['-h']);
-  assert.ok(output.includes('scc install'), 'Should print usage');
+  assert.ok(output.includes('scc-universal install'), 'Should print usage');
 });
 
 // ── Dry run ──

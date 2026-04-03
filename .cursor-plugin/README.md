@@ -15,7 +15,7 @@ Salesforce Claude Code (SCC) — production-ready AI agent harness for Salesforc
 
 ```bash
 npm install -g scc-universal
-npx scc install all --target cursor
+npx scc-universal install all --target cursor
 ```
 
 ### Local Development

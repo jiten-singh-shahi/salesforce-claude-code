@@ -84,7 +84,9 @@ function runScanner(files) {
 function run(rawInput) {
   try {
     const input = JSON.parse(rawInput);
-    const command = String(input.tool_input?.command || '');
+    const { normalizeInput } = require('../lib/hook-input');
+    const ctx = normalizeInput(input);
+    const command = ctx.command;
 
     // Only intercept git push and sf deploy commands
     const isGitPush = /\bgit\s+push\b/.test(command);

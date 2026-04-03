@@ -22,8 +22,9 @@ process.stdin.on('data', chunk => {
 process.stdin.on('end', () => {
   try {
     const input = JSON.parse(raw);
-    const cmd = String(input.tool_input?.command || '');
-    if (/\bgit\s+push\b/.test(cmd)) {
+    const { normalizeInput } = require('../lib/hook-input');
+    const ctx = normalizeInput(input);
+    if (/\bgit\s+push\b/.test(ctx.command)) {
       console.error('[Hook] Review changes before push...');
       console.error('[Hook] Continuing with push (remove this hook to add interactive review)');
     }

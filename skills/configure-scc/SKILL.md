@@ -28,9 +28,9 @@ Interactive guide for installing and configuring Salesforce Claude Code.
 npm install -g scc-universal
 
 # Install with a profile
-npx scc install all      # Everything (all agents, skills, rules)
-npx scc install apex     # Apex-focused development
-npx scc install lwc      # LWC-focused development
+npx scc-universal install all      # Everything (all agents, skills, rules)
+npx scc-universal install apex     # Apex-focused development
+npx scc-universal install lwc      # LWC-focused development
 ```
 
 ### Profile Details
@@ -44,10 +44,10 @@ npx scc install lwc      # LWC-focused development
 ### Diagnostics
 
 ```bash
-npx scc doctor    # Check for missing/drifted files
-npx scc status    # View installed components
-npx scc repair    # Restore drifted files
-npx scc uninstall # Remove SCC-managed files
+npx scc-universal doctor    # Check for missing/drifted files
+npx scc-universal status    # View installed components
+npx scc-universal repair    # Restore drifted files
+npx scc-universal uninstall # Remove SCC-managed files
 ```
 
 ## Hook Configuration
@@ -113,10 +113,10 @@ CLAUDE_PACKAGE_MANAGER=npm
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
-| `npx scc install` fails | Node.js < 20 | Upgrade: `nvm install 20` |
-| Hooks not firing | SCC not installed in project | Run `npx scc doctor` to check |
-| `Permission denied` on hooks | Script not executable | Run `npx scc repair` |
-| Skills not loading | Wrong install profile | Run `npx scc install all` |
+| `npx scc-universal install` fails | Node.js < 20 | Upgrade: `nvm install 20` |
+| Hooks not firing | SCC not installed in project | Run `npx scc-universal doctor` to check |
+| `Permission denied` on hooks | Script not executable | Run `npx scc-universal repair` |
+| Skills not loading | Wrong install profile | Run `npx scc-universal install all` |
 | `sf` command not found | SF CLI not installed | Install: `npm install -g @salesforce/cli` |
 | `sf` commands fail with errors | SF CLI version too old | Upgrade: `npm update -g @salesforce/cli` (SCC requires SF CLI v2.x / `sf` not `sfdx`) |
 | Hooks slow down session | Too many hooks enabled | Switch to `SCC_HOOK_PROFILE=minimal` |
@@ -125,19 +125,19 @@ CLAUDE_PACKAGE_MANAGER=npm
 
 ```bash
 # Full diagnostic report
-npx scc doctor
+npx scc-universal doctor
 
 # See exactly what's installed
-npx scc list-installed
+npx scc-universal list-installed
 
 # Preview what WOULD be installed (dry run)
-npx scc plan apex
+npx scc-universal plan apex
 
 # Check state store
-npx scc status
+npx scc-universal status
 
 # Reset everything and reinstall
-npx scc uninstall && npx scc install all
+npx scc-universal uninstall && npx scc-universal install all
 ```
 
 ### Upgrading SCC
@@ -147,17 +147,17 @@ npx scc uninstall && npx scc install all
 npm install -g scc-universal@latest
 
 # Repair any drifted files after upgrade
-npx scc repair
+npx scc-universal repair
 
 # Verify upgrade
-npx scc doctor
+npx scc-universal doctor
 ```
 
 ## Verification
 
 ```bash
 npm test              # Run all validators
-npx scc doctor        # Check installation health
+npx scc-universal doctor        # Check installation health
 sf --version          # Verify SF CLI is installed
-npx scc status        # Confirm installed components
+npx scc-universal status        # Confirm installed components
 ```

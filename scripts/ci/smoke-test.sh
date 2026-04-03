@@ -70,7 +70,7 @@ pass "test project created and tarball installed"
 # ── Install apex ────────────────────────────────────────────────────────────
 section "scc install apex"
 
-npx scc install apex > /dev/null 2>&1
+npx scc-universal install apex > /dev/null 2>&1
 
 # Core agents
 for f in sf-architect.md sf-review-agent.md sf-bugfix-agent.md; do
@@ -103,7 +103,8 @@ for f in sf-deployment sf-deployment-constraints; do
 done
 
 # Hooks
-if [ -f ".claude/hooks/hooks.json" ]; then pass "hooks installed"; else fail "hooks installed"; fi
+if [ -f ".claude/settings.json" ] && node -e "const s=require('./.claude/settings.json'); if(!s.hooks) process.exit(1);" 2>/dev/null; then pass "hooks merged into settings.json"; else fail "hooks merged into settings.json"; fi
+if [ -f ".claude/hooks/governor-check.js" ]; then pass "hook scripts installed"; else fail "hook scripts installed"; fi
 
 # Reference files
 if [ -d ".claude/skills/_reference" ]; then pass "reference dir exists"; else fail "reference dir exists"; fi
@@ -115,7 +116,7 @@ if [ ! -f ".claude/skills/sf-flow-development/SKILL.md" ]; then pass "no extende
 # ── Uninstall ───────────────────────────────────────────────────────────────
 section "scc uninstall"
 
-npx scc uninstall --yes > /dev/null 2>&1
+npx scc-universal uninstall --yes > /dev/null 2>&1
 
 if [ ! -f ".claude/agents/sf-apex-agent.md" ]; then pass "uninstall removed agents"; else fail "uninstall did not remove agents"; fi
 if [ ! -f ".claude/skills/sf-apex-testing/SKILL.md" ]; then pass "uninstall removed skills"; else fail "uninstall did not remove skills"; fi
@@ -123,7 +124,7 @@ if [ ! -f ".claude/skills/sf-apex-testing/SKILL.md" ]; then pass "uninstall remo
 # ── Install all ─────────────────────────────────────────────────────────────
 section "scc install all"
 
-npx scc install all > /dev/null 2>&1
+npx scc-universal install all > /dev/null 2>&1
 
 # Extended agents
 for f in sf-agentforce-agent.md sf-flow-agent.md sf-visualforce-reviewer.md sf-aura-reviewer.md sf-admin-agent.md; do
@@ -143,8 +144,8 @@ done
 # ── Install lwc (after clean) ──────────────────────────────────────────────
 section "scc install lwc"
 
-npx scc uninstall --yes > /dev/null 2>&1
-npx scc install lwc > /dev/null 2>&1
+npx scc-universal uninstall --yes > /dev/null 2>&1
+npx scc-universal install lwc > /dev/null 2>&1
 
 if [ -f ".claude/agents/sf-lwc-agent.md" ]; then pass "lwc agent"; else fail "lwc agent"; fi
 for f in sf-lwc-development sf-lwc-testing sf-lwc-constraints; do

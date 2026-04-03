@@ -48,7 +48,9 @@ process.stdin.on('data', c => {
 process.stdin.on('end', () => {
   try {
     const input = JSON.parse(data);
-    const filePath = String((input.tool_input && input.tool_input.file_path) || '');
+    const { normalizeInput } = require('../lib/hook-input');
+    const ctx = normalizeInput(input);
+    const filePath = ctx.filePath;
 
     if (filePath && !isAllowedDocPath(filePath)) {
       console.error('[Hook] WARNING: Non-standard documentation file detected');

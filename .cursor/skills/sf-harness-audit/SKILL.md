@@ -29,7 +29,7 @@ ls -la .claude/agents/ 2>/dev/null
 ls -la .claude/skills/ 2>/dev/null
 ```
 
-If using SCC CLI: `npx scc status`
+If using SCC CLI: `npx scc-universal status`
 
 ### Step 2 — Score Each Category
 
@@ -110,7 +110,7 @@ SCC Harness Audit
 
   Top Recommendations:
     1. [+1.0] Enable strict hook profile: export SCC_HOOK_PROFILE=strict
-    2. [+0.5] Install all modules: npx scc install all
+    2. [+0.5] Install all modules: npx scc-universal install all
 ```
 
 ### Step 4 — Actionable Recommendations
@@ -119,11 +119,11 @@ For each gap, provide a specific command to fix it:
 
 | Gap | Fix Command |
 |-----|-------------|
-| Missing hooks | `npx scc repair` |
-| Missing domain rules | `npx scc install all` (or target: `npx scc install apex`, `npx scc install lwc`) |
-| Low skill count | `npx scc install all` |
+| Missing hooks | `npx scc-universal repair` |
+| Missing domain rules | `npx scc-universal install all` (or target: `npx scc-universal install apex`, `npx scc-universal install lwc`) |
+| Low skill count | `npx scc-universal install all` |
 | Wrong hook profile | `export SCC_HOOK_PROFILE=strict` |
-| Drifted files | `npx scc doctor` then `npx scc repair` |
+| Drifted files | `npx scc-universal doctor` then `npx scc-universal repair` |
 
 ## Examples
 

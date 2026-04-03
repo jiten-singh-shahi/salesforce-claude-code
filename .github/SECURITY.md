@@ -34,7 +34,7 @@ Instead, use one of these methods:
 
 This policy covers:
 - SCC plugin code (agents, skills, hooks, scripts)
-- CLI tools (`npx scc`)
+- CLI tools (`npx scc-universal`)
 - CI/CD pipeline configuration
 - Hook scripts that execute in user environments
 

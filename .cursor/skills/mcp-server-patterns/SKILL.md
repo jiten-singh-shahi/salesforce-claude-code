@@ -72,7 +72,7 @@ Use **Zod** (or the SDK's preferred schema format) for input validation.
 
 ### Official @salesforce/mcp Server
 
-MCP config is auto-installed by `npx scc install` (`.mcp.json` for Claude Code, `.cursor/mcp.json` for Cursor). The official `@salesforce/mcp` server provides these toolsets:
+MCP config is auto-installed by `npx scc-universal install` (`.mcp.json` for Claude Code, `.cursor/mcp.json` for Cursor). The official `@salesforce/mcp` server provides these toolsets:
 
 | Toolset | What It Does |
 |---------|-------------|

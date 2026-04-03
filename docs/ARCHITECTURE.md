@@ -37,7 +37,7 @@ Salesforce Claude Code (SCC) is a **plugin harness system** — a collection of 
 │  └────────────────────────────────────────────────────┘ │
 │                                                           │
 ├─────────────────────────────────────────────────────────┤
-│                    CLI (npx scc)                          │
+│                    CLI (npx scc-universal)                          │
 │   install | doctor | repair | status | sessions          │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -84,7 +84,7 @@ Hooks run at lifecycle events and are gated by profiles:
 
 ### CLI System
 
-The `npx scc` CLI provides:
+The `npx scc-universal` CLI provides:
 
 - `install <profile>` — Install SCC content for a specific profile (core, apex, lwc, devops, security, full)
 - `doctor` — Diagnose missing or drifted files
@@ -111,7 +111,7 @@ SCC uses a JSON state store (`~/.scc/state.json`) to track:
 ## Installation Flow
 
 ```
-npx scc install all
+npx scc-universal install all
     │
     ├── Read manifests/install-profiles.json
     ├── Resolve component list for profile

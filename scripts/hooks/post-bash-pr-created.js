@@ -22,10 +22,12 @@ process.stdin.on('data', chunk => {
 process.stdin.on('end', () => {
   try {
     const input = JSON.parse(raw);
-    const cmd = String(input.tool_input?.command || '');
+    const { normalizeInput } = require('../lib/hook-input');
+    const ctx = normalizeInput(input);
+    const cmd = ctx.command;
 
     if (/\bgh\s+pr\s+create\b/.test(cmd)) {
-      const out = String(input.tool_output?.output || '');
+      const out = ctx.output;
       const match = out.match(/https:\/\/github\.com\/[^/]+\/[^/]+\/pull\/\d+/);
       if (match) {
         const prUrl = match[0];

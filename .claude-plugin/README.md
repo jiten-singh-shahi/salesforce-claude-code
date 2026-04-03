@@ -15,7 +15,7 @@ Salesforce Claude Code (SCC) — production-ready AI agent harness for Salesforc
 
 ```bash
 npm install -g scc-universal
-npx scc install all
+npx scc-universal install all
 ```
 
 ### From Source
@@ -24,7 +24,7 @@ npx scc install all
 git clone <repo-url> salesforce-claude-code
 cd salesforce-claude-code
 npm install
-npx scc install all
+npx scc-universal install all
 ```
 
 ## What's Included
