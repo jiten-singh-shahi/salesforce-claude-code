@@ -108,7 +108,7 @@ jobs:
       - name: Test scc install apex
         run: |
           cd /tmp/test-project
-          npx scc install apex
+          npx scc-universal install apex
 
       - name: Verify apex install — core agents
         run: |
@@ -165,7 +165,7 @@ jobs:
       - name: Test scc uninstall
         run: |
           cd /tmp/test-project
-          npx scc uninstall --yes
+          npx scc-universal uninstall --yes
 
       - name: Verify uninstall removed files
         run: |
@@ -176,7 +176,7 @@ jobs:
       - name: Test scc install all
         run: |
           cd /tmp/test-project
-          npx scc install all
+          npx scc-universal install all
 
       - name: Verify full install — extended agents present
         run: |
@@ -210,12 +210,12 @@ jobs:
       - name: Clean uninstall before lwc test
         run: |
           cd /tmp/test-project
-          npx scc uninstall --yes
+          npx scc-universal uninstall --yes
 
       - name: Test scc install lwc
         run: |
           cd /tmp/test-project
-          npx scc install lwc
+          npx scc-universal install lwc
 
       - name: Verify lwc install — lwc agent and skills present
         run: |
