@@ -318,6 +318,17 @@ function installHooks(group, pluginRoot, targetName, projectRoot, moduleName, dr
       const cursorHooksPath = path.join(projectRoot, '.cursor', 'hooks.json');
       const cursorHooks = transformHooks(hooksJson);
 
+      // Remap adapter paths from scripts/hooks/ to .cursor/hooks/
+      // (adapter outputs plugin-relative paths, but install copies to .cursor/hooks/)
+      for (const hooks of Object.values(cursorHooks.hooks)) {
+        for (const hook of hooks) {
+          if (hook.command) {
+            hook.command = hook.command.replace(/\bnode scripts\/hooks\//g, 'node "$CURSOR_PROJECT_DIR"/.cursor/hooks/');
+            hook.command = hook.command.replace(/\bbash scripts\/hooks\//g, 'bash "$CURSOR_PROJECT_DIR"/.cursor/hooks/');
+          }
+        }
+      }
+
       if (dryRun) {
         const hookCount = Object.values(cursorHooks.hooks).reduce((sum, arr) => sum + arr.length, 0);
         console.log(`  [dry-run] Would generate .cursor/hooks.json (${hookCount} hooks)`);

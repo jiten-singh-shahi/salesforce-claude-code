@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.0](https://github.com/jiten-singh-shahi/salesforce-claude-code/compare/scc-universal-v1.1.0...scc-universal-v1.2.0) (2026-04-03)
 
-
 ### Features
 
 * hooks adapter, cross-harness compatibility, and install fixes ([#16](https://github.com/jiten-singh-shahi/salesforce-claude-code/issues/16)) ([a80c81d](https://github.com/jiten-singh-shahi/salesforce-claude-code/commit/a80c81d1e8f708141760135d10a58cfca09a4990))
