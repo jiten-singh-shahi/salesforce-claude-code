@@ -1,6 +1,6 @@
 {
   "name": "salesforce-claude-code",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Production-ready expert subagents, domain skills, and quality gates for Salesforce development",
   "author": {
     "name": "Jiten Singh",
