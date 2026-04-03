@@ -107,7 +107,7 @@ test('getTargetDirs: returns correct dirs for cursor target', () => {
   assert.strictEqual(dirs.agents, '/project/.cursor/agents');
   assert.strictEqual(dirs.skills, '/project/.cursor/skills');
   assert.strictEqual(dirs.commands, '/project/.cursor/commands');
-  assert.strictEqual(dirs.hooks, null, 'cursor should not have hooks');
+  assert.strictEqual(dirs.hooks, '/project/.cursor/hooks.json', 'cursor hooks points to generated hooks.json');
 });
 
 test('getTargetDirs: throws on unknown target', () => {

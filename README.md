@@ -39,7 +39,7 @@ SCC is a unified system where each layer serves a distinct role:
 
 ## Requirements
 
-- **Node.js >= 20** — required to run the `npx scc` CLI
+- **Node.js >= 20** — required to run the `npx scc-universal` CLI
 - **Python 3.x** — required for learning-engine agent (instinct CLI)
 
 ---
@@ -48,20 +48,20 @@ SCC is a unified system where each layer serves a distinct role:
 
 ```bash
 # Install everything
-npx scc install all
+npx scc-universal install all
 
 # Install only Apex
-npx scc install apex
+npx scc-universal install apex
 
 # Install only LWC
-npx scc install lwc
+npx scc-universal install lwc
 
 # Install only DevOps
-npx scc install devops
+npx scc-universal install devops
 
 # Diagnose / repair installed files
-npx scc doctor
-npx scc repair
+npx scc-universal doctor
+npx scc-universal repair
 ```
 
 ### CLI Reference
@@ -111,9 +111,9 @@ SCC content is organized into 7 modules. Profiles compose subsets:
 
 ### Harness-Specific Instructions
 
-**Claude Code** — files are auto-installed via `npx scc install all`. Agents, skills, commands, rules, and hooks are all activated.
+**Claude Code** — files are auto-installed via `npx scc-universal install all`. Agents, skills, commands, rules, and hooks are all activated.
 
-**Cursor** — run `npx scc install all --target cursor`. Agents, skills, rules, and MCP config are auto-installed to `.cursor/` directory.
+**Cursor** — run `npx scc-universal install all --target cursor`. Agents, skills, rules, and MCP config are auto-installed to `.cursor/` directory.
 
 ---
 
@@ -175,11 +175,11 @@ SCC is designed to complement the official [Salesforce MCP server](https://githu
 - **@salesforce/mcp** provides: org management, metadata deployment, SOQL queries, Apex test execution, code analysis, LWC tools, DevOps operations
 - **SCC provides**: domain expertise to use those tools correctly, quality gates to catch mistakes, and institutional knowledge to follow best practices
 
-MCP config is auto-installed by `npx scc install`:
+MCP config is auto-installed by `npx scc-universal install`:
 
 ```bash
-npx scc install all --target claude   # Installs .mcp.json at project root
-npx scc install all --target cursor   # Installs .cursor/mcp.json
+npx scc-universal install all --target claude   # Installs .mcp.json at project root
+npx scc-universal install all --target cursor   # Installs .cursor/mcp.json
 ```
 
 ### Enhanced Quality Gates

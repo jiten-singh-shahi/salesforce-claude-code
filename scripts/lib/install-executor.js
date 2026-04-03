@@ -14,6 +14,7 @@ const { copyFile, readJson, fileExists, simpleHash } = require('./utils');
 const { saveState } = require('./state-store');
 const { transformSkillDir } = require('./skill-adapter');
 const { transformAgentFile } = require('./agent-adapter');
+const { transformHooks } = require('./hooks-adapter');
 
 const VALID_TARGETS = ['claude', 'cursor'];
 const VALID_PROFILES = ['apex', 'lwc', 'full'];
@@ -31,13 +32,14 @@ function getTargetDirs(target, projectRoot) {
         skills: path.join(projectRoot, '.claude', 'skills'),
         commands: path.join(projectRoot, '.claude', 'commands'),
         hooks: path.join(projectRoot, '.claude', 'hooks'),
+        settings: path.join(projectRoot, '.claude', 'settings.json'),
       };
     case 'cursor':
       return {
         agents: path.join(projectRoot, '.cursor', 'agents'),
         skills: path.join(projectRoot, '.cursor', 'skills'),
         commands: path.join(projectRoot, '.cursor', 'commands'),
-        hooks: null,
+        hooks: path.join(projectRoot, '.cursor', 'hooks.json'),
       };
     default:
       throw new Error(`Unknown target: ${target}`);
@@ -198,6 +200,149 @@ function installPaths(pathsList, destDir, pluginRoot, moduleName, dryRun, target
 }
 
 /**
+ * Remap hook commands from plugin paths to project-local paths.
+ * ${CLAUDE_PLUGIN_ROOT}/scripts/hooks/foo.js → "$CLAUDE_PROJECT_DIR"/.claude/hooks/foo.js
+ */
+function remapHookCommandForProject(command) {
+  // Strip run-with-flags wrapper and extract the actual script
+  const runWithFlagsMatch = command.match(
+    /node\s+"?\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/hooks\/run-with-flags\.js"?\s+\S+\s+\S+\s+"?\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/hooks\/([^"]+)"?/
+  );
+  if (runWithFlagsMatch) {
+    return `node "$CLAUDE_PROJECT_DIR"/.claude/hooks/${runWithFlagsMatch[1]}`;
+  }
+
+  // Shell flags wrapper
+  const shellFlagsMatch = command.match(
+    /bash\s+"?\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/hooks\/run-with-flags-shell\.sh"?\s+\S+\s+"?scripts\/hooks\/([^"]+)"?\s+\S+/
+  );
+  if (shellFlagsMatch) {
+    return `bash "$CLAUDE_PROJECT_DIR"/.claude/hooks/${shellFlagsMatch[1]}`;
+  }
+
+  // Direct script reference
+  const directMatch = command.match(
+    /node\s+"?\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/hooks\/([^"]+)"?/
+  );
+  if (directMatch) {
+    return `node "$CLAUDE_PROJECT_DIR"/.claude/hooks/${directMatch[1]}`;
+  }
+
+  // npx commands pass through
+  if (command.startsWith('npx ')) {
+    return command;
+  }
+
+  return command.replace(/\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/hooks\//g, '"$CLAUDE_PROJECT_DIR"/.claude/hooks/');
+}
+
+/**
+ * Install hooks by merging into .claude/settings.json (Claude Code target)
+ * or generating .cursor/hooks.json (Cursor target).
+ *
+ * Claude Code reads hooks from settings.json, NOT from a separate hooks.json.
+ * The hooks/hooks.json format is only for plugins.
+ */
+function installHooks(group, pluginRoot, targetName, projectRoot, moduleName, dryRun) {
+  const installed = [];
+  const hooksSourcePath = path.join(pluginRoot, group.hooksSource || 'hooks/hooks.json');
+
+  if (!fileExists(hooksSourcePath)) {
+    console.warn(`  [WARN] Hooks source not found: ${hooksSourcePath}`);
+    return installed;
+  }
+
+  // Step 1: Copy hook scripts to target directory
+  const destRelative = (group.targets || {})[targetName];
+  if (destRelative) {
+    const destDir = path.join(projectRoot, destRelative);
+    installed.push(...installPaths(group.paths || [], destDir, pluginRoot, moduleName, dryRun, targetName));
+  }
+
+  // Step 2: For Claude Code target, merge hooks into .claude/settings.json
+  if (targetName === 'claude') {
+    const settingsPath = path.join(projectRoot, '.claude', 'settings.json');
+    const hooksJson = readJson(hooksSourcePath);
+
+    if (!hooksJson || !hooksJson.hooks) {
+      console.warn('  [WARN] No hooks found in hooks source');
+      return installed;
+    }
+
+    // Remap all hook commands from plugin paths to project-local paths
+    const remappedHooks = {};
+    for (const [event, groups] of Object.entries(hooksJson.hooks)) {
+      remappedHooks[event] = groups.map(g => ({
+        ...g,
+        hooks: (g.hooks || []).map(h => ({
+          ...h,
+          command: h.command ? remapHookCommandForProject(h.command) : h.command,
+        })),
+      }));
+    }
+
+    if (dryRun) {
+      const hookCount = Object.values(remappedHooks).reduce((sum, arr) => sum + arr.length, 0);
+      console.log(`  [dry-run] Would merge ${hookCount} hook groups into .claude/settings.json`);
+    } else {
+      // Read existing settings or create new
+      let settings = {};
+      if (fileExists(settingsPath)) {
+        settings = readJson(settingsPath) || {};
+      }
+
+      // Merge hooks (SCC hooks replace any existing SCC hooks)
+      settings.hooks = remappedHooks;
+
+      // Write settings.json
+      const settingsDir = path.dirname(settingsPath);
+      if (!fs.existsSync(settingsDir)) {
+        fs.mkdirSync(settingsDir, { recursive: true });
+      }
+      fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + '\n', 'utf8');
+      console.log(`  [OK] Merged hooks into .claude/settings.json`);
+    }
+
+    installed.push({
+      destPath: settingsPath,
+      srcPath: hooksSourcePath,
+      module: moduleName,
+      hash: simpleHash(hooksSourcePath),
+    });
+  }
+
+  // Step 3: For Cursor target, generate .cursor/hooks.json via adapter
+  if (targetName === 'cursor') {
+    const hooksJson = readJson(hooksSourcePath);
+    if (hooksJson) {
+      const cursorHooksPath = path.join(projectRoot, '.cursor', 'hooks.json');
+      const cursorHooks = transformHooks(hooksJson);
+
+      if (dryRun) {
+        const hookCount = Object.values(cursorHooks.hooks).reduce((sum, arr) => sum + arr.length, 0);
+        console.log(`  [dry-run] Would generate .cursor/hooks.json (${hookCount} hooks)`);
+      } else {
+        const destDir = path.dirname(cursorHooksPath);
+        if (!fs.existsSync(destDir)) {
+          fs.mkdirSync(destDir, { recursive: true });
+        }
+        fs.writeFileSync(cursorHooksPath, JSON.stringify(cursorHooks, null, 2) + '\n', 'utf8');
+        console.log(`  [OK] Generated .cursor/hooks.json`);
+      }
+
+      installed.push({
+        destPath: cursorHooksPath,
+        srcPath: hooksSourcePath,
+        module: moduleName,
+        hash: simpleHash(hooksSourcePath),
+      });
+    }
+  }
+
+  return installed;
+}
+
+/**
  * Install files for a single module definition.
  * Supports two formats:
  *   - Legacy: `paths` + `targets` (single target directory for all paths)
@@ -218,6 +363,13 @@ function installModule(moduleDef, moduleName, pluginRoot, targetName, projectRoo
     let hasAnyTarget = false;
 
     for (const group of moduleDef.pathGroups) {
+      // Special handling for hooks install type
+      if (group.installType === 'hooks') {
+        hasAnyTarget = true;
+        installed.push(...installHooks(group, pluginRoot, targetName, projectRoot, moduleName, dryRun));
+        continue;
+      }
+
       const destRelative = (group.targets || {})[targetName];
       if (!destRelative) continue;
       hasAnyTarget = true;

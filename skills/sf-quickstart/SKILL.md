@@ -82,9 +82,9 @@ Based on detection results, recommend the best SCC profile:
 
 | Detected Stack | Recommended Profile | Command |
 |---------------|--------------------|---------|
-| Apex + LWC + Flows + triggers | `all` | `npx scc install all` |
-| Primarily Apex (classes + triggers) | `apex` | `npx scc install apex` |
-| Primarily LWC with some Apex | `lwc` | `npx scc install lwc` |
+| Apex + LWC + Flows + triggers | `all` | `npx scc-universal install all` |
+| Primarily Apex (classes + triggers) | `apex` | `npx scc-universal install apex` |
+| Primarily LWC with some Apex | `lwc` | `npx scc-universal install lwc` |
 
 **Profile details:**
 
@@ -114,7 +114,7 @@ Check that SCC is properly configured:
 
 ```bash
 # Check hooks are loaded
-test -f .claude/hooks/hooks.json && echo "Hooks: ACTIVE" || echo "Hooks: MISSING (run npx scc install)"
+test -f .claude/hooks/hooks.json && echo "Hooks: ACTIVE" || echo "Hooks: MISSING (run npx scc-universal install)"
 
 # Check hook profile
 echo "Hook Profile: ${SCC_HOOK_PROFILE:-standard (default)}"
@@ -146,7 +146,7 @@ Tech Stack Detected:
   Custom Objects:  15
 
 Recommended Profile: all
-  -> npx scc install all
+  -> npx scc-universal install all
 
 SCC Status:
   Hooks:         ACTIVE (standard profile)
