@@ -195,8 +195,9 @@ function checkGovernorLimits(filePath) {
 function run(rawInput) {
   try {
     const input = JSON.parse(rawInput);
-    const filePath = String(input.tool_input?.file_path || '');
-    checkGovernorLimits(filePath);
+    const { normalizeInput } = require('../lib/hook-input');
+    const ctx = normalizeInput(input);
+    checkGovernorLimits(ctx.filePath);
   } catch {
     // Ignore errors
   }

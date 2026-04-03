@@ -105,7 +105,9 @@ function processInput(input) {
     return null;
   }
 
-  const command = (input.tool_input && input.tool_input.command) || '';
+  const { normalizeInput } = require('../lib/hook-input');
+  const ctx = normalizeInput(input);
+  const command = ctx.command;
   if (!command) return null;
 
   // Skip if command doesn't involve SF/SFDX

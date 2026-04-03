@@ -28,7 +28,9 @@ process.stdin.on('data', chunk => {
 process.stdin.on('end', () => {
   try {
     const input = JSON.parse(raw);
-    const cmd = String(input.tool_input?.command || '');
+    const { normalizeInput } = require('../lib/hook-input');
+    const ctx = normalizeInput(input);
+    const cmd = ctx.command;
 
     if (
       process.platform !== 'win32' &&

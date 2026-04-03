@@ -1,5 +1,5 @@
 {
-  "$schema": "../schemas/hooks.schema.json",
+  "description": "Salesforce Claude Code (SCC) lifecycle hooks — automated quality gates for Apex, LWC, and Salesforce CLI",
   "hooks": {
     "SessionStart": [
       {
@@ -10,8 +10,7 @@
             "async": true,
             "timeout": 15
           }
-        ],
-        "description": "Display Salesforce project context: detected org, scratch orgs, CLI version"
+        ]
       },
       {
         "hooks": [
@@ -21,8 +20,7 @@
             "async": true,
             "timeout": 5
           }
-        ],
-        "description": "Warn if platform reference docs (deprecations, API versions) are outdated"
+        ]
       }
     ],
     "PreToolUse": [
@@ -33,23 +31,27 @@
             "type": "command",
             "command": "npx block-no-verify@1.1.2"
           }
-        ],
-        "description": "Block git hook-bypass flag to protect pre-commit, commit-msg, and pre-push hooks from being skipped"
+        ]
       },
       {
-        "matcher": "*",
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"pre:mcp-health-check\" standard \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/mcp-health-check.js\""
           }
-        ],
-        "description": "Check MCP server health before MCP tool execution and block unhealthy MCP calls"
+        ]
       },
       {
-        "matcher": "*",
-        "hooks": [{ "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags-shell.sh\" \"pre:observe\" \"scripts/hooks/learning-observe.sh\" \"standard,strict\"", "async": true, "timeout": 10 }],
-        "description": "Capture tool use observations for continuous learning"
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags-shell.sh\" \"pre:observe\" \"scripts/hooks/learning-observe.sh\" \"standard,strict\"",
+            "async": true,
+            "timeout": 10
+          }
+        ]
       },
       {
         "matcher": "Bash",
@@ -60,8 +62,7 @@
             "async": true,
             "timeout": 10
           }
-        ],
-        "description": "Validate Salesforce CLI commands before execution (deprecation + danger warnings)"
+        ]
       },
       {
         "matcher": "Write",
@@ -72,8 +73,7 @@
             "async": true,
             "timeout": 5
           }
-        ],
-        "description": "Warn about non-standard documentation files"
+        ]
       },
       {
         "matcher": "Bash",
@@ -84,8 +84,7 @@
             "async": true,
             "timeout": 10
           }
-        ],
-        "description": "Validate SFDX commands for best practices (deploy flags, dry-run suggestions)"
+        ]
       },
       {
         "matcher": "Bash",
@@ -96,32 +95,30 @@
             "async": true,
             "timeout": 5
           }
-        ],
-        "description": "Remind to review changes before git push"
+        ]
       },
       {
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
+            "if": "Bash(git push*|sf project deploy*)",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" sfdx-scanner-check standard,strict \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/sfdx-scanner-check.js\"",
-            "async": true,
             "timeout": 45
           }
-        ],
-        "description": "Run sfdx-scanner PMD analysis before git push/sf deploy (standard and strict profiles)"
+        ]
       },
       {
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
+            "if": "Bash(sf project deploy*|sf org create*|sf apex run test*|npm test*)",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" pre-bash-tmux-reminder strict \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/pre-bash-tmux-reminder.js\"",
             "async": true,
             "timeout": 5
           }
-        ],
-        "description": "Remind to use tmux for long-running Salesforce CLI commands (deploy, test, scratch org)"
+        ]
       },
       {
         "matcher": "Edit|Write",
@@ -132,15 +129,20 @@
             "async": true,
             "timeout": 5
           }
-        ],
-        "description": "Track tool call count and suggest strategic compaction"
+        ]
       }
     ],
     "PostToolUse": [
       {
-        "matcher": "*",
-        "hooks": [{ "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags-shell.sh\" \"post:observe\" \"scripts/hooks/learning-observe.sh\" \"standard,strict\"", "async": true, "timeout": 10 }],
-        "description": "Capture tool use results for continuous learning"
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags-shell.sh\" \"post:observe\" \"scripts/hooks/learning-observe.sh\" \"standard,strict\"",
+            "async": true,
+            "timeout": 10
+          }
+        ]
       },
       {
         "matcher": "Write",
@@ -151,8 +153,7 @@
             "async": true,
             "timeout": 10
           }
-        ],
-        "description": "Detect Apex/LWC file writes and remind about test coverage"
+        ]
       },
       {
         "matcher": "Edit",
@@ -163,32 +164,32 @@
             "async": true,
             "timeout": 15
           }
-        ],
-        "description": "Run quality checks on edited Apex/LWC files (anti-patterns, common issues)"
+        ]
       },
       {
         "matcher": "Edit",
         "hooks": [
           {
             "type": "command",
+            "if": "Edit(*.cls|*.trigger)",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" governor-check standard \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/governor-check.js\"",
             "async": true,
-            "timeout": 10
+            "timeout": 10,
+            "statusMessage": "Checking governor limits..."
           }
-        ],
-        "description": "Check edited Apex files for governor limit violations (SOQL/DML in loops)"
+        ]
       },
       {
         "matcher": "Edit",
         "hooks": [
           {
             "type": "command",
+            "if": "Edit(*.js|*.ts|*.jsx|*.tsx)",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" post-edit-console-warn standard \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-console-warn.js\"",
             "async": true,
             "timeout": 10
           }
-        ],
-        "description": "Warn about console.log statements in edited JS/LWC files"
+        ]
       },
       {
         "matcher": "Edit",
@@ -199,20 +200,19 @@
             "async": true,
             "timeout": 15
           }
-        ],
-        "description": "Auto-format edited files with Prettier (strict profile only)"
+        ]
       },
       {
         "matcher": "Edit",
         "hooks": [
           {
             "type": "command",
+            "if": "Edit(*.ts|*.tsx)",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" post-edit-typecheck strict \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit-typecheck.js\"",
             "async": true,
             "timeout": 30
           }
-        ],
-        "description": "Type-check edited TypeScript/LWC files (strict profile only)"
+        ]
       },
       {
         "matcher": "Bash",
@@ -223,32 +223,30 @@
             "async": true,
             "timeout": 10
           }
-        ],
-        "description": "Detect build/deploy completion and log notice"
+        ]
       },
       {
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
+            "if": "Bash(gh pr create*)",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" post-bash-pr-created standard \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-bash-pr-created.js\"",
             "async": true,
             "timeout": 10
           }
-        ],
-        "description": "Detect PR creation and log review command"
+        ]
       }
     ],
     "PostToolUseFailure": [
       {
-        "matcher": "*",
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" \"post:mcp-health-check\" standard \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/mcp-health-check.js\""
           }
-        ],
-        "description": "Track failed MCP tool calls, mark unhealthy servers, and attempt reconnect"
+        ]
       }
     ],
     "PreCompact": [
@@ -257,11 +255,9 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" pre-compact minimal \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/pre-compact.js\"",
-            "async": true,
             "timeout": 10
           }
-        ],
-        "description": "Save session state before context compaction"
+        ]
       }
     ],
     "Stop": [
@@ -270,44 +266,36 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/stop-hook.js\"",
-            "async": true,
             "timeout": 10
           }
-        ],
-        "description": "Summarize Salesforce changes and suggest next steps"
+        ]
       },
       {
         "hooks": [
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" check-console-log standard \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/check-console-log.js\"",
-            "async": true,
             "timeout": 10
           }
-        ],
-        "description": "Check for console.log statements in modified LWC/JS files"
+        ]
       },
       {
         "hooks": [
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" session-end standard \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/session-end.js\"",
-            "async": true,
             "timeout": 15
           }
-        ],
-        "description": "Persist session summary for cross-session continuity"
+        ]
       },
       {
         "hooks": [
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" cost-tracker minimal \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/cost-tracker.js\"",
-            "async": true,
             "timeout": 10
           }
-        ],
-        "description": "Track token usage and estimated costs per session"
+        ]
       },
       {
         "hooks": [
@@ -317,8 +305,7 @@
             "async": true,
             "timeout": 10
           }
-        ],
-        "description": "Evaluate session for extractable patterns and learned skills"
+        ]
       }
     ],
     "SessionEnd": [
@@ -327,11 +314,9 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/run-with-flags.js\" session-end-marker minimal \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/session-end-marker.js\"",
-            "async": true,
             "timeout": 10
           }
-        ],
-        "description": "Session end lifecycle marker (non-blocking)"
+        ]
       }
     ]
   }

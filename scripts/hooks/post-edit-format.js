@@ -54,8 +54,9 @@ function tryFormat(filePath) {
 function run(rawInput) {
   try {
     const input = JSON.parse(rawInput);
-    const filePath = String(input.tool_input?.file_path || '');
-    tryFormat(filePath);
+    const { normalizeInput } = require('../lib/hook-input');
+    const ctx = normalizeInput(input);
+    tryFormat(ctx.filePath);
   } catch {
     // Ignore errors
   }

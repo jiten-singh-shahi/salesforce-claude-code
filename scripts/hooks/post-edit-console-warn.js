@@ -25,7 +25,9 @@ process.stdin.on('data', chunk => {
 process.stdin.on('end', () => {
   try {
     const input = JSON.parse(data);
-    const filePath = input.tool_input?.file_path;
+    const { normalizeInput } = require('../lib/hook-input');
+    const ctx = normalizeInput(input);
+    const filePath = ctx.filePath;
 
     if (filePath && /\.(ts|tsx|js|jsx)$/.test(filePath)) {
       let content;

@@ -78,6 +78,9 @@ run('Cursor skills', process.execPath, [path.join(pluginRoot, 'scripts', 'dev', 
 // 2. Cursor agents
 run('Cursor agents', process.execPath, [path.join(pluginRoot, 'scripts', 'dev', 'build-cursor-agents.js')]);
 
+// 3. Cursor hooks
+run('Cursor hooks', process.execPath, [path.join(pluginRoot, 'scripts', 'dev', 'build-cursor-hooks.js')]);
+
 // MCP: No copy needed — both plugin.json files reference mcp-configs/mcp-servers.json directly
 
 // ── Summary ──────────────────────────────────────────────────────────────────
