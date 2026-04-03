@@ -6,7 +6,7 @@
 
 > The complete AI development system for Salesforce — expert agents, automated quality gates, and institutional knowledge, powered by @salesforce/mcp
 
-SCC (`scc-universal` on npm) is a Claude Code plugin that supercharges your Salesforce development workflow with specialized AI agents, domain skills, lifecycle hooks, and always-on coding rules. Built for Apex, LWC, SOQL, Flow, Visualforce, Aura, DevOps, and Agentforce — covering every layer of the Salesforce platform.
+SCC (`scc-universal` on npm) is a Claude Code plugin that supercharges your Salesforce development workflow with **17 expert subagents**, **55 domain knowledge skills**, and **29 automated quality gates**. Built for Apex, LWC, SOQL, Flow, Visualforce, Aura, DevOps, and Agentforce — covering every layer of the Salesforce platform.
 
 ---
 
@@ -32,7 +32,7 @@ SCC is a unified system where each layer serves a distinct role:
 |---|---|---|
 | Agents | 17 | Specialized Salesforce subagents (11 domain + 6 platform) |
 | Skills | 55 | Domain knowledge + workflow modules (17 user-invocable, 38 auto-activating) |
-| Hooks | 29 | Lifecycle hooks (SessionStart, PreToolUse, PostToolUse, PostToolUseFailure, PreCompact, Stop, SessionEnd) |
+| Hooks | 29 | Automated quality gates (SessionStart, PreToolUse, PostToolUse, PostToolUseFailure, PreCompact, Stop, SessionEnd) |
 | Harnesses | 2 | Claude Code, Cursor |
 
 ---
@@ -95,7 +95,7 @@ SCC content is organized into 7 modules. Profiles compose subsets:
 
 | Module | Description | Depends On |
 |---|---|---|
-| `core` | Essential agents, core skills, lifecycle hooks | — |
+| `core` | Essential agents, core skills, quality gates | — |
 | `apex` | Apex agents, skills, SOQL, constraints | core |
 | `lwc` | LWC agent, skills, constraints | core |
 | `platform` | Cross-domain agents, universal skills, debugging, integration | core |
