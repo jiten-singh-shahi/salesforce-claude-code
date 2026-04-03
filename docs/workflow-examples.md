@@ -27,10 +27,10 @@ Plan an AccountRatingService that rates accounts as Hot (>= $1M revenue), Warm (
 ### Step 2 -- Write Tests First (Red Phase)
 
 ```
-/sf-tdd-workflow Create an AccountRatingService that rates accounts based on AnnualRevenue
+Create an AccountRatingService that rates accounts based on AnnualRevenue. Use TDD — write tests first.
 ```
 
-**Agent invoked**: `sf-apex-agent`
+**Agent invoked**: `sf-apex-agent` (consults `sf-tdd-workflow` pattern skill)
 
 **What happens**:
 
@@ -67,10 +67,10 @@ sf apex run test --class-names AccountRatingServiceTest --target-org MyScratchOr
 ### Step 4 -- Review the Code
 
 ```
-/sf-apex-best-practices Review AccountRatingService.cls
+Review AccountRatingService.cls for best practices
 ```
 
-**Agent invoked**: `sf-review-agent`
+**Agent invoked**: `sf-review-agent` (consults `sf-apex-best-practices` pattern skill)
 
 **What happens**: The reviewer checks the implementation against its checklist:
 
@@ -92,10 +92,10 @@ With green tests as a safety net, refactor:
 - Run tests after each change to confirm they still pass
 
 ```
-/sf-governor-limits Check AccountRatingService for governor limit risks
+Check AccountRatingService for governor limit risks
 ```
 
-**Agent invoked**: `sf-apex-agent`
+**Agent invoked**: `sf-apex-agent` (consults `sf-governor-limits` pattern skill)
 
 **Expected outcome**: Clean audit -- no governor limit risks in pure in-memory logic.
 
@@ -112,10 +112,10 @@ You need to create an `accountRatingCard` LWC that displays an account's rating 
 ### Step 1 -- Scaffold the Component
 
 ```
-/sf-lwc-development Create an accountRatingCard component that shows account name, rating badge (Hot=red, Warm=orange, Cold=blue), and annual revenue
+Create an accountRatingCard LWC component that shows account name, rating badge (Hot=red, Warm=orange, Cold=blue), and annual revenue
 ```
 
-**Agent invoked**: `sf-lwc-agent`
+**Agent invoked**: `sf-lwc-agent` (consults `sf-lwc-development` pattern skill)
 
 **What happens**: Reviews the plan for the component and provides guidance on:
 
@@ -144,7 +144,7 @@ The agent creates four files:
 ### Step 3 -- Write Jest Tests
 
 ```
-/sf-tdd-workflow Write Jest tests for the accountRatingCard LWC component
+Write Jest tests for the accountRatingCard LWC component. Tests first.
 ```
 
 **What happens**: Creates `__tests__/accountRatingCard.test.js` with:
@@ -182,10 +182,10 @@ npx lwc-jest --coverage
 ### Step 5 -- Accessibility Review
 
 ```
-/sf-lwc-development Review accountRatingCard for accessibility compliance
+Review accountRatingCard for accessibility compliance
 ```
 
-**Agent invoked**: `sf-lwc-agent`
+**Agent invoked**: `sf-lwc-agent` (consults `sf-lwc-development` pattern skill)
 
 **What it checks**:
 
@@ -200,10 +200,10 @@ npx lwc-jest --coverage
 ### Step 6 -- Deploy to Scratch Org
 
 ```
-/sf-deployment Deploy accountRatingCard and AccountRatingService to scratch org
+Deploy accountRatingCard and AccountRatingService to scratch org
 ```
 
-**Agent invoked**: `sf-architect`
+**Agent invoked**: `sf-architect` (consults `sf-deployment` pattern skill)
 
 **Hook activity**:
 
@@ -219,10 +219,10 @@ Full development lifecycle from scratch org creation through production deployme
 ### Step 1 -- Create a Scratch Org
 
 ```
-/sf-deployment Create a new scratch org for feature/account-rating
+Create a new scratch org for feature/account-rating
 ```
 
-**Agent invoked**: `sf-architect`
+**Agent invoked**: `sf-architect` (consults `sf-deployment` pattern skill)
 
 **What happens**:
 
@@ -262,7 +262,7 @@ Use the Apex TDD workflow (Workflow 1) and LWC development workflow (Workflow 2)
 ### Step 3 -- Run All Tests
 
 ```
-/sf-apex-testing Run all local tests in the scratch org
+Run all local tests in the scratch org
 ```
 
 **What happens**:
@@ -276,10 +276,10 @@ sf apex run test --target-org account-rating --test-level RunLocalTests --code-c
 ### Step 4 -- Validate Against Staging
 
 ```
-/sf-deployment Validate deployment to staging (dry run)
+Validate deployment to staging (dry run)
 ```
 
-**Agent invoked**: `sf-architect`
+**Agent invoked**: `sf-architect` (consults `sf-deployment` pattern skill)
 
 ```bash
 sf project deploy validate --source-dir force-app/ --target-org Staging --test-level RunLocalTests --wait 30
@@ -327,10 +327,10 @@ Run a comprehensive security audit on the codebase, fix findings, and verify the
 ### Step 1 -- Run the Security Scan
 
 ```
-/sf-security Run a full security audit on force-app/
+Run a full security audit on force-app/
 ```
 
-**Agent invoked**: `sf-review-agent`
+**Agent invoked**: `sf-review-agent` (consults `sf-security` pattern skill)
 
 **What happens**: The security reviewer performs a multi-pass analysis:
 
@@ -386,7 +386,7 @@ Address each finding by severity, starting with CRITICAL:
 **Fix SOQL injection:**
 
 ```
-/sf-apex-best-practices Fix the SOQL injection in AccountQueryController.cls
+Fix the SOQL injection in AccountQueryController.cls
 ```
 
 The agent replaces string concatenation with bind variables:
@@ -428,7 +428,7 @@ List<Contact> contacts = [SELECT Id, Name, Email FROM Contact WHERE AccountId = 
 ### Step 3 -- Re-Scan
 
 ```
-/sf-security Re-scan force-app/ to verify all security findings are resolved
+Re-scan force-app/ to verify all security findings are resolved
 ```
 
 **Expected output**:
@@ -466,10 +466,10 @@ Identify and fix performance bottlenecks in an existing Salesforce codebase.
 ### Step 1 -- Run the Governor Audit
 
 ```
-/sf-governor-limits Scan force-app/main/default/classes/ for governor limit risks
+Scan force-app/main/default/classes/ for governor limit risks
 ```
 
-**Agent invoked**: `sf-apex-agent`
+**Agent invoked**: `sf-apex-agent` (consults `sf-governor-limits` pattern skill)
 
 **What happens**: The agent scans all Apex classes and triggers for:
 
@@ -512,10 +512,10 @@ MEDIUM (1):
 ### Step 2 -- Optimize SOQL Queries
 
 ```
-/sf-soql-optimization Optimize the SOQL queries in OrderProcessor.cls
+Optimize the SOQL queries in OrderProcessor.cls
 ```
 
-**Agent invoked**: `sf-apex-agent`
+**Agent invoked**: `sf-apex-agent` (consults `sf-soql-optimization` pattern skill)
 
 **What happens**: The agent refactors the code to move queries outside loops:
 
@@ -555,10 +555,10 @@ for (Order__c order : orders) {
 ### Step 3 -- Fix the Trigger Bulkification
 
 ```
-/sf-trigger-frameworks Refactor AccountTrigger to use a handler pattern with proper bulkification
+Refactor AccountTrigger to use a handler pattern with proper bulkification
 ```
 
-**Agent invoked**: `sf-architect`
+**Agent invoked**: `sf-architect` (consults `sf-trigger-frameworks` pattern skill)
 
 **What happens**: Converts the non-bulkified trigger into the thin-trigger-fat-handler pattern:
 
@@ -580,7 +580,7 @@ trigger AccountTrigger on Account (
 Run tests that exercise the refactored code with 200 records (the standard trigger batch size):
 
 ```
-/sf-apex-testing Run tests for OrderProcessor and AccountTriggerHandler with bulk data verification
+Run tests for OrderProcessor and AccountTriggerHandler with bulk data verification
 ```
 
 ```bash
@@ -595,7 +595,7 @@ sf apex run test --class-names OrderProcessorTest,AccountTriggerHandlerTest --ta
 ### Step 5 -- Re-Audit
 
 ```
-/sf-governor-limits Re-scan force-app/ to verify all governor limit risks are resolved
+Re-scan force-app/ to verify all governor limit risks are resolved
 ```
 
 **Expected output**:
@@ -617,10 +617,10 @@ All critical and high severity findings resolved.
 ### Step 6 -- Performance Validation
 
 ```
-/sf-governor-limits Run a comprehensive performance audit including SOQL query analysis
+Run a comprehensive performance audit including SOQL query analysis
 ```
 
-**Agent invoked**: `sf-apex-agent`
+**Agent invoked**: `sf-apex-agent` (consults `sf-governor-limits` pattern skill)
 
 **What it checks beyond governor limits**:
 
@@ -636,10 +636,10 @@ All critical and high severity findings resolved.
 
 ## Summary: Commands, Agents, and Hooks by Workflow
 
-| Workflow | Primary Commands | Agents Invoked | Key Hooks |
+| Workflow | Pattern Skills Consulted | Agents Invoked | Key Hooks |
 |---|---|---|---|
-| Apex TDD | `/sf-tdd-workflow`, `/sf-apex-best-practices`, `/sf-governor-limits` | sf-apex-agent, sf-review-agent, sf-apex-agent | governor-check, quality-gate, post-write |
-| LWC Development | `/sf-lwc-development`, `/sf-deployment` | sf-lwc-agent, sf-architect | post-write, post-edit-console-warn, sfdx-validate |
-| Deployment Pipeline | `/sf-deployment`, `/sf-apex-testing`, `/sf-deployment` | sf-architect, sf-architect, sf-review-agent | session-start, sfdx-validate, post-bash-build-complete |
-| Security Audit | `/sf-security`, `/sf-apex-best-practices` | sf-review-agent, sf-review-agent | governor-check, quality-gate, sfdx-scanner-check |
-| Performance Optimization | `/sf-governor-limits`, `/sf-soql-optimization`, `/sf-trigger-frameworks`, `/sf-governor-limits` | sf-apex-agent, sf-apex-agent, sf-architect | governor-check, quality-gate, sfdx-validate |
+| Apex TDD | `sf-tdd-workflow`, `sf-apex-best-practices`, `sf-governor-limits` | sf-apex-agent, sf-review-agent | governor-check, quality-gate, post-write |
+| LWC Development | `sf-lwc-development`, `sf-deployment` | sf-lwc-agent, sf-architect | post-write, post-edit-console-warn, sfdx-validate |
+| Deployment Pipeline | `sf-deployment`, `sf-apex-testing` | sf-architect, sf-review-agent | session-start, sfdx-validate, post-bash-build-complete |
+| Security Audit | `sf-security`, `sf-apex-best-practices` | sf-review-agent | governor-check, quality-gate, sfdx-scanner-check |
+| Performance Optimization | `sf-governor-limits`, `sf-soql-optimization`, `sf-trigger-frameworks` | sf-apex-agent, sf-architect | governor-check, quality-gate, sfdx-validate |

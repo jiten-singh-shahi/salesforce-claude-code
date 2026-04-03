@@ -48,10 +48,11 @@ Useful Salesforce automations:
 
 Skills with `user-invocable: true` that users invoke via `/skill-name`:
 
-- Deployment skills (`/sf-deployment`, `/sf-devops-ci-cd`)
-- Testing skills (`/sf-tdd-workflow`, `/sf-apex-testing`, `/sf-e2e-testing`)
-- Security skills (`/sf-security`, `/sf-governor-limits`)
-- Platform skills (`/continuous-agent-loop`, `/prompt-optimizer`, `/strategic-compact`)
+- Setup skills (`/sf-quickstart`, `/configure-scc`, `/sf-harness-audit`)
+- Session skills (`/sessions`, `/save-session`, `/resume-session`, `/checkpoint`)
+- Utility skills (`/sf-help`, `/sf-docs-lookup`, `/aside`, `/model-route`)
+- Workflow skills (`/continuous-agent-loop`, `/prompt-optimizer`, `/search-first`)
+- Maintenance skills (`/refactor-clean`, `/update-docs`, `/update-platform-docs`)
 
 ---
 

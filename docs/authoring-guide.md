@@ -198,7 +198,7 @@ Platform skills are Salesforce-adapted patterns for AI-assisted development work
 
 ## User-Invocable Skill Authoring
 
-User-invocable skills are skills that users can invoke directly as slash commands (e.g., `/sf-tdd-workflow`, `/sf-security`). They live in `skills/<skill-name>/SKILL.md` alongside standard skills, but include `user-invocable: true` in their frontmatter.
+User-invocable skills are skills that users can invoke directly as slash commands (e.g., `/sf-help`, `/sf-quickstart`, `/checkpoint`). They live in `skills/<skill-name>/SKILL.md` alongside standard skills, but include `user-invocable: true` in their frontmatter.
 
 All commands have been migrated to user-invocable skills. There is no separate `commands/` directory.
 
@@ -284,7 +284,7 @@ sf apex run test --class-names MyTest --target-org <alias>
 - Skills use descriptive names like `sf-apex-best-practices`, `sf-security`, `sf-deployment`.
 - Salesforce-specific skills use the `sf-` prefix: `sf-tdd-workflow`, `sf-deployment`, `sf-security`.
 - Platform skills omit the prefix: `checkpoint`, `strategic-compact`, `save-session`.
-- Users invoke them via `/skill-name` (e.g., `/sf-tdd-workflow`, `/sf-security`, `/checkpoint`).
+- Users invoke user-invocable skills via `/skill-name` (e.g., `/sf-help`, `/sf-quickstart`, `/checkpoint`, `/sessions`).
 
 ## CI Validation
 

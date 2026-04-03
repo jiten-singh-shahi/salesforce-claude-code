@@ -2,10 +2,9 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://scc-universal/schemas/plugin.schema.json",
   "title": "SCC Plugin Manifest",
-  "description": "JSON Schema for .claude-plugin/plugin.json — describes the SCC plugin for the Claude Code marketplace",
+  "description": "JSON Schema for plugin.json — describes the SCC plugin for Claude Code and Cursor marketplaces",
   "type": "object",
-  "required": ["name", "version", "displayName", "description", "license", "engines", "main"],
-  "additionalProperties": false,
+  "required": ["name", "version", "description"],
   "properties": {
     "$schema": {
       "type": "string",
@@ -35,13 +34,27 @@
       "maxLength": 300
     },
     "author": {
-      "type": "string",
-      "description": "Plugin author name or organization"
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Plugin author name or organization"
+        },
+        {
+          "type": "object",
+          "description": "Plugin author details",
+          "required": ["name"],
+          "properties": {
+            "name": { "type": "string" },
+            "email": { "type": "string", "format": "email" },
+            "url": { "type": "string", "format": "uri" }
+          },
+          "additionalProperties": false
+        }
+      ]
     },
     "license": {
       "type": "string",
-      "description": "SPDX license identifier",
-      "enum": ["MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "GPL-3.0", "LGPL-3.0", "MPL-2.0"]
+      "description": "SPDX license identifier"
     },
     "keywords": {
       "type": "array",
@@ -53,15 +66,17 @@
       "minItems": 1,
       "maxItems": 20
     },
+    "logo": {
+      "type": "string",
+      "description": "Relative path to the plugin logo image (SVG or PNG)"
+    },
     "engines": {
       "type": "object",
       "description": "Required harness versions",
-      "additionalProperties": false,
       "properties": {
         "claude-code": {
           "type": "string",
-          "description": "Required Claude Code version (semver range)",
-          "pattern": "^[>=^~]?\\d+\\.\\d+\\.\\d+.*$"
+          "description": "Required Claude Code version (semver range)"
         },
         "node": {
           "type": "string",
@@ -71,16 +86,36 @@
     },
     "main": {
       "type": "string",
-      "description": "Relative path to the primary plugin entry file (hooks.json)",
+      "description": "Relative path to the primary plugin entry file",
       "minLength": 1
     },
     "agents": {
-      "type": "string",
-      "description": "Relative path to agents directory"
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Relative path to agents directory"
+        },
+        {
+          "type": "array",
+          "description": "Array of relative paths to individual agent files",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
     },
     "skills": {
       "type": "string",
       "description": "Relative path to skills directory"
+    },
+    "hooks": {
+      "type": "string",
+      "description": "Relative path to hooks configuration file"
+    },
+    "mcpServers": {
+      "type": "string",
+      "description": "Relative path to MCP servers configuration file"
     },
     "commands": {
       "type": "string",
@@ -91,17 +126,20 @@
       "description": "Relative path to rules directory"
     },
     "repository": {
-      "type": "object",
-      "description": "Source repository information",
-      "properties": {
-        "type": {
+      "oneOf": [
+        {
           "type": "string",
-          "enum": ["git", "svn"]
+          "description": "Repository URL"
         },
-        "url": {
-          "type": "string"
+        {
+          "type": "object",
+          "description": "Source repository information",
+          "properties": {
+            "type": { "type": "string", "enum": ["git", "svn"] },
+            "url": { "type": "string" }
+          }
         }
-      }
+      ]
     },
     "homepage": {
       "type": "string",
