@@ -102,7 +102,7 @@ Based on the project state, suggest 3-5 commands to start with:
 | Low test coverage | `sf-apex-testing` skill -- analyze gaps |
 | Deployment files present | `sf-deployment` skill -- pre-deployment check |
 | Security review needed | `sf-security` skill -- full security audit |
-| Build errors | `/sf-build-fix` -- fix build and deployment errors |
+| Build errors | `sf-build-fix` -- fix build and deployment errors |
 | Any project | `/sf-help` -- browse all available commands and skills |
 
 ### Step 5 — Verify SCC Installation

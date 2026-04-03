@@ -239,6 +239,6 @@ sf scanner run --target "force-app/" \
 
 ## SCC Skills
 
-- `/sf-security` -- run a comprehensive security audit on your codebase
-- `/sf-apex-best-practices` -- review Apex code including security best practices
-- `/sf-governor-limits` -- check for governor limit issues (overlaps with security for SOQL)
+- `sf-security` -- run a comprehensive security audit on your codebase
+- `sf-apex-best-practices` -- review Apex code including security best practices
+- `sf-governor-limits` -- check for governor limit issues (overlaps with security for SOQL)

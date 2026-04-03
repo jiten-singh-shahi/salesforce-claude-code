@@ -420,52 +420,21 @@ Control which hooks run via the `SCC_HOOK_PROFILE` environment variable:
 
 ## Tips and Best Practices
 
-### Salesforce-Specific Workflows
+### Typical Workflows
 
-**New Feature Development:**
+**New Feature:** Describe what you want to build — sf-architect activates automatically, designs the solution, and delegates to domain agents (sf-apex-agent, sf-lwc-agent, sf-flow-agent) with TDD.
 
-1. `/blueprint` - Plan the implementation (metadata types, governor limits)
-2. `/sf-tdd-workflow` - Write tests first, then implement
-3. `/sf-apex-best-practices` - Review your code
-4. `/sf-deployment` - Deploy to target org
+**Bug Fix:** Describe the error — sf-bugfix-agent activates, diagnoses root cause, applies minimal fix.
 
-**Code Review:**
-
-1. `/sf-apex-best-practices` - Full review of uncommitted changes
-2. `/sf-security` - Security-focused audit
-3. `/sf-governor-limits` - Check for governor limit issues
-
-**Performance Optimization:**
-
-1. `/sf-soql-optimization` - Fix expensive queries
-2. `/sf-governor-limits` - Find limit violations
-3. Use the `sf-review-agent` for deep analysis
-
-### Context Window Management
-
-- Keep MCP servers minimal (SF CLI MCP + 2-3 others)
-- Use specific prompts: "Review AccountTrigger.cls" not "review everything"
-- Use `/compact` when context gets large
-
-### Parallel Workflows
-
-- Use `/fork` for non-overlapping tasks
-- Use git worktrees for parallel scratch org work:
-
-```bash
-git worktree add ../feature-branch feature-branch
-cd ../feature-branch
-sf org create scratch --alias feature-scratch
-```
+**Code Review:** Ask to review before deploy — sf-review-agent runs a full quality gate (security, governor limits, test coverage, deploy readiness).
 
 ### Key Principles
 
 1. **Governor limits are king** — Every agent checks for limit violations
 2. **Test-first approach** — 75% is the SF minimum, aim for 85%+
-3. **Use the right agent** — Specialized agents give better results than generic prompts
+3. **Be specific** — "Review AccountTrigger.cls" not "review everything"
 4. **Hook profiles matter** — Start with `standard`, move to `strict` for CI
-5. **Context is precious** — Be specific in prompts, disable unused MCPs
-6. **Security baked in** — CRUD/FLS and sharing model from the start
+5. **Security baked in** — CRUD/FLS and sharing model from the start
 
 ---
 

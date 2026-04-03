@@ -319,7 +319,7 @@ jobs:
 
 ## SCC Skills
 
-- `/sf-deployment` -- validate and deploy metadata to a target org
-- `/sf-devops-ci-cd` -- CI/CD pipeline patterns with scratch orgs
-- `/sf-build-fix` -- diagnose and fix deployment failures
-- `/sf-apex-testing` -- run Apex tests with coverage analysis
+- `sf-deployment` -- validate and deploy metadata to a target org
+- `sf-devops-ci-cd` -- CI/CD pipeline patterns with scratch orgs
+- `sf-build-fix` -- diagnose and fix deployment failures
+- `sf-apex-testing` -- run Apex tests with coverage analysis

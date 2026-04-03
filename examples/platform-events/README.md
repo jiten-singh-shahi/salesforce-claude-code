@@ -486,7 +486,7 @@ private class OrderEventPublisher_Test {
 
 ## SCC Skills
 
-- `/sf-platform-events-cdc` -- review Platform Event and CDC implementations
-- `/sf-apex-best-practices` -- review publisher and subscriber Apex code
-- `/sf-lwc-development` -- review the empApi subscription component
-- `/sf-governor-limits` -- check event publish limits and bulk compliance
+- `sf-platform-events-cdc` -- review Platform Event and CDC implementations
+- `sf-apex-best-practices` -- review publisher and subscriber Apex code
+- `sf-lwc-development` -- review the empApi subscription component
+- `sf-governor-limits` -- check event publish limits and bulk compliance
