@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.0](https://github.com/jiten-singh-shahi/salesforce-claude-code/compare/scc-universal-v1.0.0...scc-universal-v1.1.0) (2026-04-03)
 
-
 ### Features
 
 * add 27 specialized Salesforce agents ([8ea9c9b](https://github.com/jiten-singh-shahi/salesforce-claude-code/commit/8ea9c9bd526aa116315221ed32c926560f6dd605))
@@ -21,7 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * expand sf-e2e-runner agent from 4.4KB to 10.6KB ([a6aca4d](https://github.com/jiten-singh-shahi/salesforce-claude-code/commit/a6aca4d8e10563650692f662cb3d35446cb3484e))
 * pre-release consolidation for v0.1.0 ([a2dab5d](https://github.com/jiten-singh-shahi/salesforce-claude-code/commit/a2dab5d4d2b1e2f1f852030b7f7ccbfcf4e7d52f))
 * upgrade CI validators with stricter agent and skill checks ([0b8b314](https://github.com/jiten-singh-shahi/salesforce-claude-code/commit/0b8b314dc7200b5c849b6efc16284ec60c9c1a1c))
-
 
 ### Bug Fixes
 
