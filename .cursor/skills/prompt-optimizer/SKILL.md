@@ -93,13 +93,13 @@ Map intent + scope + tech stack (from Phase 0) to specific SCC components.
 
 | Intent | Invocable Skills | Skills | Agents |
 |--------|----------|--------|--------|
-| New Feature | /sf-tdd-workflow, /sf-apex-best-practices | sf-apex-best-practices, sf-apex-enterprise-patterns | sf-architect, sf-apex-agent, sf-review-agent |
-| Bug Fix | /sf-tdd-workflow, /sf-build-fix | sf-apex-testing, sf-debugging | sf-bugfix-agent, sf-apex-agent |
-| Refactor | /refactor-clean, /sf-apex-best-practices | sf-trigger-frameworks, sf-apex-enterprise-patterns | refactor-cleaner, sf-review-agent |
-| Testing | /sf-tdd-workflow, /sf-apex-testing, /sf-e2e-testing | sf-apex-testing, sf-tdd-workflow | sf-apex-agent |
-| Review | /sf-apex-best-practices, /sf-lwc-development, /sf-security | sf-security | sf-review-agent, sf-review-agent |
+| New Feature | sf-tdd-workflow, sf-apex-best-practices | sf-apex-best-practices, sf-apex-enterprise-patterns | sf-architect, sf-apex-agent, sf-review-agent |
+| Bug Fix | sf-tdd-workflow, sf-build-fix | sf-apex-testing, sf-debugging | sf-bugfix-agent, sf-apex-agent |
+| Refactor | /refactor-clean, sf-apex-best-practices | sf-trigger-frameworks, sf-apex-enterprise-patterns | refactor-cleaner, sf-review-agent |
+| Testing | sf-tdd-workflow, sf-apex-testing, sf-e2e-testing | sf-apex-testing, sf-tdd-workflow | sf-apex-agent |
+| Review | sf-apex-best-practices, sf-lwc-development, sf-security | sf-security | sf-review-agent, sf-review-agent |
 | Documentation | /update-docs | — | doc-updater, deep-researcher |
-| Infrastructure | /sf-deployment | sf-devops-ci-cd, sf-deployment | sf-architect |
+| Infrastructure | sf-deployment | sf-devops-ci-cd, sf-deployment | sf-architect |
 | Design (EPIC) | — | — | sf-architect, sf-architect |
 
 #### By Tech Stack
@@ -161,7 +161,7 @@ For tasks that exceed a single session, split into sequential prompts:
 
 - Prompt 1: Research + Plan (use search-first skill, then sf-architect agent)
 - Prompt 2-N: Implement one phase per prompt (each ends with sf-review-agent agent)
-- Final Prompt: Integration test + /sf-apex-best-practices across all phases
+- Final Prompt: Integration test + sf-apex-best-practices across all phases
 - Use /save-session and /resume-session to preserve context between sessions
 
 ---
@@ -188,7 +188,7 @@ If Phase 0 auto-detected the answer, state it instead of asking.
 
 | Type | Component | Purpose |
 |------|-----------|---------|
-| Command | /sf-tdd-workflow | TDD workflow for Apex |
+| Command | sf-tdd-workflow | TDD workflow for Apex |
 | Skill | sf-apex-best-practices | Apex coding standards |
 | Agent | sf-review-agent | Post-implementation review |
 | Model | Sonnet | Recommended for this scope |
@@ -206,7 +206,7 @@ The prompt must be self-contained and ready to copy-paste. Include:
 - Scope boundaries (what NOT to do)
 
 For items that reference blueprint, write: "Use the sf-architect agent to..."
-(not `/blueprint`, since sf-architect is an agent, not a command).
+(not `sf-architect agent`, since sf-architect is an agent, not a command).
 
 ### Section 4: Optimized Prompt — Quick Version
 
@@ -214,12 +214,12 @@ A compact version for experienced SCC users. Vary by intent type:
 
 | Intent | Quick Pattern |
 |--------|--------------|
-| New Feature | `Use sf-architect agent for [feature]. /sf-tdd-workflow to implement. /sf-apex-best-practices. Use sf-review-agent agent.` |
-| Bug Fix | `/sf-tdd-workflow — write failing test for [bug]. Fix to green. Use sf-review-agent agent.` |
-| Refactor | `/refactor-clean [scope]. /sf-apex-best-practices. Use sf-review-agent agent.` |
+| New Feature | `Use sf-architect agent for [feature]. sf-tdd-workflow to implement. sf-apex-best-practices. Use sf-review-agent agent.` |
+| Bug Fix | `sf-tdd-workflow — write failing test for [bug]. Fix to green. Use sf-review-agent agent.` |
+| Refactor | `/refactor-clean [scope]. sf-apex-best-practices. Use sf-review-agent agent.` |
 | Research | `Use search-first skill for [topic]. Use sf-architect agent based on findings.` |
-| Testing | `/sf-tdd-workflow [class]. /sf-e2e-testing for critical flows. /sf-apex-testing.` |
-| Review | `/sf-apex-best-practices. Then use sf-review-agent agent.` |
+| Testing | `sf-tdd-workflow [class]. sf-e2e-testing for critical flows. sf-apex-testing.` |
+| Review | `sf-apex-best-practices. Then use sf-review-agent agent.` |
 | Docs | `/update-docs. Use deep-researcher agent.` |
 | EPIC | `Use sf-architect agent for "[objective]". Execute phases with sf-review-agent agent gates.` |
 
@@ -267,9 +267,9 @@ Technical requirements:
 
 Workflow:
 1. Use sf-architect agent to plan trigger handler structure and business logic
-2. /sf-tdd-workflow — write failing test class first (use @TestSetup and test data factory)
+2. sf-tdd-workflow — write failing test class first (use @TestSetup and test data factory)
 3. Implement AccountTrigger and AccountTriggerHandler
-4. /sf-apex-best-practices to review implementation
+4. sf-apex-best-practices to review implementation
 5. Use sf-review-agent agent to verify all tests pass and coverage reaches 75%+
 
 Security requirements:
@@ -279,7 +279,7 @@ Security requirements:
 Acceptance criteria:
 - Test coverage 85%+
 - Zero governor limit violations
-- Passes /sf-security review
+- Passes sf-security review
 ```
 
 ### Example 2: Moderate English Prompt
@@ -309,10 +309,10 @@ Requirements:
 
 Workflow:
 1. Use sf-architect agent for the endpoint structure, validation logic, and error response envelope
-2. /sf-tdd-workflow — write tests for success, validation failure, permission failure
+2. sf-tdd-workflow — write tests for success, validation failure, permission failure
 3. Implement AccountAPI class following existing REST patterns
-4. /sf-security — verify CRUD/FLS enforcement
-5. /sf-apex-best-practices
+4. sf-security — verify CRUD/FLS enforcement
+5. sf-apex-best-practices
 6. Use sf-review-agent agent — run full test suite, confirm no regressions
 
 Do not:
@@ -342,7 +342,7 @@ Before executing, answer these questions in the blueprint:
 The blueprint should produce phases like:
 - Phase 1: Audit all existing triggers and document business logic
 - Phase 2: Implement TriggerHandler base class and factory
-- Phase 3: Migrate highest-priority object triggers with /sf-tdd-workflow gates
+- Phase 3: Migrate highest-priority object triggers with sf-tdd-workflow gates
 - Phase 4: Migrate remaining triggers
 - Phase N: Remove legacy trigger code, run full regression
 

@@ -221,7 +221,7 @@ Flow: Case Creation from Chat
 
 ## SCC Skills
 
-- `/sf-agentforce-development` -- scaffold and review Agentforce actions
-- `/sf-apex-best-practices` -- review the action class for best practices
-- `/sf-tdd-workflow` -- write tests first, then implement the action
-- `/sf-governor-limits` -- check governor limit compliance in bulk scenarios
+- `sf-agentforce-development` -- scaffold and review Agentforce actions
+- `sf-apex-best-practices` -- review the action class for best practices
+- `sf-tdd-workflow` -- write tests first, then implement the action
+- `sf-governor-limits` -- check governor limit compliance in bulk scenarios

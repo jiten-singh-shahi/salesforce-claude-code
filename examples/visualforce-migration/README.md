@@ -308,7 +308,7 @@ public with sharing class AccountEditorLwcController {
 
 ## SCC Skills
 
-- `/sf-visualforce-development` -- audit a Visualforce page for migration readiness
-- `/sf-lwc-development` -- review the migrated LWC component for best practices
-- `/sf-apex-best-practices` -- review the simplified Apex controller
-- `/sf-security` -- verify security enforcement in the new component
+- `sf-visualforce-development` -- audit a Visualforce page for migration readiness
+- `sf-lwc-development` -- review the migrated LWC component for best practices
+- `sf-apex-best-practices` -- review the simplified Apex controller
+- `sf-security` -- verify security enforcement in the new component

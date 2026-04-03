@@ -410,7 +410,7 @@ private class PaymentGatewayService_Test {
 
 ## SCC Skills
 
-- `/sf-security` -- verify Named Credential usage and no hardcoded secrets
-- `/sf-apex-best-practices` -- review callout service code for best practices
-- `/sf-tdd-workflow` -- write tests first using mock classes
-- `/sf-governor-limits` -- check callout limits in async and batch contexts
+- `sf-security` -- verify Named Credential usage and no hardcoded secrets
+- `sf-apex-best-practices` -- review callout service code for best practices
+- `sf-tdd-workflow` -- write tests first using mock classes
+- `sf-governor-limits` -- check callout limits in async and batch contexts
