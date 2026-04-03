@@ -117,27 +117,45 @@ public with sharing class OrderEventSubscriber {
      * handle large event volumes gracefully.
      */
     public static void handleEvents(List<Order_Status_Event__e> events) {
-        Set<String> orderIds = new Set<String>();
+        Set<String> orderIdStrings = new Set<String>();
         Map<String, Order_Status_Event__e> latestByOrder = new Map<String, Order_Status_Event__e>();
 
         for (Order_Status_Event__e evt : events) {
-            orderIds.add(evt.Order_Id__c);
+            orderIdStrings.add(evt.Order_Id__c);
             // Keep only the latest event per order (events arrive in order)
             latestByOrder.put(evt.Order_Id__c, evt);
         }
+
+        // Query orders to validate IDs exist — Order_Id__c is Text, so we must
+        // verify the referenced records are real before using them as WhatId
+        Map<Id, Order> ordersById = new Map<Id, Order>(
+            [SELECT Id FROM Order WHERE Id IN :orderIdStrings]
+        );
 
         // Create follow-up tasks for failed orders
         List<Task> tasks = new List<Task>();
         for (Order_Status_Event__e evt : latestByOrder.values()) {
             if (evt.Status__c == 'Failed') {
-                tasks.add(new Task(
-                    Subject = 'Order Failed: ' + evt.Order_Id__c,
-                    Description = evt.Message__c,
-                    WhatId = evt.Order_Id__c,
-                    Priority = 'High',
-                    Status = 'Not Started',
-                    ActivityDate = Date.today().addDays(1)
-                ));
+                // Safely convert Text to Id — skip if the value is invalid
+                Id orderId;
+                try {
+                    orderId = Id.valueOf(evt.Order_Id__c);
+                } catch (StringException e) {
+                    System.debug(LoggingLevel.ERROR,
+                        'Invalid Order ID in event: ' + evt.Order_Id__c);
+                    continue;
+                }
+
+                if (ordersById.containsKey(orderId)) {
+                    tasks.add(new Task(
+                        Subject = 'Order Failed: ' + evt.Order_Id__c,
+                        Description = evt.Message__c,
+                        WhatId = orderId,
+                        Priority = 'High',
+                        Status = 'Not Started',
+                        ActivityDate = Date.today().addDays(1)
+                    ));
+                }
             }
         }
 
@@ -413,14 +431,24 @@ private class OrderEventPublisher_Test {
 
     @IsTest
     static void testSubscriberCreatesTasksForFailedOrders() {
+        // Create a real Order so the subscriber can validate the ID via SOQL
+        Account acc = new Account(Name = 'Test Account');
+        insert acc;
+        Order ord = new Order(
+            AccountId = acc.Id,
+            EffectiveDate = Date.today(),
+            Status = 'Draft'
+        );
+        insert ord;
+
         List<Order_Status_Event__e> events = new List<Order_Status_Event__e>{
             new Order_Status_Event__e(
-                Order_Id__c = '801xx000000001AAA',
+                Order_Id__c = ord.Id,
                 Status__c = 'Failed',
                 Message__c = 'Payment declined'
             ),
             new Order_Status_Event__e(
-                Order_Id__c = '801xx000000002AAA',
+                Order_Id__c = ord.Id,
                 Status__c = 'Shipped',
                 Message__c = 'Shipped successfully'
             )
@@ -430,9 +458,10 @@ private class OrderEventPublisher_Test {
         OrderEventSubscriber.handleEvents(events);
         Test.stopTest();
 
-        List<Task> tasks = [SELECT Subject, Priority FROM Task WHERE Subject LIKE 'Order Failed%'];
+        List<Task> tasks = [SELECT Subject, Priority, WhatId FROM Task WHERE Subject LIKE 'Order Failed%'];
         System.assertEquals(1, tasks.size(), 'Should create task only for failed order');
         System.assertEquals('High', tasks[0].Priority);
+        System.assertEquals(ord.Id, tasks[0].WhatId, 'Task should be linked to the Order');
     }
 }
 ```

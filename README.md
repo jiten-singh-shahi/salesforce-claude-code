@@ -470,6 +470,25 @@ sf org create scratch --alias feature-scratch
 
 ---
 
+## Example Patterns
+
+Production-ready implementations demonstrating Salesforce best practices:
+
+| Pattern | Description |
+|---|---|
+| [Apex Trigger Handler](examples/apex-trigger-handler/) | One-trigger-per-object with virtual base handler |
+| [LWC Component](examples/lwc-component/) | Wire service, Apex calls, Jest tests, meta.xml |
+| [Platform Events & CDC](examples/platform-events/) | Real-time event-driven architecture with empApi |
+| [Integration Pattern](examples/integration-pattern/) | Named Credentials, retry logic, async callouts |
+| [Flow Automation](examples/flow-automation/) | Record-Triggered Before Save Flow with XML metadata |
+| [Security Audit](examples/security-audit/) | CRUD/FLS, SOQL injection prevention, sharing model |
+| [Agentforce Action](examples/agentforce-action/) | @InvocableMethod with structured inputs/outputs |
+| [DevOps Pipeline](examples/devops-pipeline/) | GitHub Actions CI/CD with scratch orgs |
+| [Scratch Org Setup](examples/scratch-org-setup/) | Automated org creation and data loading |
+| [Visualforce Migration](examples/visualforce-migration/) | VF-to-LWC conversion patterns |
+
+---
+
 ## Contributing
 
 Contributions are welcome! Please follow these guidelines:

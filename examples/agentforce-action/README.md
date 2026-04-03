@@ -1,6 +1,6 @@
 # Agentforce Custom Action
 
-Custom Agentforce action using `@InvocableMethod` with structured inputs/outputs for Flow and Agent integration.
+Custom Agentforce action using `@InvocableMethod` with structured inputs/outputs for Flow and Agent integration. Requires API version 66.0+ (Spring '26).
 
 ## When to Use This Pattern
 
