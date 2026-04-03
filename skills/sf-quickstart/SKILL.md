@@ -114,16 +114,16 @@ Check that SCC is properly configured:
 
 ```bash
 # Check hooks are loaded
-test -f .claude/hooks/hooks.json && echo "Hooks: ACTIVE" || echo "Hooks: MISSING (run npx scc-universal install)"
+test -f .claude/settings.json && grep -q '"hooks"' .claude/settings.json 2>/dev/null && echo "Hooks: ACTIVE (in settings.json)" || echo "Hooks: MISSING (run npx scc-universal install)"
 
 # Check hook profile
 echo "Hook Profile: ${SCC_HOOK_PROFILE:-standard (default)}"
 
 # Check for governor-check hook
-grep -q "governor-check" .claude/hooks/hooks.json 2>/dev/null && echo "Governor Check: ACTIVE" || echo "Governor Check: MISSING"
+grep -q "governor-check" .claude/settings.json 2>/dev/null && echo "Governor Check: ACTIVE" || echo "Governor Check: MISSING"
 
 # Check for quality-gate hook
-grep -q "quality-gate" .claude/hooks/hooks.json 2>/dev/null && echo "Quality Gate: ACTIVE" || echo "Quality Gate: MISSING"
+grep -q "quality-gate" .claude/settings.json 2>/dev/null && echo "Quality Gate: ACTIVE" || echo "Quality Gate: MISSING"
 ```
 
 ### Step 6 — Report

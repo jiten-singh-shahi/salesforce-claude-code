@@ -146,9 +146,11 @@ jobs:
           test -f /tmp/test-project/.claude/skills/sf-deployment/SKILL.md
           test -f /tmp/test-project/.claude/skills/sf-deployment-constraints/SKILL.md
 
-      - name: Verify apex install — hooks
+      - name: Verify apex install — hooks merged into settings.json
         run: |
-          test -f /tmp/test-project/.claude/hooks/hooks.json
+          test -f /tmp/test-project/.claude/settings.json
+          node -e "const s=require('/tmp/test-project/.claude/settings.json'); if(!s.hooks||!s.hooks.PreToolUse) { process.exit(1); }"
+          test -f /tmp/test-project/.claude/hooks/governor-check.js
 
       - name: Verify apex install — reference files
         run: |
