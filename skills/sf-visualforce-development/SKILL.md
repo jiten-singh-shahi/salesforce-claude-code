@@ -2,7 +2,7 @@
 name: sf-visualforce-development
 description: "Visualforce development — pages, controllers, extensions, ViewState, JS Remoting, LWC migration. Use when maintaining VF pages, building PDFs, or planning VF-to-LWC migration. Do NOT use for LWC, Aura, or Flow."
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # Visualforce Development

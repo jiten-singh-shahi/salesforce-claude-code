@@ -2,7 +2,7 @@
 name: sf-flow-development
 description: "Salesforce Flow development — flow types, patterns, bulkification, error handling, testing, subflows, Flow vs Apex. Use when building or reviewing Flows. Do NOT use for pure Apex or Platform Event architecture."
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # Salesforce Flow Development
@@ -372,6 +372,6 @@ sf project deploy start \
 
 ## Related
 
-- Agent: `sf-flow-reviewer` -- for interactive, in-depth guidance
+- Agent: `sf-flow-agent` -- for interactive, in-depth guidance
 - Constraints: sf-apex-constraints (for Apex-invoked flows)
 - Reference: @../_reference/FLOW_PATTERNS.md

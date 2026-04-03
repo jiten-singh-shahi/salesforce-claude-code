@@ -2,7 +2,7 @@
 name: sf-soql-optimization
 description: "SOQL optimization — selective queries, index strategy, query plans, relationship efficiency, large data volumes. Use when queries hit limits or designing for 100K+ records. Do NOT use for general Apex, LWC, or Flow."
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # SOQL Optimization
@@ -350,5 +350,5 @@ If you see `TableScan` on a large object:
 
 ## Related
 
-- **Agent**: `sf-performance-optimizer` — For interactive, in-depth guidance
+- **Agent**: `sf-apex-agent` — For interactive, in-depth guidance
 - **Constraints**: `sf-soql-constraints` — Hard rules for SOQL safety and compliance

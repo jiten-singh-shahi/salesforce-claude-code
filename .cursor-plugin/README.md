@@ -26,8 +26,8 @@ ln -s /path/to/salesforce-claude-code ~/.cursor/plugins/local/salesforce-claude-
 
 ## What's Included
 
-- **25 agents** for Salesforce development (Apex, LWC, SOQL, Flows, Visualforce, Aura, DevOps, Security)
-- **55 skills** for domain knowledge, workflows, and patterns (35 user-invocable via `/skill-name`, 20 auto-activating)
+- **17 agents** for Salesforce development (11 domain + 6 platform)
+- **55 skills** for domain knowledge, workflows, and patterns (17 user-invocable via `/skill-name`, 38 auto-activating)
 - **29 hooks** for quality gates and automation
 - **MCP config** for Salesforce DX and SF CLI integration
 

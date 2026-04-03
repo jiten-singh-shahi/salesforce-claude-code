@@ -1,9 +1,6 @@
 ---
 name: deep-researcher
-description: >-
-  Multi-source Salesforce research — Apex patterns, org architecture, platform event
-  trade-offs, deploy strategies. Use when investigating complex decisions requiring
-  cited reports. Do NOT use for single doc lookups.
+description: "Multi-source Salesforce research — Apex patterns, org architecture, platform event trade-offs, deploy strategies. Use when investigating complex decisions requiring cited reports. Do NOT use for single doc lookups."
 tools: ["Read", "Write", "Bash", "Grep", "Glob", "WebSearch", "WebFetch"]
 model: sonnet
 origin: SCC

@@ -4,7 +4,7 @@ This guide covers how to create new agents, skills, and rules for Salesforce Cla
 
 ## General Conventions
 
-- **File naming**: Use lowercase with hyphens (kebab-case). Example: `sf-apex-reviewer.md`, `sf-tdd-workflow`.
+- **File naming**: Use lowercase with hyphens (kebab-case). Example: `sf-apex-agent.md`, `sf-tdd-workflow`.
 - **Salesforce-specific prefix**: All Salesforce-specific content uses the `sf-` prefix. Platform-agnostic content omits the prefix (e.g., `strategic-compact`, `continuous-agent-loop`).
 - **CommonJS throughout**: All Node.js scripts use `require()` and `module.exports`.
 - **Origin tag**: All SCC content uses `origin: SCC` in frontmatter.
@@ -92,8 +92,8 @@ When reviewing [content type], verify:
 
 ### Model Selection
 
-- **opus**: Use for agents that perform deep architectural analysis, multi-file reasoning, or complex decision-making (e.g., `sf-architect`, `sf-integration-architect`).
-- **sonnet**: Use for most agents. Good balance of capability and speed (e.g., `sf-apex-reviewer`, `sf-lwc-reviewer`, `sf-tdd-guide`).
+- **opus**: Use for agents that perform deep architectural analysis, multi-file reasoning, or complex decision-making (e.g., `sf-architect`, `sf-integration-agent`).
+- **sonnet**: Use for most agents. Good balance of capability and speed (e.g., `sf-apex-agent`, `sf-lwc-agent`, `sf-apex-agent`).
 - **haiku**: Use for lightweight, fast-response agents that perform simple lookups or formatting.
 
 ## Skill Authoring
@@ -191,8 +191,8 @@ public with sharing class ExampleService {
 
 SCC includes two categories of skills:
 
-- **Salesforce-specific** (40 skills, `sf-` prefix): `sf-apex-testing`, `sf-governor-limits`, `sf-lwc-development`, `sf-security`, `sf-trigger-frameworks`, `sf-apex-constraints`, etc.
-- **Platform skills** (15 skills, no prefix): `configure-scc`, `continuous-agent-loop`, `mcp-server-patterns`, `prompt-optimizer`, `search-first`, `security-scan`, `strategic-compact`, `checkpoint`, `aside`, `model-route`, `sessions`, `save-session`, `resume-session`, `refactor-clean`, `update-docs`.
+- **Salesforce-specific** (39 skills, `sf-` prefix): `sf-apex-testing`, `sf-governor-limits`, `sf-lwc-development`, `sf-security`, `sf-trigger-frameworks`, `sf-apex-constraints`, etc.
+- **Platform skills** (16 skills, no prefix): `configure-scc`, `continuous-agent-loop`, `mcp-server-patterns`, `prompt-optimizer`, `search-first`, `security-scan`, `strategic-compact`, `checkpoint`, `aside`, `model-route`, `sessions`, `save-session`, `resume-session`, `refactor-clean`, `update-docs`, `update-platform-docs`.
 
 Platform skills are Salesforce-adapted patterns for AI-assisted development workflows (loops, research, verification, evaluation).
 
@@ -273,7 +273,7 @@ sf apex run test --class-names MyTest --target-org <alias>
 
 1. **"When to Use" section**: Required. Helps Claude Code decide when to apply the skill. Use bullet points starting with "When...".
 2. **Workflow steps**: Use numbered steps (Step 1, Step 2, etc.) to guide the agent through a structured process. Each step should be self-contained and actionable.
-3. **Agent delegation**: Skills often delegate to specialized agents. Reference the agent by name (e.g., "Delegate to `sf-apex-reviewer` for the review phase").
+3. **Agent delegation**: Skills often delegate to specialized agents. Reference the agent by name (e.g., "Delegate to `sf-apex-agent` for the review phase").
 4. **CLI examples**: Show exact `sf` CLI commands with realistic arguments. Use `<alias>` or `<placeholder>` for values the user must provide.
 5. **Rules section**: Define constraints the skill enforces (e.g., "Never write production Apex without a failing test first").
 6. **Usage examples**: Show 3-5 examples of how to invoke the skill with different arguments.

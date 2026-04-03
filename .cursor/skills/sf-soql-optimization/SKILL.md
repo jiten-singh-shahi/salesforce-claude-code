@@ -349,5 +349,5 @@ If you see `TableScan` on a large object:
 
 ## Related
 
-- **Agent**: `sf-performance-optimizer` — For interactive, in-depth guidance
+- **Agent**: `sf-apex-agent` — For interactive, in-depth guidance
 - **Constraints**: `sf-soql-constraints` — Hard rules for SOQL safety and compliance

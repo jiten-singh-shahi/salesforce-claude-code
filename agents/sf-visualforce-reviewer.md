@@ -1,9 +1,6 @@
 ---
 name: sf-visualforce-reviewer
-description: >-
-  Reviews Visualforce pages for XSS, SOQL injection, ViewState, CRUD/FLS, and
-  LWC migration readiness. Use when reviewing or maintaining Visualforce pages.
-  Do NOT use for LWC or Apex classes.
+description: "Reviews Visualforce pages for XSS, SOQL injection, ViewState, CRUD/FLS, and LWC migration readiness. Use when reviewing or maintaining Visualforce pages. Do NOT use for LWC or Apex classes."
 tools: ["Read", "Grep", "Glob"]
 model: sonnet
 origin: SCC
@@ -466,6 +463,6 @@ Produce a per-page findings report using the Output Format. Assign CRITICAL/HIGH
 
 ## Related
 
-- **Agent**: `sf-security-reviewer` — Deep Apex security review beyond Visualforce scope
-- **Agent**: `sf-performance-optimizer` — SOQL query performance in Visualforce controllers
-- **Skill**: `sf-visualforce-development` — Quick reference (invoke via `/sf-visualforce-development`)
+- **Agent**: `sf-review-agent` — Deep Apex security review beyond Visualforce scope
+- **Agent**: `sf-apex-agent` — SOQL query performance in Visualforce controllers
+- **Skill**: `sf-visualforce-development` — Quick reference (preloaded)

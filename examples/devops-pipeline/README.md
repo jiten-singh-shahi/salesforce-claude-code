@@ -1,6 +1,6 @@
 # CI/CD Pipeline for Salesforce
 
-End-to-end DevOps pipeline with scratch org creation, source deployment, test execution, PMD scanning, and production deployment using GitHub Actions.
+End-to-end DevOps pipeline with scratch org creation, source deployment, test execution, PMD scanning, and production deployment using GitHub Actions. Targets API version 66.0 (Spring '26).
 
 ## When to Use This Pattern
 

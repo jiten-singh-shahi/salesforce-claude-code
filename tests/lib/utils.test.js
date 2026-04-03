@@ -65,9 +65,9 @@ test('parseFrontmatter: strips quotes from string values', () => {
 });
 
 test('parseFrontmatter: handles multiple frontmatter fields', () => {
-  const content = `---\nname: sf-apex-reviewer\ndescription: Reviews Apex code quality\nmodel: sonnet\norigin: SCC\n---\n# Apex Reviewer`;
+  const content = `---\nname: sf-apex-agent\ndescription: Reviews Apex code quality\nmodel: sonnet\norigin: SCC\n---\n# Apex Agent`;
   const { frontmatter } = parseFrontmatter(content);
-  assert.strictEqual(frontmatter.name, 'sf-apex-reviewer');
+  assert.strictEqual(frontmatter.name, 'sf-apex-agent');
   assert.strictEqual(frontmatter.model, 'sonnet');
   assert.strictEqual(frontmatter.origin, 'SCC');
 });

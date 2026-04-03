@@ -396,5 +396,56 @@ test('fails when agent body content is too short', () => {
   }
 });
 
+// ── Branch: warns when description missing PROACTIVE clause ──────────────────
+
+test('warns when description missing PROACTIVE clause', () => {
+  const tmp = makeTmpDir();
+  try {
+    const agentsDir = path.join(tmp, 'agents');
+    // VALID_DESC has "Use when" but NOT "proactively"
+    writeAgent(agentsDir, 'sf-no-proactive.md', [
+      '---',
+      'name: sf-no-proactive',
+      `description: "${VALID_DESC}"`,
+      'tools: ["Read", "Grep"]',
+      'model: sonnet',
+      'origin: SCC',
+      '---',
+      VALID_BODY,
+    ].join('\n'));
+    const result = runValidator(tmp);
+    // Should still PASS (warning, not error)
+    assert.strictEqual(result.status, 0, `Expected pass but got: ${result.stderr || result.stdout}`);
+    const output = result.stderr + result.stdout;
+    assert.ok(output.includes('PROACTIVE'), 'Expected PROACTIVE warning in output');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('no proactive warning when description includes Use PROACTIVELY', () => {
+  const tmp = makeTmpDir();
+  try {
+    const agentsDir = path.join(tmp, 'agents');
+    const proactiveDesc = 'Use PROACTIVELY when reviewing Apex classes, triggers, or SOQL queries in a Salesforce org. Do NOT use for LWC.';
+    writeAgent(agentsDir, 'sf-proactive-agent.md', [
+      '---',
+      'name: sf-proactive-agent',
+      `description: "${proactiveDesc}"`,
+      'tools: ["Read", "Grep"]',
+      'model: sonnet',
+      'origin: SCC',
+      '---',
+      VALID_BODY,
+    ].join('\n'));
+    const result = runValidator(tmp);
+    assert.strictEqual(result.status, 0);
+    const output = result.stderr + result.stdout;
+    assert.ok(!output.includes('PROACTIVE clause'), 'Should not warn when PROACTIVE present');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
 console.log(`\nvalidate-agents.test.js: ${passCount} passed, ${failCount} failed`);
 if (failCount > 0) process.exit(1);

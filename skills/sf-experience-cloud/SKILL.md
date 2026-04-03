@@ -246,4 +246,4 @@ Publish via Experience Builder UI or Apex: `ConnectApi.Communities.publishCommun
 
 ### Agents
 
-- **sf-lwc-reviewer** — For LWC components used in Experience Cloud sites
+- **sf-lwc-agent** — For LWC components used in Experience Cloud sites

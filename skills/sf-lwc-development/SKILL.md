@@ -2,7 +2,7 @@
 name: sf-lwc-development
 description: "LWC development — components, reactive properties, wire service, Apex integration, events, lifecycle hooks. Use when building LWC components or debugging wire/reactivity. Do NOT use for Aura, Visualforce, or Flow."
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # LWC Development
@@ -300,4 +300,4 @@ Expose components as Flow screen actions via `lightning__FlowScreen` target. Imp
 
 ### Agents
 
-- **sf-lwc-reviewer** — For interactive, in-depth LWC review guidance
+- **sf-lwc-agent** — For interactive, in-depth LWC review guidance

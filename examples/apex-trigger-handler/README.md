@@ -1,6 +1,6 @@
 # Apex Trigger Handler Pattern
 
-Enterprise-grade trigger handler pattern with one trigger per object.
+Enterprise-grade trigger handler pattern with one trigger per object. Compatible with API version 66.0 (Spring '26).
 
 ## Structure
 

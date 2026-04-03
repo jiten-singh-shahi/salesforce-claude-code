@@ -5,7 +5,7 @@ description: >-
   sharing keywords, SOQL injection prevention, AppExchange review prep.
   Do NOT use for general Apex or LWC patterns.
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # Salesforce Security
@@ -316,7 +316,19 @@ Real-time threat detection: block large data exports, enforce MFA for sensitive 
 
 ---
 
+## Security Skills Cross-Reference
+
+Security guidance is distributed across multiple skills. Use this index to find the right skill:
+
+| Skill | Focus | Type |
+|---|---|---|
+| `sf-security` (this skill) | CRUD/FLS, sharing, injection, Named Credentials, AppExchange prep | Implementation guide |
+| `sf-security-constraints` | Hard never/always rules for security compliance | Constraint (auto-loaded) |
+| `sf-apex-constraints` | Apex-specific security: `with sharing`, bind variables, `without sharing` justification | Constraint (auto-loaded) |
+| `sf-soql-constraints` | SOQL injection prevention, selective queries, bind variables | Constraint (auto-loaded) |
+| `sf-lwc-constraints` | LWC XSS prevention, `lwc:dom="manual"` restrictions, CSP | Constraint (auto-loaded) |
+
 ## Related
 
-- **Agent**: `sf-security-reviewer` — For interactive, in-depth guidance
+- **Agent**: `sf-review-agent` — For interactive, in-depth guidance
 - **Constraints**: `sf-security-constraints` — Hard rules for security compliance

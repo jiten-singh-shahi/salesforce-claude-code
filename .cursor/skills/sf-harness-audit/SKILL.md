@@ -51,10 +51,10 @@ Check: `echo $SCC_HOOK_PROFILE` to verify profile level.
 
 | Score | Criteria |
 |-------|----------|
-| 0-3 | Only generic agents (planner, code-reviewer) |
-| 4-6 | Core Salesforce agents (sf-apex-reviewer, sf-lwc-reviewer) |
-| 7-8 | Domain-specific agents (sf-trigger-architect, sf-performance-optimizer, sf-security-reviewer) |
-| 9-10 | Full coverage including sf-agentforce-builder, sf-flow-reviewer, sf-architect |
+| 0-3 | Only platform agents (loop-operator, doc-updater) |
+| 4-6 | Core domain agents (sf-architect, sf-apex-agent, sf-review-agent) |
+| 7-8 | Full domain agents (+ sf-lwc-agent, sf-flow-agent, sf-integration-agent) |
+| 9-10 | Complete coverage including sf-admin-agent, sf-agentforce-agent, sf-bugfix-agent |
 
 Check: `ls .claude/agents/sf-*.md 2>/dev/null | wc -l`
 
@@ -73,7 +73,7 @@ Check: `find .claude/skills/ -name "SKILL.md" | wc -l`
 
 | Score | Criteria |
 |-------|----------|
-| 0-3 | Only basic skills (sf-blueprint-planner agent, sf-apex-best-practices) |
+| 0-3 | Only basic skills (sf-architect agent, sf-apex-best-practices) |
 | 4-6 | Core workflow skills (sf-deployment, sf-debugging, sf-security) |
 | 7-8 | Testing and security skills (sf-tdd-workflow, sf-governor-limits) |
 | 9-10 | Full suite including discovery (/sf-help, /sf-quickstart) |

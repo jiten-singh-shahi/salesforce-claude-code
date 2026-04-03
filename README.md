@@ -17,8 +17,8 @@ SCC is a unified system where each layer serves a distinct role:
 | Layer | What It Does | Examples |
 |-------|-------------|----------|
 | **@salesforce/mcp** | Platform capabilities — query orgs, deploy metadata, run tests, analyze code | Org management, SOQL queries, Apex test execution |
-| **25 Agents** | Expert routing — each agent specializes in one Salesforce domain | `sf-apex-reviewer`, `sf-performance-optimizer`, `sf-trigger-architect`, `sf-security-reviewer` |
-| **55 Skills** | Institutional knowledge + workflows — 35 user-invocable via `/skill-name`, 20 auto-activating | `/sf-apex-best-practices`, `/sf-deployment`, `/sf-soql-optimization`, `/sf-security` |
+| **17 Agents** | Lean full-stack agents that design, build, test, and review | `sf-architect`, `sf-apex-agent`, `sf-lwc-agent`, `sf-review-agent` |
+| **55 Skills** | Institutional knowledge + workflows — 17 user-invocable via `/skill-name`, 38 auto-activating | `/sf-help`, `/sf-quickstart`, `/configure-scc`, `/sessions` |
 | **7 Constraint Skills** | Always-on governance via auto-activating skills | `sf-apex-constraints`, `sf-soql-constraints`, `sf-security-constraints`, `sf-trigger-constraints` |
 | **29 Hooks** | Automated enforcement — quality gates run on every code change | SOQL-in-loop detection, PMD via sf scanner, privilege escalation checks |
 
@@ -30,8 +30,8 @@ SCC is a unified system where each layer serves a distinct role:
 
 | Category | Count | Description |
 |---|---|---|
-| Agents | 25 | Specialized Salesforce subagents |
-| Skills | 55 | Domain knowledge + workflow modules (35 user-invocable, 20 auto-activating) |
+| Agents | 17 | Specialized Salesforce subagents (11 domain + 6 platform) |
+| Skills | 55 | Domain knowledge + workflow modules (17 user-invocable, 38 auto-activating) |
 | Hooks | 29 | Lifecycle hooks (SessionStart, PreToolUse, PostToolUse, PostToolUseFailure, PreCompact, Stop, SessionEnd) |
 | Harnesses | 2 | Claude Code, Cursor |
 
@@ -210,25 +210,17 @@ All content is structured for use across multiple AI harnesses:
 
 | Agent | Description |
 |---|---|
-| `sf-apex-reviewer` | Deep Apex quality, patterns, and governor limits |
-| `sf-lwc-reviewer` | LWC component architecture and accessibility review |
-| `sf-code-reviewer` | General Salesforce code quality review |
-| `sf-security-reviewer` | CRUD/FLS/sharing and injection vulnerability audit |
-| `sf-tdd-guide` | Test-driven development guidance for Apex |
-| `sf-trigger-architect` | Trigger framework design and refactoring |
-| `sf-flow-reviewer` | Flow Builder best practices and performance review |
-| `sf-agentforce-builder` | Agentforce agent design and configuration |
-| `sf-performance-optimizer` | Governor limit analysis, SOQL optimization, and performance tuning |
-| `sf-integration-architect` | REST/SOAP/Platform Events integration patterns |
-| `sf-architect` | Salesforce architecture design and review |
-| `sf-admin` | Salesforce admin configuration and audit |
-| `sf-build-resolver` | Build error resolution and dependency fixes |
-| `sf-devops-deployment` | SF CLI, CI/CD pipelines, deployment strategy and rollback |
-| `sf-e2e-runner` | End-to-end test execution and analysis |
-| `sf-visualforce-reviewer` | Visualforce page review and migration guidance |
+| `sf-architect` | Orchestrator — analyze requirements, design solutions, decompose tasks, final review |
+| `sf-apex-agent` | All Apex — classes, triggers, batch, async, callouts, tests (TDD) |
+| `sf-lwc-agent` | All LWC — components, Jest tests, wire service, events, SLDS |
+| `sf-flow-agent` | All Flow — record-triggered, screen, scheduled, approval processes |
+| `sf-admin-agent` | All config — objects, permissions, sharing, metadata, Experience Cloud |
+| `sf-integration-agent` | All integration — REST/SOAP callouts, Named Creds, Platform Events, CDC |
+| `sf-agentforce-agent` | Agentforce — topics, custom Apex actions, prompt templates |
+| `sf-review-agent` | Cross-domain review — security audit, performance, test coverage |
+| `sf-bugfix-agent` | Fix build errors, test failures, deploy issues (minimal diff) |
 | `sf-aura-reviewer` | Aura component review and LWC migration guidance |
-| `sf-blueprint-planner` | Multi-session project planning and coordination |
-| `sf-verification-runner` | Quality gates: build, lint, test, security, deploy readiness |
+| `sf-visualforce-reviewer` | Visualforce page review and migration guidance |
 | `doc-updater` | Documentation generation and maintenance |
 | `refactor-cleaner` | Code refactoring and cleanup |
 | `loop-operator` | Autonomous loop execution and monitoring |
@@ -300,58 +292,72 @@ All content is structured for use across multiple AI harnesses:
 
 ---
 
-## Skills (User-Invocable)
+## Skills
 
-35 skills are user-invocable via `/skill-name`. 20 are auto-activating context skills. Key skills by category:
+17 skills are user-invocable via `/skill-name`. 38 are auto-activating context skills (28 pattern + 7 constraint + 3 platform).
 
-### Salesforce Development
+### User-Invocable (17)
 
-| Skill | Description |
-|---|---|
-| `/sf-apex-best-practices` | Apex code review — governor limits, bulkification, security, patterns |
-| `/sf-lwc-development` | LWC component review — architecture, reactivity, accessibility |
-| `/sf-tdd-workflow` | Test-driven Apex development with test-first workflow |
-| `/sf-soql-optimization` | Analyze and optimize SOQL queries for performance |
-| `/sf-trigger-frameworks` | Trigger framework patterns — One-Trigger-Per-Object, handler base class |
-| `/sf-security` | Security audit — CRUD/FLS, sharing, SOQL injection, XSS |
-| `/sf-deployment` | Deployment workflow — validate, test, deploy to sandbox or production |
-| `/sf-apex-testing` | Run and analyze Apex test results with coverage |
-| `/sf-flow-development` | Review Flows for best practices and anti-patterns |
-| `/sf-agentforce-development` | Design and configure an Agentforce AI agent |
-| `/sf-governor-limits` | Governor limit audit — SOQL, DML, heap, CPU, callouts |
-| `/sf-debugging` | Debug using logs, debug levels, and tracing |
-| `/sf-e2e-testing` | End-to-end test patterns and deployment verification |
-| `/sf-platform-events-cdc` | Platform Events and Change Data Capture review |
-| `/sf-visualforce-development` | Visualforce review — XSS, ViewState, LWC migration |
-| `/sf-aura-development` | Aura component review — Locker Service, LWC migration |
-| `/sf-data-modeling` | Data modeling, sharing rules, and admin configuration |
-
-### Platform & Workflow
+Invoke with `/skill-name` in Claude Code or Cursor.
 
 | Skill | Description |
 |---|---|
-| `/sf-build-fix` | Fix build errors and resolve dependencies |
-| `/continuous-agent-loop` | Multi-agent orchestration and autonomous loops |
-| `/prompt-optimizer` | Optimize prompts for better agent performance |
 | `/sf-help` | Discover SCC skills, agents, and workflows |
 | `/sf-quickstart` | Interactive onboarding and project detection |
+| `/sf-docs-lookup` | Look up Salesforce documentation |
+| `/sf-harness-audit` | Audit SCC harness configuration |
+| `/sessions` | List and manage sessions |
+| `/configure-scc` | Interactive SCC setup wizard for profiles, modules, and org config |
+| `/continuous-agent-loop` | Multi-agent orchestration and autonomous loops |
+| `/prompt-optimizer` | Optimize prompts for better agent performance |
 | `/checkpoint` | Save a development checkpoint for rollback |
 | `/save-session` | Save current session state |
 | `/resume-session` | Resume a saved session |
-| `/sessions` | List and manage sessions |
 | `/refactor-clean` | Dead code removal and consolidation |
 | `/update-docs` | Update project documentation |
-| `/sf-docs-lookup` | Look up Salesforce documentation |
+| `/update-platform-docs` | Update platform reference docs with latest release features |
 | `/aside` | Quick side investigation without losing context |
 | `/model-route` | Route tasks to optimal model by complexity |
-| `/sf-harness-audit` | Audit SCC harness configuration |
-| `/configure-scc` | Interactive SCC setup wizard for profiles, modules, and org config |
 | `/search-first` | Research existing tools and patterns before writing custom code |
-| `/update-platform-docs` | Update platform reference docs with latest release features |
+
+### Pattern Skills (28) — Agent-Consulted
+
+Agents read these on demand for domain knowledge. Not directly invocable via `/`.
+
+| Skill | Description |
+|---|---|
+| `sf-apex-best-practices` | Apex code review — governor limits, bulkification, security, patterns |
+| `sf-apex-testing` | Run and analyze Apex test results with coverage |
+| `sf-apex-async-patterns` | Batch vs Queueable vs @future decision framework |
+| `sf-apex-enterprise-patterns` | FFLIB selector/domain/service/UoW layers |
+| `sf-apex-cursor` | Cursor API for large SOQL result sets |
+| `sf-trigger-frameworks` | Trigger framework patterns — One-Trigger-Per-Object, handler base class |
+| `sf-soql-optimization` | Analyze and optimize SOQL queries for performance |
+| `sf-governor-limits` | Governor limit audit — SOQL, DML, heap, CPU, callouts |
+| `sf-lwc-development` | LWC component review — architecture, reactivity, accessibility |
+| `sf-lwc-testing` | Jest testing for LWC — mocks, DOM queries, accessibility |
+| `sf-flow-development` | Review Flows for best practices and anti-patterns |
+| `sf-approval-processes` | Approval lifecycle, multi-step, delegation patterns |
+| `sf-data-modeling` | Data modeling, sharing rules, and admin configuration |
+| `sf-experience-cloud` | Experience Cloud sites, guest users, external sharing |
+| `sf-metadata-management` | package.xml, .forceignore, source tracking |
+| `sf-integration` | REST/SOAP callouts, Named Credentials, retry patterns |
+| `sf-platform-events-cdc` | Platform Events and Change Data Capture review |
+| `sf-api-design` | Custom REST endpoints, batch operations |
+| `sf-agentforce-development` | Design and configure an Agentforce AI agent |
+| `sf-security` | Security audit — CRUD/FLS, sharing, SOQL injection, XSS |
+| `sf-e2e-testing` | End-to-end test patterns and deployment verification |
+| `sf-debugging` | Debug using logs, debug levels, and tracing |
+| `sf-deployment` | Deployment workflow — validate, test, deploy to sandbox or production |
+| `sf-devops-ci-cd` | GitHub Actions, CI/CD, scratch org CI |
+| `sf-tdd-workflow` | Test-driven Apex development with test-first workflow |
+| `sf-build-fix` | Fix build errors and resolve dependencies |
+| `sf-visualforce-development` | Visualforce review — XSS, ViewState, LWC migration |
+| `sf-aura-development` | Aura component review — Locker Service, LWC migration |
 
 ### Auto-Activating Skills
 
-20 skills activate automatically during development — no `/` invocation needed.
+38 skills activate automatically during development — no `/` invocation needed.
 
 **Constraint Skills (always-on governance):**
 
@@ -365,23 +371,15 @@ All content is structured for use across multiple AI harnesses:
 | `sf-testing-constraints` | 75% coverage minimum, test isolation, assertion requirements |
 | `sf-trigger-constraints` | One-trigger-per-object, handler delegation, recursion prevention |
 
-**Context Skills (activate when relevant):**
+**Platform Context Skills (3):**
 
 | Skill | Activates When |
 |---|---|
-| `sf-apex-async-patterns` | Choosing or implementing async processing (@future, Queueable, Batch) |
-| `sf-apex-cursor` | Paginating large SOQL results or migrating from OFFSET |
-| `sf-apex-enterprise-patterns` | Implementing FFLIB Selector, Domain, Service, Unit of Work |
-| `sf-api-design` | Designing custom REST endpoints or Composite API usage |
-| `sf-approval-processes` | Building multi-step approvals or Flow-integrated submissions |
-| `sf-devops-ci-cd` | Setting up CI/CD pipelines, JWT auth, scratch org workflows |
-| `sf-experience-cloud` | Building portals, partner communities, or public-facing sites |
-| `sf-integration` | Building REST/SOAP callouts, Named Credentials, External Services |
-| `sf-lwc-testing` | Writing or debugging LWC Jest tests |
-| `sf-metadata-management` | Working with package.xml, .forceignore, source vs metadata format |
 | `mcp-server-patterns` | Building MCP servers for Salesforce integration |
 | `security-scan` | Scanning Claude Code config for vulnerabilities and misconfigurations |
 | `strategic-compact` | Managing context during long development sessions |
+
+Pattern skills (28, listed above) also activate contextually when their domain is relevant.
 
 ---
 
@@ -427,7 +425,7 @@ Control which hooks run via the `SCC_HOOK_PROFILE` environment variable:
 
 1. `/sf-soql-optimization` - Fix expensive queries
 2. `/sf-governor-limits` - Find limit violations
-3. Use the `sf-performance-optimizer` agent for deep analysis
+3. Use the `sf-review-agent` for deep analysis
 
 ### Context Window Management
 
@@ -469,6 +467,25 @@ sf org create scratch --alias feature-scratch
 | [Security Guide](the-security-guide.md) | CRUD/FLS, injection prevention, encryption, session security |
 | [Troubleshooting](TROUBLESHOOTING.md) | Common issues and solutions |
 | [Changelog](CHANGELOG.md) | Version history and release notes |
+
+---
+
+## Example Patterns
+
+Production-ready implementations demonstrating Salesforce best practices:
+
+| Pattern | Description |
+|---|---|
+| [Apex Trigger Handler](examples/apex-trigger-handler/) | One-trigger-per-object with virtual base handler |
+| [LWC Component](examples/lwc-component/) | Wire service, Apex calls, Jest tests, meta.xml |
+| [Platform Events & CDC](examples/platform-events/) | Real-time event-driven architecture with empApi |
+| [Integration Pattern](examples/integration-pattern/) | Named Credentials, retry logic, async callouts |
+| [Flow Automation](examples/flow-automation/) | Record-Triggered Before Save Flow with XML metadata |
+| [Security Audit](examples/security-audit/) | CRUD/FLS, SOQL injection prevention, sharing model |
+| [Agentforce Action](examples/agentforce-action/) | @InvocableMethod with structured inputs/outputs |
+| [DevOps Pipeline](examples/devops-pipeline/) | GitHub Actions CI/CD with scratch orgs |
+| [Scratch Org Setup](examples/scratch-org-setup/) | Automated org creation and data loading |
+| [Visualforce Migration](examples/visualforce-migration/) | VF-to-LWC conversion patterns |
 
 ---
 

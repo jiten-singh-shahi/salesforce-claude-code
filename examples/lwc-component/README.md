@@ -73,6 +73,29 @@ export default class AccountList extends LightningElement {
 }
 ```
 
+## Component Metadata
+
+```xml
+<!-- accountList.js-meta.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>Account</object>
+            </objects>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
+```
+
 ## Jest Tests
 
 ```javascript
@@ -80,11 +103,12 @@ import { createElement } from 'lwc';
 import AccountList from 'c/accountList';
 import getAccounts from '@salesforce/apex/AccountController.getAccounts';
 
-const { emit } = require('jestMocks/apex');
-
-jest.mock('@salesforce/apex/AccountController.getAccounts', () => ({
-    default: jest.fn()
-}), { virtual: true });
+// Standard @salesforce/sfdx-lwc-jest mock pattern
+jest.mock(
+    '@salesforce/apex/AccountController.getAccounts',
+    () => ({ default: jest.fn() }),
+    { virtual: true }
+);
 
 const MOCK_ACCOUNTS = [
     { Id: '001xx001', Name: 'Acme', Industry: 'Tech', AnnualRevenue: 100000 },

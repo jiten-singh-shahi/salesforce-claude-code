@@ -1,6 +1,6 @@
 # Security Audit Walkthrough
 
-Step-by-step security audit for Salesforce Apex code covering CRUD/FLS, SOQL injection, sharing model, and static analysis.
+Step-by-step security audit for Salesforce Apex code covering CRUD/FLS, SOQL injection, sharing model, and static analysis. Patterns verified for API version 66.0 (Spring '26).
 
 ## When to Use This Pattern
 

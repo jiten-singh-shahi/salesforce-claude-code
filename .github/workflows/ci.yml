@@ -112,23 +112,13 @@ jobs:
 
       - name: Verify apex install — core agents
         run: |
-          test -f /tmp/test-project/.claude/agents/sf-blueprint-planner.md
-          test -f /tmp/test-project/.claude/agents/sf-code-reviewer.md
-          test -f /tmp/test-project/.claude/agents/sf-tdd-guide.md
+          test -f /tmp/test-project/.claude/agents/sf-architect.md
+          test -f /tmp/test-project/.claude/agents/sf-review-agent.md
+          test -f /tmp/test-project/.claude/agents/sf-bugfix-agent.md
 
-      - name: Verify apex install — apex agents
+      - name: Verify apex install — apex agent
         run: |
-          test -f /tmp/test-project/.claude/agents/sf-apex-reviewer.md
-          test -f /tmp/test-project/.claude/agents/sf-trigger-architect.md
-          test -f /tmp/test-project/.claude/agents/sf-performance-optimizer.md
-
-      - name: Verify apex install — security agent
-        run: |
-          test -f /tmp/test-project/.claude/agents/sf-security-reviewer.md
-
-      - name: Verify apex install — devops agent
-        run: |
-          test -f /tmp/test-project/.claude/agents/sf-devops-deployment.md
+          test -f /tmp/test-project/.claude/agents/sf-apex-agent.md
 
       - name: Verify apex install — core skills
         run: |
@@ -167,8 +157,8 @@ jobs:
 
       - name: Verify apex install — NO extended content (should not be installed)
         run: |
-          test ! -f /tmp/test-project/.claude/agents/sf-agentforce-builder.md
-          test ! -f /tmp/test-project/.claude/agents/sf-flow-reviewer.md
+          test ! -f /tmp/test-project/.claude/agents/sf-agentforce-agent.md
+          test ! -f /tmp/test-project/.claude/agents/sf-flow-agent.md
           test ! -f /tmp/test-project/.claude/skills/sf-flow-development/SKILL.md
 
       # ── Test: scc uninstall ───────────────────────────────────────────
@@ -179,7 +169,7 @@ jobs:
 
       - name: Verify uninstall removed files
         run: |
-          test ! -f /tmp/test-project/.claude/agents/sf-apex-reviewer.md
+          test ! -f /tmp/test-project/.claude/agents/sf-apex-agent.md
           test ! -f /tmp/test-project/.claude/skills/sf-apex-testing/SKILL.md
 
       # ── Test: scc install all (full profile) ──────────────────────────
@@ -190,11 +180,11 @@ jobs:
 
       - name: Verify full install — extended agents present
         run: |
-          test -f /tmp/test-project/.claude/agents/sf-agentforce-builder.md
-          test -f /tmp/test-project/.claude/agents/sf-flow-reviewer.md
+          test -f /tmp/test-project/.claude/agents/sf-agentforce-agent.md
+          test -f /tmp/test-project/.claude/agents/sf-flow-agent.md
           test -f /tmp/test-project/.claude/agents/sf-visualforce-reviewer.md
           test -f /tmp/test-project/.claude/agents/sf-aura-reviewer.md
-          test -f /tmp/test-project/.claude/agents/sf-admin.md
+          test -f /tmp/test-project/.claude/agents/sf-admin-agent.md
 
       - name: Verify full install — extended skills present
         run: |
@@ -207,8 +197,8 @@ jobs:
       - name: Verify full install — platform agents present
         run: |
           test -f /tmp/test-project/.claude/agents/deep-researcher.md
-          test -f /tmp/test-project/.claude/agents/sf-integration-architect.md
-          test -f /tmp/test-project/.claude/agents/sf-build-resolver.md
+          test -f /tmp/test-project/.claude/agents/sf-integration-agent.md
+          test -f /tmp/test-project/.claude/agents/sf-bugfix-agent.md
 
       - name: Verify full install — platform skills present
         run: |
@@ -229,15 +219,14 @@ jobs:
 
       - name: Verify lwc install — lwc agent and skills present
         run: |
-          test -f /tmp/test-project/.claude/agents/sf-lwc-reviewer.md
+          test -f /tmp/test-project/.claude/agents/sf-lwc-agent.md
           test -f /tmp/test-project/.claude/skills/sf-lwc-development/SKILL.md
           test -f /tmp/test-project/.claude/skills/sf-lwc-testing/SKILL.md
           test -f /tmp/test-project/.claude/skills/sf-lwc-constraints/SKILL.md
 
-      - name: Verify lwc install — NO apex-specific agents
+      - name: Verify lwc install — NO apex-specific agent
         run: |
-          test ! -f /tmp/test-project/.claude/agents/sf-apex-reviewer.md
-          test ! -f /tmp/test-project/.claude/agents/sf-trigger-architect.md
+          test ! -f /tmp/test-project/.claude/agents/sf-apex-agent.md
 
       # ── Summary ───────────────────────────────────────────────────────
       - name: Smoke test passed

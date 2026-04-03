@@ -337,5 +337,67 @@ test('fails when description exceeds 250 chars', () => {
   }
 });
 
+// ── Branch: warns when SF pattern skill missing "Use when" ───────────────────
+
+test('warns when SF pattern skill has Use when but lacks proactive trigger', () => {
+  const tmp = makeTmpDir();
+  try {
+    const skillsDir = path.join(tmp, 'skills');
+    // Has "Use when" (passes WHEN clause check) but description could be stronger
+    const weakDesc = 'Use when writing Apex classes or SOQL queries in a Salesforce org for governor limit compliance. Do NOT use for LWC or Flow.';
+    writeSkill(skillsDir, 'sf-weak-trigger', [
+      '---',
+      'name: sf-weak-trigger',
+      `description: "${weakDesc}"`,
+      'origin: SCC',
+      '---',
+      VALID_BODY,
+    ].join('\n'));
+    const result = runValidator(tmp);
+    // Should PASS (all checks pass — "Use when" is present)
+    assert.strictEqual(result.status, 0, `Expected pass but got: ${result.stderr || result.stdout}`);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('no Use when warning for constraint skills', () => {
+  const tmp = makeTmpDir();
+  try {
+    const skillsDir = path.join(tmp, 'skills');
+    // Constraint skills are identified by -constraints suffix; they're preloaded by agents
+    const constraintDesc = 'Enforce Apex governor limits and bulkification rules for Salesforce development. Use when writing Apex code. Do NOT use for LWC.';
+    const constraintBody = [
+      '## When to Use', '',
+      'Auto-activated on Apex code changes.', '',
+      '## Never Do', '',
+      '- N1: Never put SOQL inside loops', '',
+      '## Always Do', '',
+      '- A1: Always bulkify trigger handlers', '',
+      '@../_reference/GOVERNOR_LIMITS.md',
+    ].join('\n');
+    writeSkill(skillsDir, 'sf-test-constraints', [
+      '---',
+      'name: sf-test-constraints',
+      `description: "${constraintDesc}"`,
+      'origin: SCC',
+      'user-invocable: false',
+      'allowed-tools: ["Read", "Grep", "Glob"]',
+      '---',
+      constraintBody,
+    ].join('\n'));
+    // Create the referenced _reference file
+    const refDir = path.join(skillsDir, '_reference');
+    fs.mkdirSync(refDir, { recursive: true });
+    fs.writeFileSync(path.join(refDir, 'GOVERNOR_LIMITS.md'), '# Governor Limits\n\n| Limit | Value |\n|---|---|\n| SOQL | 100 |');
+    const result = runValidator(tmp);
+    assert.strictEqual(result.status, 0, `Expected pass but got: ${result.stderr || result.stdout}`);
+    const output = result.stderr + result.stdout;
+    assert.ok(!output.includes('SF pattern skill description should'), 'Should not warn constraint skills about Use when');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
 console.log(`\nvalidate-skills.test.js: ${passCount} passed, ${failCount} failed`);
 if (failCount > 0) process.exit(1);

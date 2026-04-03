@@ -21,3 +21,4 @@ workspace/
 *.key
 credentials.json
 .npmrc
+*.tgz

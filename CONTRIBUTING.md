@@ -182,7 +182,7 @@ What you return to the user.
 
 | Field | Description | Options |
 |-------|-------------|---------|
-| `name` | Lowercase, hyphenated | `sf-apex-reviewer` |
+| `name` | Lowercase, hyphenated | `sf-apex-agent` |
 | `description` | Used to decide when to invoke | Be specific! |
 | `tools` | Only what's needed | `Read, Write, Edit, Bash, Grep, Glob, WebFetch, Task` |
 | `model` | Complexity level | `haiku` (simple), `sonnet` (coding), `opus` (complex), `inherit` (caller decides) |
@@ -334,7 +334,7 @@ How you tested this with Salesforce projects.
 
 ## File Naming
 
-- Use lowercase with hyphens: `sf-apex-reviewer.md`
+- Use lowercase with hyphens: `sf-apex-agent.md`
 - Be descriptive: `sf-trigger-frameworks.md` not `triggers.md`
 - Match name to filename
 

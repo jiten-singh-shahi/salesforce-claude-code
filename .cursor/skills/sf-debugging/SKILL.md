@@ -358,5 +358,5 @@ CALLOUT_RESPONSE|....|200 {"orderId":"123","status":"OK"}
 
 ## Related
 
-- **Agent**: `sf-code-reviewer` -- for interactive, in-depth guidance
+- **Agent**: `sf-review-agent` -- for interactive, in-depth guidance
 - **Constraints**: `sf-apex-constraints` -- governor limits and Apex coding rules

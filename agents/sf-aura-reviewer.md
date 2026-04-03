@@ -1,9 +1,6 @@
 ---
 name: sf-aura-reviewer
-description: >-
-  Use when reviewing or maintaining Aura components for architecture, events,
-  Locker/LWS compliance, performance, and LWC migration readiness. Do NOT use
-  for LWC components or Apex-only review.
+description: "Use when reviewing or maintaining Aura components for architecture, events, Locker/LWS compliance, performance, and LWC migration readiness. Do NOT use for LWC components or Apex-only review."
 tools: ["Read", "Grep", "Glob"]
 model: sonnet
 origin: SCC
@@ -25,7 +22,7 @@ Use this agent when you need to:
 - Assess migration readiness — identify blockers and effort for LWC conversion
 - Review accessibility, SLDS token usage, and CSS compliance
 
-Do NOT use this agent for LWC component review — use `sf-lwc-reviewer`. Do NOT use for Apex-only logic review — use `sf-apex-reviewer`.
+Do NOT use this agent for LWC component review — use `sf-lwc-agent`. Do NOT use for Apex-only logic review — use `sf-review-agent`.
 
 ## Analysis Process
 
@@ -370,6 +367,6 @@ handleKeyDown: function(component, event, helper) {
 
 ## Related
 
-- **Agent**: `sf-lwc-reviewer` — For reviewing Lightning Web Components
-- **Agent**: `sf-apex-reviewer` — For reviewing the backing Apex controllers
-- **Skill**: `sf-aura-development` — Aura quick reference (invoke via `/sf-aura-development`)
+- **Agent**: `sf-lwc-agent` — For reviewing Lightning Web Components
+- **Agent**: `sf-review-agent` — For reviewing the backing Apex controllers
+- **Skill**: `sf-aura-development` — Aura quick reference (preloaded)

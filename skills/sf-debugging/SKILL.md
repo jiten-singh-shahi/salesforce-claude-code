@@ -2,7 +2,7 @@
 name: sf-debugging
 description: "Salesforce debugging — debug logs, SOQL explain plan, Flow debug, LWC DevTools, error resolution. Use when diagnosing Apex exceptions, governor breaches, or Flow failures. Do NOT use for tests or build errors."
 origin: SCC
-user-invocable: true
+user-invocable: false
 ---
 
 # Salesforce Debugging Techniques
@@ -359,5 +359,5 @@ CALLOUT_RESPONSE|....|200 {"orderId":"123","status":"OK"}
 
 ## Related
 
-- **Agent**: `sf-code-reviewer` -- for interactive, in-depth guidance
+- **Agent**: `sf-review-agent` -- for interactive, in-depth guidance
 - **Constraints**: `sf-apex-constraints` -- governor limits and Apex coding rules

@@ -16,7 +16,7 @@ You need to create an `AccountRatingService` that assigns ratings to accounts ba
 Plan an AccountRatingService that rates accounts as Hot (>= $1M revenue), Warm ($100K-$1M), or Cold (< $100K)
 ```
 
-**Agent invoked**: `sf-blueprint-planner`
+**Agent invoked**: `sf-architect`
 
 **What happens**: The planner agent analyzes the requirement and produces a structured plan including:
 
@@ -30,7 +30,7 @@ Plan an AccountRatingService that rates accounts as Hot (>= $1M revenue), Warm (
 /sf-tdd-workflow Create an AccountRatingService that rates accounts based on AnnualRevenue
 ```
 
-**Agent invoked**: `sf-tdd-guide`
+**Agent invoked**: `sf-apex-agent`
 
 **What happens**:
 
@@ -70,7 +70,7 @@ sf apex run test --class-names AccountRatingServiceTest --target-org MyScratchOr
 /sf-apex-best-practices Review AccountRatingService.cls
 ```
 
-**Agent invoked**: `sf-apex-reviewer`
+**Agent invoked**: `sf-review-agent`
 
 **What happens**: The reviewer checks the implementation against its checklist:
 
@@ -95,7 +95,7 @@ With green tests as a safety net, refactor:
 /sf-governor-limits Check AccountRatingService for governor limit risks
 ```
 
-**Agent invoked**: `sf-performance-optimizer`
+**Agent invoked**: `sf-apex-agent`
 
 **Expected outcome**: Clean audit -- no governor limit risks in pure in-memory logic.
 
@@ -115,7 +115,7 @@ You need to create an `accountRatingCard` LWC that displays an account's rating 
 /sf-lwc-development Create an accountRatingCard component that shows account name, rating badge (Hot=red, Warm=orange, Cold=blue), and annual revenue
 ```
 
-**Agent invoked**: `sf-lwc-reviewer`
+**Agent invoked**: `sf-lwc-agent`
 
 **What happens**: Reviews the plan for the component and provides guidance on:
 
@@ -185,7 +185,7 @@ npx lwc-jest --coverage
 /sf-lwc-development Review accountRatingCard for accessibility compliance
 ```
 
-**Agent invoked**: `sf-lwc-reviewer`
+**Agent invoked**: `sf-lwc-agent`
 
 **What it checks**:
 
@@ -203,7 +203,7 @@ npx lwc-jest --coverage
 /sf-deployment Deploy accountRatingCard and AccountRatingService to scratch org
 ```
 
-**Agent invoked**: `sf-devops-deployment`
+**Agent invoked**: `sf-architect`
 
 **Hook activity**:
 
@@ -222,7 +222,7 @@ Full development lifecycle from scratch org creation through production deployme
 /sf-deployment Create a new scratch org for feature/account-rating
 ```
 
-**Agent invoked**: `sf-devops-deployment`
+**Agent invoked**: `sf-architect`
 
 **What happens**:
 
@@ -279,7 +279,7 @@ sf apex run test --target-org account-rating --test-level RunLocalTests --code-c
 /sf-deployment Validate deployment to staging (dry run)
 ```
 
-**Agent invoked**: `sf-devops-deployment`
+**Agent invoked**: `sf-architect`
 
 ```bash
 sf project deploy validate --source-dir force-app/ --target-org Staging --test-level RunLocalTests --wait 30
@@ -308,7 +308,7 @@ sf project deploy start --source-dir force-app/ --target-org Staging --test-leve
 Verify the deployment to Staging succeeded and all tests pass
 ```
 
-**Agent invoked**: `sf-verification-runner`
+**Agent invoked**: `sf-review-agent`
 
 **What happens**:
 
@@ -330,7 +330,7 @@ Run a comprehensive security audit on the codebase, fix findings, and verify the
 /sf-security Run a full security audit on force-app/
 ```
 
-**Agent invoked**: `sf-security-reviewer`
+**Agent invoked**: `sf-review-agent`
 
 **What happens**: The security reviewer performs a multi-pass analysis:
 
@@ -469,7 +469,7 @@ Identify and fix performance bottlenecks in an existing Salesforce codebase.
 /sf-governor-limits Scan force-app/main/default/classes/ for governor limit risks
 ```
 
-**Agent invoked**: `sf-performance-optimizer`
+**Agent invoked**: `sf-apex-agent`
 
 **What happens**: The agent scans all Apex classes and triggers for:
 
@@ -515,7 +515,7 @@ MEDIUM (1):
 /sf-soql-optimization Optimize the SOQL queries in OrderProcessor.cls
 ```
 
-**Agent invoked**: `sf-performance-optimizer`
+**Agent invoked**: `sf-apex-agent`
 
 **What happens**: The agent refactors the code to move queries outside loops:
 
@@ -558,7 +558,7 @@ for (Order__c order : orders) {
 /sf-trigger-frameworks Refactor AccountTrigger to use a handler pattern with proper bulkification
 ```
 
-**Agent invoked**: `sf-trigger-architect`
+**Agent invoked**: `sf-architect`
 
 **What happens**: Converts the non-bulkified trigger into the thin-trigger-fat-handler pattern:
 
@@ -620,7 +620,7 @@ All critical and high severity findings resolved.
 /sf-governor-limits Run a comprehensive performance audit including SOQL query analysis
 ```
 
-**Agent invoked**: `sf-performance-optimizer`
+**Agent invoked**: `sf-apex-agent`
 
 **What it checks beyond governor limits**:
 
@@ -638,8 +638,8 @@ All critical and high severity findings resolved.
 
 | Workflow | Primary Commands | Agents Invoked | Key Hooks |
 |---|---|---|---|
-| Apex TDD | `/sf-tdd-workflow`, `/sf-apex-best-practices`, `/sf-governor-limits` | sf-tdd-guide, sf-apex-reviewer, sf-performance-optimizer | governor-check, quality-gate, post-write |
-| LWC Development | `/sf-lwc-development`, `/sf-deployment` | sf-lwc-reviewer, sf-devops-deployment | post-write, post-edit-console-warn, sfdx-validate |
-| Deployment Pipeline | `/sf-deployment`, `/sf-apex-testing`, `/sf-deployment` | sf-devops-deployment, sf-devops-deployment, sf-verification-runner | session-start, sfdx-validate, post-bash-build-complete |
-| Security Audit | `/sf-security`, `/sf-apex-best-practices` | sf-security-reviewer, sf-apex-reviewer | governor-check, quality-gate, sfdx-scanner-check |
-| Performance Optimization | `/sf-governor-limits`, `/sf-soql-optimization`, `/sf-trigger-frameworks`, `/sf-governor-limits` | sf-performance-optimizer, sf-performance-optimizer, sf-trigger-architect | governor-check, quality-gate, sfdx-validate |
+| Apex TDD | `/sf-tdd-workflow`, `/sf-apex-best-practices`, `/sf-governor-limits` | sf-apex-agent, sf-review-agent, sf-apex-agent | governor-check, quality-gate, post-write |
+| LWC Development | `/sf-lwc-development`, `/sf-deployment` | sf-lwc-agent, sf-architect | post-write, post-edit-console-warn, sfdx-validate |
+| Deployment Pipeline | `/sf-deployment`, `/sf-apex-testing`, `/sf-deployment` | sf-architect, sf-architect, sf-review-agent | session-start, sfdx-validate, post-bash-build-complete |
+| Security Audit | `/sf-security`, `/sf-apex-best-practices` | sf-review-agent, sf-review-agent | governor-check, quality-gate, sfdx-scanner-check |
+| Performance Optimization | `/sf-governor-limits`, `/sf-soql-optimization`, `/sf-trigger-frameworks`, `/sf-governor-limits` | sf-apex-agent, sf-apex-agent, sf-architect | governor-check, quality-gate, sfdx-validate |

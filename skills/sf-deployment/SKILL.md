@@ -5,7 +5,7 @@ description: >-
   package deployment, validation-then-quick-deploy, rollback planning,
   and production deployment best practices.
 origin: SCC
-user-invocable: true
+user-invocable: false
 disable-model-invocation: true
 ---
 
@@ -292,4 +292,4 @@ sf package install \
 ## Related
 
 - **Constraints**: `sf-deployment-constraints` -- deployment safety rules
-- **Agent**: `sf-devops-deployment` -- interactive, in-depth guidance
+- **Agent**: `sf-architect` -- interactive, in-depth guidance

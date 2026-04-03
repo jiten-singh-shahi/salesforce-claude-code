@@ -4,7 +4,7 @@ description: >-
   Use when doing test-driven Salesforce Apex development — RED-GREEN-REFACTOR
   cycle for classes, triggers, and LWC Jest. Do NOT use for test patterns only.
 origin: SCC
-user-invocable: true
+user-invocable: false
 allowed-tools: Read, Grep, Glob, Edit, Write, Bash
 disable-model-invocation: true
 ---
@@ -328,7 +328,7 @@ private class OpportunityFlowTest {
 
 ## Related
 
-- **Agent**: `sf-tdd-guide` — For interactive, in-depth guidance
+- **Agent**: `sf-apex-agent` — For interactive, in-depth guidance
 - **Skills**: `sf-apex-testing` — Test implementation patterns
 
 ### Guardrails

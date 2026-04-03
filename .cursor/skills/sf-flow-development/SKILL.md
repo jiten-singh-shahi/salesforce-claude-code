@@ -371,6 +371,6 @@ sf project deploy start \
 
 ## Related
 
-- Agent: `sf-flow-reviewer` -- for interactive, in-depth guidance
+- Agent: `sf-flow-agent` -- for interactive, in-depth guidance
 - Constraints: sf-apex-constraints (for Apex-invoked flows)
 - Reference: @../_reference/FLOW_PATTERNS.md

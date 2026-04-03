@@ -114,6 +114,6 @@ Never proceed past an escalation point autonomously.
 ## Related
 
 - **Skill**: `sf-apex-best-practices` — naming, organization, and error-handling standards
-- **Agent**: `sf-apex-reviewer` — code review that identifies candidates for cleanup
+- **Agent**: `sf-review-agent` — code review that identifies candidates for cleanup
 - **Agent**: `loop-operator` — running cleanup across many files with checkpoint tracking
-- **Agent**: `sf-security-reviewer` — verifying public API surface before removal
+- **Agent**: `sf-review-agent` — verifying public API surface before removal

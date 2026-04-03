@@ -1,6 +1,6 @@
 # External Integration with Named Credentials
 
-Secure external API integration using Named Credentials, HTTP callout service, retry handling, async processing, and test mocking.
+Secure external API integration using Named Credentials, HTTP callout service, retry handling, async processing, and test mocking. Compatible with API version 66.0 (Spring '26).
 
 ## When to Use This Pattern
 

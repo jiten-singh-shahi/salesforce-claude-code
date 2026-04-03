@@ -399,7 +399,7 @@ private class AccountServiceTest {
 
 ## Related
 
-- **Agent**: `sf-tdd-guide` — For interactive, in-depth guidance
+- **Agent**: `sf-apex-agent` — For interactive, in-depth guidance
 - **Skills**: `sf-tdd-workflow` — TDD workflow for Apex
 
 ### Guardrails

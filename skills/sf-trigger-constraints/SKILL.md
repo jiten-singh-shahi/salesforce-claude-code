@@ -87,4 +87,4 @@ Use when writing or reviewing a trigger PR:
 
 - **Skill**: `sf-trigger-frameworks` -- Framework patterns, base class code, migration guide
 - **Reference**: @../_reference/TRIGGER_PATTERNS.md -- Order of execution, context variables, framework comparison
-- **Agent**: `sf-trigger-architect` -- Interactive trigger design guidance
+- **Agent**: `sf-architect` -- Interactive trigger design guidance

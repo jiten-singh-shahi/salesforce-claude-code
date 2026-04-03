@@ -2,7 +2,7 @@
 name: sf-apex-testing
 description: "Apex unit testing — test structure, TestDataFactory, governor limit testing, async testing, mocks, coverage. Use when writing tests or improving coverage. Do NOT use for TDD workflow or LWC Jest tests."
 origin: SCC
-user-invocable: true
+user-invocable: false
 allowed-tools: Read, Grep, Glob, Edit, Write, Bash
 ---
 
@@ -401,7 +401,7 @@ private class AccountServiceTest {
 
 ## Related
 
-- **Agent**: `sf-tdd-guide` — For interactive, in-depth guidance
+- **Agent**: `sf-apex-agent` — For interactive, in-depth guidance
 - **Skills**: `sf-tdd-workflow` — TDD workflow for Apex
 
 ### Guardrails

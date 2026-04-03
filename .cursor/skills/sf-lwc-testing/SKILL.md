@@ -384,4 +384,4 @@ it('dispatches typed custom event', () => {
 
 ### Agents
 
-- **sf-lwc-reviewer** — For interactive, in-depth LWC review guidance
+- **sf-lwc-agent** — For interactive, in-depth LWC review guidance

@@ -75,5 +75,5 @@ Hard rules that every Apex class, trigger, and batch job must satisfy. Violation
 
 ## Related
 
-- Action skill: sf-write-apex (co-activates)
+- **Pattern skill**: `sf-apex-best-practices` — implementation examples for the rules above (class organization, error handling, collection patterns)
 - Reference files: @../_reference/GOVERNOR_LIMITS.md, @../_reference/NAMING_CONVENTIONS.md, @../_reference/SECURITY_PATTERNS.md
