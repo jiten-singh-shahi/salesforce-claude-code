@@ -1,7 +1,7 @@
 {
   "name": "salesforce-claude-code",
   "version": "1.1.0",
-  "description": "Production-ready AI agents, skills, and hooks for Salesforce development",
+  "description": "Production-ready expert subagents, domain skills, and quality gates for Salesforce development",
   "author": {
     "name": "Jiten Singh",
     "email": "jitencseng@gmail.com"

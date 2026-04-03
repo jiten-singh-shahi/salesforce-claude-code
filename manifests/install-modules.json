@@ -4,7 +4,7 @@
     {
       "id": "core",
       "kind": "bundle",
-      "description": "Core baseline — architect, review agent, core skills, lifecycle hooks",
+      "description": "Core baseline — architect, review agent, core skills, quality gates",
       "pathGroups": [
         {
           "paths": [
