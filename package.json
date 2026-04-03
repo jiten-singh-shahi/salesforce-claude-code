@@ -57,7 +57,7 @@
     ".cursor-plugin/plugin.json"
   ],
   "bin": {
-    "scc": "scripts/scc.js",
+    "scc-universal": "scripts/scc.js",
     "scc-install": "scripts/cli/install-apply.js"
   },
   "scripts": {

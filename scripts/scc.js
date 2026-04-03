@@ -23,14 +23,14 @@ function showHelp(exitCode = 0) {
 SCC — Salesforce Claude Code CLI
 
 Usage:
-  scc <command> [args...]
-  scc [install args...]
+  scc-universal <command> [args...]
+  scc-universal [install args...]
 
 Commands:
 ${PRIMARY_COMMANDS.map(cmd => `  ${cmd.padEnd(18)} ${COMMANDS[cmd].description}`).join('\n')}
 
 Compatibility:
-  scc [args...]      Without a command, args are routed to "install"
+  scc-universal [args...]      Without a command, args are routed to "install"
   scc help <command> Show help for a specific command
 
 Install targets:
@@ -44,17 +44,17 @@ Install profiles:
   --profile full       Complete suite — all 7 bundles (default)
 
 Examples:
-  scc apex
-  scc all
-  scc install --config scc-install.json
-  scc install --profile apex --target claude
-  scc plan --config scc-install.json --target cursor
-  scc doctor
-  scc repair --dry-run
-  scc status --json
-  scc sessions
-  scc session-inspect claude:latest
-  scc uninstall --dry-run
+  scc-universal apex
+  scc-universal all
+  scc-universal install --config scc-install.json
+  scc-universal install --profile apex --target claude
+  scc-universal plan --config scc-install.json --target cursor
+  scc-universal doctor
+  scc-universal repair --dry-run
+  scc-universal status --json
+  scc-universal sessions
+  scc-universal session-inspect claude:latest
+  scc-universal uninstall --dry-run
 
 Environment:
   SCC_HOOK_PROFILE    Hook profile: minimal | standard | strict

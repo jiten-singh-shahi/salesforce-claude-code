@@ -17,11 +17,11 @@ const { loadInstallConfig } = require('../lib/install-config');
 
 function showHelp(exitCode = 0) {
   console.log(`
-scc install — Install SCC content
+scc-universal install — Install SCC content
 
 Usage:
-  scc install [target] [options]
-  scc install --profile <name> --target <name>
+  scc-universal install [target] [options]
+  scc-universal install --profile <name> --target <name>
 
 Shorthand targets:
   apex              Install Apex profile content
@@ -37,12 +37,12 @@ Options:
   --help, -h        Show this help
 
 Examples:
-  scc install apex
-  scc install all
-  scc install --config scc-install.json
-  scc install --config scc-install.json --target cursor
-  scc install --profile security --target claude
-  scc install --profile lwc --target cursor --dry-run
+  scc-universal install apex
+  scc-universal install all
+  scc-universal install --config scc-install.json
+  scc-universal install --config scc-install.json --target cursor
+  scc-universal install --profile security --target claude
+  scc-universal install --profile lwc --target cursor --dry-run
 `);
   process.exit(exitCode);
 }
