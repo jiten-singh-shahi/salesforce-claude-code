@@ -12,7 +12,7 @@
             "agents/sf-review-agent.md",
             "agents/sf-bugfix-agent.md"
           ],
-          "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
+          "targets": { "claude": ".claude/agents/", "cursor": ".cursor/agents/" }
         },
         {
           "paths": [
@@ -25,7 +25,7 @@
         },
         {
           "paths": ["scripts/hooks/"],
-          "targets": { "claude": ".claude/", "cursor": null },
+          "targets": { "claude": ".claude/", "cursor": ".cursor/" },
           "installType": "hooks",
           "hooksSource": "hooks/hooks.json"
         }
@@ -44,7 +44,7 @@
           "paths": [
             "agents/sf-apex-agent.md"
           ],
-          "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
+          "targets": { "claude": ".claude/agents/", "cursor": ".cursor/agents/" }
         },
         {
           "paths": [
@@ -72,7 +72,7 @@
       "pathGroups": [
         {
           "paths": ["agents/sf-lwc-agent.md"],
-          "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
+          "targets": { "claude": ".claude/agents/", "cursor": ".cursor/agents/" }
         },
         {
           "paths": [
@@ -103,7 +103,7 @@
             "agents/loop-operator.md",
             "agents/refactor-cleaner.md"
           ],
-          "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
+          "targets": { "claude": ".claude/agents/", "cursor": ".cursor/agents/" }
         },
         {
           "paths": [
@@ -194,7 +194,7 @@
             "agents/sf-aura-reviewer.md",
             "agents/sf-admin-agent.md"
           ],
-          "targets": { "claude": ".claude/agents/", "cursor": ".agents/" }
+          "targets": { "claude": ".claude/agents/", "cursor": ".cursor/agents/" }
         },
         {
           "paths": [
