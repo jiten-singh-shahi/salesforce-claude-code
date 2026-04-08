@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2](https://github.com/jiten-singh-shahi/salesforce-claude-code/compare/scc-universal-v1.2.1...scc-universal-v1.2.2) (2026-04-08)
+
+
+### Bug Fixes
+
+* install hook scripts with lib dependencies and filter unused files ([#26](https://github.com/jiten-singh-shahi/salesforce-claude-code/issues/26)) ([d35547b](https://github.com/jiten-singh-shahi/salesforce-claude-code/commit/d35547bfeaac00cd1c79979186cd05b75b358898))
+* remove stale /skill-name invocations for pattern skills ([#21](https://github.com/jiten-singh-shahi/salesforce-claude-code/issues/21)) ([148e5c4](https://github.com/jiten-singh-shahi/salesforce-claude-code/commit/148e5c49d29f30e8ba98b3361d0e9163bf2808e0))
+
 ## [1.2.1](https://github.com/jiten-singh-shahi/salesforce-claude-code/compare/scc-universal-v1.2.0...scc-universal-v1.2.1) (2026-04-03)
 
 
