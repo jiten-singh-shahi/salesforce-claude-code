@@ -104,7 +104,7 @@ done
 
 # Hooks
 if [ -f ".claude/settings.json" ] && node -e "const s=require('./.claude/settings.json'); if(!s.hooks) process.exit(1);" 2>/dev/null; then pass "hooks merged into settings.json"; else fail "hooks merged into settings.json"; fi
-if [ -f ".claude/hooks/governor-check.js" ]; then pass "hook scripts installed"; else fail "hook scripts installed"; fi
+if [ -f ".claude/hooks/scripts/governor-check.js" ]; then pass "hook scripts installed"; else fail "hook scripts installed"; fi
 
 # Reference files
 if [ -d ".claude/skills/_reference" ]; then pass "reference dir exists"; else fail "reference dir exists"; fi

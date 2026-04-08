@@ -106,7 +106,8 @@ npx scc-universal uninstall    # Remove SCC-managed files
 |---|---|---|
 | Agents | `.claude/agents/*.md` | `.cursor/agents/*.md` |
 | Skills | `.claude/skills/*/SKILL.md` | `.cursor/skills/*/SKILL.md` |
-| Hooks | Merged into `.claude/settings.json` | `.cursor/hooks.json` |
+| Hooks (config) | Merged into `.claude/settings.json` | `.cursor/hooks.json` |
+| Hooks (scripts) | `.claude/hooks/scripts/`, `.claude/hooks/lib/` | `.cursor/hooks/scripts/`, `.cursor/hooks/lib/` |
 | MCP config | `.mcp.json` (project root) | `.cursor/mcp.json` |
 
 ### Install Profiles

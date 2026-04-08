@@ -24,8 +24,12 @@
           "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
         },
         {
-          "paths": ["scripts/hooks/"],
-          "targets": { "claude": ".claude/", "cursor": ".cursor/" },
+          "paths": ["scripts/hooks/", "scripts/lib/"],
+          "destMap": { "hooks": "scripts" },
+          "includeOnly": {
+            "scripts/lib/": ["utils.js", "hook-input.js", "apex-analysis.js", "hook-flags.js"]
+          },
+          "targets": { "claude": ".claude/hooks/", "cursor": ".cursor/hooks/" },
           "installType": "hooks",
           "hooksSource": "hooks/hooks.json"
         }
