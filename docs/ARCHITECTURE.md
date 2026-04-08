@@ -117,9 +117,10 @@ npx scc-universal install all
     ├── Resolve component list for profile
     ├── Generate install plan (scripts/dev/install-plan.js)
     ├── Execute plan (scripts/cli/install-apply.js)
-    │   ├── Copy agents to target
-    │   ├── Copy skills to target
-    │   └── Register hooks
+    │   ├── Copy agents to target (.claude/agents/)
+    │   ├── Copy skills to target (.claude/skills/)
+    │   ├── Copy hook scripts + lib (.claude/hooks/scripts/, .claude/hooks/lib/)
+    │   └── Merge hook config into .claude/settings.json
     └── Update state store (scripts/lib/state-store.js)
 ```
 

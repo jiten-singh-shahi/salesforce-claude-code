@@ -144,7 +144,7 @@ function isAgentFile(srcRelative) {
  * @param {string} targetName - install target ('claude' or 'cursor')
  * @returns {Array} installed file records
  */
-function installPaths(pathsList, destDir, pluginRoot, moduleName, dryRun, targetName) {
+function installPaths(pathsList, destDir, pluginRoot, moduleName, dryRun, targetName, destMap, includeOnly) {
   const installed = [];
 
   for (const srcRelative of pathsList) {
@@ -157,7 +157,11 @@ function installPaths(pathsList, destDir, pluginRoot, moduleName, dryRun, target
         continue;
       }
 
-      const dirName = path.basename(srcRelative.slice(0, -1));
+      let dirName = path.basename(srcRelative.slice(0, -1));
+      // Allow manifest destMap to override the destination directory name
+      if (destMap && destMap[dirName]) {
+        dirName = destMap[dirName];
+      }
       const destSubDir = path.join(destDir, dirName);
 
       // Use skill adapter for Cursor target when source is a skill directory
@@ -171,8 +175,11 @@ function installPaths(pathsList, destDir, pluginRoot, moduleName, dryRun, target
         continue;
       }
 
+      // Filter files if includeOnly is specified for this source directory
+      const allowList = includeOnly && includeOnly[srcRelative];
       const entries = fs.readdirSync(srcPath);
       for (const entry of entries) {
+        if (allowList && !allowList.includes(entry)) continue;
         const fullSrc = path.join(srcPath, entry);
         if (fs.statSync(fullSrc).isFile()) {
           const record = installFile(fullSrc, destSubDir, entry, moduleName, dryRun);
@@ -201,7 +208,11 @@ function installPaths(pathsList, destDir, pluginRoot, moduleName, dryRun, target
 
 /**
  * Remap hook commands from plugin paths to project-local paths.
- * ${CLAUDE_PLUGIN_ROOT}/scripts/hooks/foo.js → "$CLAUDE_PROJECT_DIR"/.claude/hooks/foo.js
+ * ${CLAUDE_PLUGIN_ROOT}/scripts/hooks/foo.js → "$CLAUDE_PROJECT_DIR"/.claude/hooks/scripts/foo.js
+ *
+ * Install copies scripts/hooks/ → .claude/hooks/scripts/ (via destMap) and
+ * scripts/lib/ → .claude/hooks/lib/ so that require('../lib/...') resolves
+ * correctly from the installed location.
  */
 function remapHookCommandForProject(command) {
   // Strip run-with-flags wrapper and extract the actual script
@@ -209,7 +220,7 @@ function remapHookCommandForProject(command) {
     /node\s+"?\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/hooks\/run-with-flags\.js"?\s+\S+\s+\S+\s+"?\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/hooks\/([^"]+)"?/
   );
   if (runWithFlagsMatch) {
-    return `node "$CLAUDE_PROJECT_DIR"/.claude/hooks/${runWithFlagsMatch[1]}`;
+    return `node "$CLAUDE_PROJECT_DIR"/.claude/hooks/scripts/${runWithFlagsMatch[1]}`;
   }
 
   // Shell flags wrapper
@@ -217,7 +228,7 @@ function remapHookCommandForProject(command) {
     /bash\s+"?\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/hooks\/run-with-flags-shell\.sh"?\s+\S+\s+"?scripts\/hooks\/([^"]+)"?\s+\S+/
   );
   if (shellFlagsMatch) {
-    return `bash "$CLAUDE_PROJECT_DIR"/.claude/hooks/${shellFlagsMatch[1]}`;
+    return `bash "$CLAUDE_PROJECT_DIR"/.claude/hooks/scripts/${shellFlagsMatch[1]}`;
   }
 
   // Direct script reference
@@ -225,7 +236,7 @@ function remapHookCommandForProject(command) {
     /node\s+"?\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/hooks\/([^"]+)"?/
   );
   if (directMatch) {
-    return `node "$CLAUDE_PROJECT_DIR"/.claude/hooks/${directMatch[1]}`;
+    return `node "$CLAUDE_PROJECT_DIR"/.claude/hooks/scripts/${directMatch[1]}`;
   }
 
   // npx commands pass through
@@ -233,7 +244,7 @@ function remapHookCommandForProject(command) {
     return command;
   }
 
-  return command.replace(/\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/hooks\//g, '"$CLAUDE_PROJECT_DIR"/.claude/hooks/');
+  return command.replace(/\$\{CLAUDE_PLUGIN_ROOT\}\/scripts\/hooks\//g, '"$CLAUDE_PROJECT_DIR"/.claude/hooks/scripts/');
 }
 
 /**
@@ -256,7 +267,7 @@ function installHooks(group, pluginRoot, targetName, projectRoot, moduleName, dr
   const destRelative = (group.targets || {})[targetName];
   if (destRelative) {
     const destDir = path.join(projectRoot, destRelative);
-    installed.push(...installPaths(group.paths || [], destDir, pluginRoot, moduleName, dryRun, targetName));
+    installed.push(...installPaths(group.paths || [], destDir, pluginRoot, moduleName, dryRun, targetName, group.destMap, group.includeOnly));
   }
 
   // Step 2: For Claude Code target, merge hooks into .claude/settings.json
@@ -318,13 +329,13 @@ function installHooks(group, pluginRoot, targetName, projectRoot, moduleName, dr
       const cursorHooksPath = path.join(projectRoot, '.cursor', 'hooks.json');
       const cursorHooks = transformHooks(hooksJson);
 
-      // Remap adapter paths from scripts/hooks/ to .cursor/hooks/
-      // (adapter outputs plugin-relative paths, but install copies to .cursor/hooks/)
+      // Remap adapter paths from scripts/hooks/ to .cursor/hooks/scripts/
+      // (adapter outputs plugin-relative paths, but install copies to .cursor/hooks/scripts/)
       for (const hooks of Object.values(cursorHooks.hooks)) {
         for (const hook of hooks) {
           if (hook.command) {
-            hook.command = hook.command.replace(/\bnode scripts\/hooks\//g, 'node "$CURSOR_PROJECT_DIR"/.cursor/hooks/');
-            hook.command = hook.command.replace(/\bbash scripts\/hooks\//g, 'bash "$CURSOR_PROJECT_DIR"/.cursor/hooks/');
+            hook.command = hook.command.replace(/\bnode scripts\/hooks\//g, 'node "$CURSOR_PROJECT_DIR"/.cursor/hooks/scripts/');
+            hook.command = hook.command.replace(/\bbash scripts\/hooks\//g, 'bash "$CURSOR_PROJECT_DIR"/.cursor/hooks/scripts/');
           }
         }
       }

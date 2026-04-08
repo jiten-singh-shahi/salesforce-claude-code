@@ -230,6 +230,83 @@ test('run-with-flags.js: can be required without throwing', () => {
     'run-with-flags.js should gate require() on hasRunExport check');
 });
 
+// ── Post-install require() resolution ────────────────────────────────────────
+
+test('hook scripts: all local require() paths resolve after install', () => {
+  // After install, scripts/hooks/ → .claude/hooks/scripts/ and scripts/lib/ → .claude/hooks/lib/.
+  // Verify that every require('../lib/...') in hooks has a matching file in scripts/lib/.
+  const hooksDir = path.join(pluginRoot, 'scripts', 'hooks');
+  if (!fs.existsSync(hooksDir)) return;
+
+  const missing = [];
+  const hookFiles = fs.readdirSync(hooksDir).filter(f => f.endsWith('.js'));
+
+  for (const file of hookFiles) {
+    const content = fs.readFileSync(path.join(hooksDir, file), 'utf8');
+    const requireMatches = content.matchAll(/require\(['"](\.\.\/.+?)['"]\)/g);
+    for (const m of requireMatches) {
+      const relPath = m[1];
+      const resolved = path.resolve(hooksDir, relPath);
+      const exists = fs.existsSync(resolved) || fs.existsSync(resolved + '.js') || fs.existsSync(resolved + '.json');
+      if (!exists) {
+        missing.push(`${file}: require('${relPath}') → not found`);
+      }
+    }
+  }
+  assert.strictEqual(missing.length, 0,
+    `Hook scripts have unresolvable require() paths:\n    ${missing.join('\n    ')}`);
+});
+
+test('install manifest: scripts/lib/ included alongside scripts/hooks/', () => {
+  const manifestPath = path.join(pluginRoot, 'manifests', 'install-modules.json');
+  if (!fs.existsSync(manifestPath)) return;
+
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  const modules = manifest.modules || [];
+
+  for (const mod of modules) {
+    for (const group of (mod.pathGroups || [])) {
+      if (group.installType === 'hooks' && (group.paths || []).includes('scripts/hooks/')) {
+        assert.ok(
+          (group.paths || []).includes('scripts/lib/'),
+          `Module "${mod.id}" installs scripts/hooks/ but not scripts/lib/ — ` +
+          'hook require(\'../lib/...\') will fail after install'
+        );
+      }
+    }
+  }
+});
+
+test('install manifest: includeOnly covers all hook require() dependencies', () => {
+  const manifestPath = path.join(pluginRoot, 'manifests', 'install-modules.json');
+  const hooksDir = path.join(pluginRoot, 'scripts', 'hooks');
+  if (!fs.existsSync(manifestPath) || !fs.existsSync(hooksDir)) return;
+
+  // Collect all lib files that hooks actually require
+  const neededLibFiles = new Set();
+  const hookFiles = fs.readdirSync(hooksDir).filter(f => f.endsWith('.js'));
+  for (const file of hookFiles) {
+    const content = fs.readFileSync(path.join(hooksDir, file), 'utf8');
+    const matches = content.matchAll(/require\(['"]\.\.\/lib\/([^'"]+)['"]\)/g);
+    for (const m of matches) {
+      const libFile = m[1].endsWith('.js') ? m[1] : m[1] + '.js';
+      neededLibFiles.add(libFile);
+    }
+  }
+
+  // Check that the includeOnly filter in the manifest covers all of them
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  for (const mod of (manifest.modules || [])) {
+    for (const group of (mod.pathGroups || [])) {
+      if (group.installType !== 'hooks' || !group.includeOnly) continue;
+      const allowed = group.includeOnly['scripts/lib/'] || [];
+      const missing = [...neededLibFiles].filter(f => !allowed.includes(f));
+      assert.strictEqual(missing.length, 0,
+        `Module "${mod.id}" includeOnly is missing hook dependencies: ${missing.join(', ')}`);
+    }
+  }
+});
+
 // ── Summary ───────────────────────────────────────────────────────────────────
 
 console.log(`\nhooks.test.js: ${passCount} passed, ${failCount} failed`);

@@ -27,7 +27,7 @@ Check what's installed in the current project:
 
 ```bash
 # Check for SCC installation markers
-ls -la .claude/hooks/ 2>/dev/null
+ls -la .claude/hooks/scripts/ 2>/dev/null
 ls -la .claude/agents/ 2>/dev/null
 ls -la .claude/skills/ 2>/dev/null
 ```
@@ -47,7 +47,7 @@ Rate each category 0-10 using these rubrics:
 | 7-8 | All standard profile hooks active |
 | 9-10 | Strict profile enabled, all hooks active including Code Analyzer integration |
 
-Check: `cat .claude/hooks/hooks.json | grep -c '"command"'` to count active hooks.
+Check: `npx scc-universal status` to see installed hooks and their profiles.
 Check: `echo $SCC_HOOK_PROFILE` to verify profile level.
 
 **Agent Coverage (0-10)**

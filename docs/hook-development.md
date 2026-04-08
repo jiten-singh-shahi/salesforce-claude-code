@@ -385,7 +385,7 @@ if (failCount > 0) process.exit(1);
 
 ### Step 4 -- Update the Cursor Mirror
 
-For Cursor IDE parity, add a corresponding hook in `.cursor/hooks/`. Cursor hooks use different lifecycle names but the adapter layer (`adapter.js`) maps them.
+For Cursor IDE parity, run `npm run build` to regenerate `.cursor/hooks.json`. The adapter layer maps Claude Code lifecycle events to Cursor equivalents automatically.
 
 | Claude Code Event | Cursor Equivalent |
 |---|---|

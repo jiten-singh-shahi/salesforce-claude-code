@@ -150,7 +150,7 @@ jobs:
         run: |
           test -f /tmp/test-project/.claude/settings.json
           node -e "const s=require('/tmp/test-project/.claude/settings.json'); if(!s.hooks||!s.hooks.PreToolUse) { process.exit(1); }"
-          test -f /tmp/test-project/.claude/hooks/governor-check.js
+          test -f /tmp/test-project/.claude/hooks/scripts/governor-check.js
 
       - name: Verify apex install — reference files
         run: |

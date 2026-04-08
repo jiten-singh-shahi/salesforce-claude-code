@@ -99,6 +99,7 @@ test('getTargetDirs: returns correct dirs for claude target', () => {
   assert.strictEqual(dirs.agents, '/project/.claude/agents');
   assert.strictEqual(dirs.skills, '/project/.claude/skills');
   assert.strictEqual(dirs.commands, '/project/.claude/commands');
+  // Base hooks dir; actual scripts install to hooks/scripts/ via manifest destMap
   assert.strictEqual(dirs.hooks, '/project/.claude/hooks');
 });
 

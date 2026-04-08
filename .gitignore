@@ -22,3 +22,4 @@ workspace/
 credentials.json
 .npmrc
 *.tgz
+tmp-test-*/
