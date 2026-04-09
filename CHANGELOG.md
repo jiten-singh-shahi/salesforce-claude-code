@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0](https://github.com/jiten-singh-shahi/salesforce-claude-code/compare/scc-universal-v1.2.2...scc-universal-v1.3.0) (2026-04-09)
+
+
+### Features
+
+* add 2GP security review, CLI reference skills and update agentforce ([#28](https://github.com/jiten-singh-shahi/salesforce-claude-code/issues/28)) ([c1c8862](https://github.com/jiten-singh-shahi/salesforce-claude-code/commit/c1c88624b9d59a374f03feff8081e0ab074a865f))
+
 ## [1.2.2](https://github.com/jiten-singh-shahi/salesforce-claude-code/compare/scc-universal-v1.2.1...scc-universal-v1.2.2) (2026-04-08)
 
 
