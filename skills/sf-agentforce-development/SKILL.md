@@ -1,24 +1,24 @@
 ---
 name: sf-agentforce-development
-description: "Agentforce AI agent development — topics, actions, Prompt Templates, testing. Use when building or testing Agentforce agents. Do NOT use for non-Agentforce Apex or Flow-only automation."
+description: "Agentforce agent development — Agent Script, topics, actions, testing, metadata. Use when building Agentforce agents. Do NOT use for non-Agentforce Apex or Flow-only automation."
 origin: SCC
 user-invocable: false
 ---
 
 # Agentforce Development
 
-Procedures for building Agentforce AI agents on the Salesforce platform. Architecture details, action type reference, instruction guidelines, and context engineering principles live in the reference file.
+Procedures for building Agentforce AI agents. Architecture, syntax reference, metadata types, instruction guidelines, and context engineering principles live in the reference file.
 
 @../_reference/AGENTFORCE_PATTERNS.md
 
 ## When to Use
 
-- Building Agentforce AI agents from scratch
+- Building Agentforce AI agents with Agent Script (`.agent` files)
+- Generating and publishing authoring bundles via CLI
 - Configuring agent topics, actions, or conversation instructions
 - Creating custom Apex actions or Flow actions for Agentforce
-- Authoring or reviewing prompt templates for agent responses
-- Testing, debugging, or evaluating agent behavior in Agent Builder
-- Reviewing Agentforce limits or security requirements
+- Testing agents with YAML test specs, CLI, or Testing Center
+- Deploying agent metadata (GenAi types) to orgs
 
 ---
 
@@ -32,419 +32,456 @@ Procedures for building Agentforce AI agents on the Salesforce platform. Archite
 
 ---
 
-## Topics: Defining Scope and Instructions
+## Development Approaches
 
-Topics are the primary organisational unit for agent capabilities.
+| | Agent Script (Recommended) | Classic Setup |
+|---|---|---|
+| **API version** | v65+ | v60+ |
+| **Surface** | `.agent` files in VS Code + CLI | Agentforce Builder UI |
+| **Source control** | Yes — diffable `.agent` files | No — UI-only |
+| **CI/CD** | Full: validate → publish → test → activate | Limited: deploy GenAi metadata |
+| **When to use** | All new agents; teams needing code review | Orgs on API < v65; admin-managed simple agents |
 
-```
-Topic Name: Case Management
-Description: Handles customer service case creation, updating, and
-             status inquiries. Covers support tickets and complaints.
-
-Instructions:
-- Verify customer identity before accessing case details
-- Create a new case if no existing open case matches the issue
-- Escalate to a human agent if the customer is frustrated or issue is technical
-- Summarise the resolution when closing a case
-
-Guardrails:
-- Do not discuss competitor products
-- Do not make promises about resolution timelines
-- Recommend contacting billing for billing disputes (out of scope)
-```
+**Default to Agent Script** for all new development.
 
 ---
 
-## Custom Apex Actions -- @InvocableMethod
+## Agent Script Development
+
+### File Structure
+
+```
+force-app/main/default/aiAuthoringBundles/My_Agent/
+  My_Agent.agent              # Agent Script file
+  My_Agent.bundle-meta.xml    # Metadata XML
+```
+
+### CLI Workflow
+
+```bash
+# Generate authoring bundle (from spec or --no-spec for boilerplate)
+sf agent generate authoring-bundle --spec specs/agentSpec.yaml \
+    --name "My Agent" --api-name My_Agent
+
+# Edit .agent file in VS Code (syntax highlighting + validation)
+# Validate → Publish → Preview → Activate
+sf agent validate authoring-bundle --target-org MySandbox
+sf agent publish authoring-bundle --target-org MySandbox
+sf agent preview --target-org MySandbox
+sf agent activate --api-name My_Agent --target-org MySandbox
+```
 
 ### Complete Example
 
-```apex
-public with sharing class CaseManagementAction {
+```
+config:
+  developer_name: "Service_Agent"
+  agent_label: "Customer Service Agent"
 
-    @InvocableMethod(
-        label='Create Support Case'
-        description='Creates a new support case for a customer.
-            Requires accountId and subject.'
-        category='Case Management'
-    )
-    public static List<CreateCaseResult> createSupportCase(
-            List<CreateCaseRequest> requests) {
-        List<CreateCaseResult> results = new List<CreateCaseResult>();
-        List<Case> casesToInsert = new List<Case>();
+variables:
+  customer_email: mutable string = ""
+  is_verified: mutable boolean = False
+  session_lang: linked string
+    source: "EndUserLanguage"
 
-        for (CreateCaseRequest req : requests) {
-            casesToInsert.add(new Case(
-                AccountId   = req.accountId,
-                ContactId   = req.contactId,
-                Subject     = req.subject,
-                Description = req.description,
-                Priority    = req.priority != null ? req.priority : 'Medium',
-                Status      = 'New',
-                Origin      = 'Agentforce'
-            ));
-        }
+system:
+  instructions: |
+    You are a customer service agent. Be friendly and concise.
+    Always verify identity before accessing account data.
+  messages:
+    welcome: "Hello! How can I help you today?"
+    error: "I apologize. Let me transfer you to a team member."
 
-        List<Database.SaveResult> saveResults =
-            Database.insert(casesToInsert, false, AccessLevel.USER_MODE);
+start_agent topic_selector:
+  description: "Routes messages to the appropriate topic"
+  reasoning:
+    instructions: ->
+      | Analyze the message and determine the best topic.
+    actions:
+      verify: @utils.transition to @topic.identity
+        description: "Verify customer identity"
+      orders: @utils.transition to @topic.order_management
+        description: "Help with order status or modifications"
 
-        Set<Id> successIds = new Set<Id>();
-        for (Database.SaveResult sr : saveResults) {
-            if (sr.isSuccess()) successIds.add(sr.getId());
-        }
+topic identity:
+  description: "Verifies customer identity via email lookup"
+  reasoning:
+    instructions: ->
+      if @variables.is_verified == True:
+        | Customer is already verified.
+        transition to @topic.order_management
+      | Ask for their email address to verify identity.
+    actions:
+      lookup:
+        action: @actions.lookup_customer
+        description: "Look up customer by email"
+        inputs:
+          email: ...
+        set:
+          is_verified: output.found
 
-        Map<Id, Case> caseMap = new Map<Id, Case>(
-            [SELECT Id, CaseNumber FROM Case WHERE Id IN :successIds]
-        );
+  after_reasoning: ->
+    if @variables.is_verified == True:
+      transition to @topic.order_management
 
-        for (Database.SaveResult sr : saveResults) {
-            CreateCaseResult result = new CreateCaseResult();
-            if (sr.isSuccess()) {
-                result.caseId     = sr.getId();
-                result.caseNumber = caseMap.get(sr.getId())?.CaseNumber;
-                result.success    = true;
-                result.message    = 'Case created: ' + result.caseNumber;
-            } else {
-                result.success = false;
-                result.message = 'Failed: ' + sr.getErrors()[0].getMessage();
-            }
-            results.add(result);
-        }
-        return results;
-    }
-
-    public class CreateCaseRequest {
-        @InvocableVariable(label='Account ID'
-            description='Salesforce Account ID of the customer'
-            required=true)
-        public Id accountId;
-
-        @InvocableVariable(label='Contact ID'
-            description='Contact ID raising the case' required=false)
-        public Id contactId;
-
-        @InvocableVariable(label='Subject'
-            description='Brief issue description (max 255 chars)'
-            required=true)
-        public String subject;
-
-        @InvocableVariable(label='Description'
-            description='Detailed issue description' required=false)
-        public String description;
-
-        @InvocableVariable(label='Priority'
-            description='Low, Medium, High, Critical' required=false)
-        public String priority;
-    }
-
-    public class CreateCaseResult {
-        @InvocableVariable(label='Case ID')
-        public Id caseId;
-
-        @InvocableVariable(label='Case Number')
-        public String caseNumber;
-
-        @InvocableVariable(label='Success')
-        public Boolean success;
-
-        @InvocableVariable(label='Message')
-        public String message;
-    }
-}
+topic order_management:
+  description: "Helps customers check order status"
+  reasoning:
+    instructions: ->
+      if @variables.is_verified == False:
+        transition to @topic.identity
+      | Help the customer with their order inquiry.
+    actions:
+      get_order:
+        action: @actions.get_order_details
+        description: "Retrieve order details by order number"
+        inputs:
+          order_number: ...
+          customer_email: @variables.customer_email
 ```
 
-### @InvocableMethod Best Practices
+### Key Patterns
 
-```apex
-// Good label and description — LLM uses these to decide when to call
-@InvocableMethod(
-    label='Get Account Recent Cases'
-    description='Retrieves the 5 most recent open cases for an account.
-        Use when customer asks about open tickets or case status.'
-    category='Case Management'
-)
+**Deterministic** (`->`) — guaranteed execution:
 
-// Return a result object (agent needs confirmation), not void
-// Bulkify — agent runtime may batch calls
+```
+-> if @variables.is_verified == False:
+     transition to @topic.identity
+```
+
+**LLM prompts** (`|`) — accumulated and sent to model:
+
+```
+| Help the customer with their order.
+| Be concise and provide the order number.
+```
+
+**Deterministic action** (`run`) — bypasses LLM:
+
+```
+-> run @actions.get_recent_orders with
+     customer_id: @variables.customer_id
+   set
+     recent_orders: result
 ```
 
 ---
 
-## Flow Actions for Agentforce
+## Action Types
 
-Use Flow actions when logic involves declarative orchestration, screen interactions, or non-developer maintenance.
+### Apex @InvocableMethod
+
+Apex actions are built by `sf-apex-agent` using patterns from `sf-apex-constraints`. Key Agentforce-specific requirements for `@InvocableMethod` actions:
+
+- **Labels/descriptions are critical** — the LLM reads these to decide routing. Keep in sync between Apex annotations and Builder action config
+- **InvocableVariable descriptions** must specify data type and format: `"accountId — 18-digit Account record ID"`
+- **Return result objects** (not void) — agent needs structured confirmation to continue reasoning
+- **Use `Database` class** (partial success) not DML verbs (all-or-nothing)
+- **Varied verb names** across actions: "Locate", "Retrieve", "Calculate" — not "Get X", "Get Y"
+- **Decompose** complex actions to avoid CPU timeout (10s sync limit)
+- **Long-running work**: enqueue Queueable, return requestId for status tracking
+
+### MCP Server
+
+External tools exposed to Agentforce via Model Context Protocol (JSON-RPC 2.0 over HTTP/SSE).
+
+- **Setup**: Register server in MCP Server Registry (Setup > MCP Servers). Tools appear in Agentforce Asset Library
+- **Auth**: OAuth 2.0 with Integration User. Principle of least privilege. FLS and sharing rules enforced
+- **Rate limit**: ~50 requests/min/server
+- **Tool discovery**: On connection, server returns schema with tool names, descriptions, required/optional parameters, return types
+- **Prebuilt servers**: Salesforce DX MCP Server (deploy, test, scratch orgs), Heroku Platform, MuleSoft
+- **Hosted MCP (Pilot)**: Fully managed cloud endpoints — zero infrastructure. Pre-built for core CRM and B2C Commerce APIs
+
+### Named Query (GA)
+
+Parameterized SOQL exposed as REST API endpoint and agent action. No Apex or Flow required.
 
 ```
-Flow: Update_Account_Segment (Autolaunched Flow)
-Variables:
-  - accountId (Input, Text, Required)
-  - newSegment (Input, Text, Required)
-  - result (Output, Text)
-
-Steps:
-  1. Get Records: Account WHERE Id = {accountId}
-  2. Decision: Is segment different from current?
-  3. Update Records: Account.Segment__c = {newSegment}
-  4. Assignment: result = "Segment updated to " + {newSegment}
+Query Name: GetRecentOrders
+SOQL: SELECT Id, Name, Status__c, CreatedDate
+      FROM Order__c
+      WHERE AccountId = :accountId
+      ORDER BY CreatedDate DESC LIMIT 5
 ```
 
-Add the Flow to an Agentforce topic as an action in Setup.
+- Auto-creates REST endpoint: `/services/data/v66.0/named/query/GetRecentOrders?accountId=001xx...`
+- Activate in API Catalog, then add as agent action
+- **Limitation**: Input parameters only in WHERE and LIMIT clauses. Cannot edit after agent action activation without deactivation
+
+### AuraEnabled Methods (Beta)
+
+Reuse existing `@AuraEnabled` controller methods as agent actions:
+
+1. Generate OpenAPI spec: VS Code → "SFDX: Create OpenAPI Document from This Class" → creates `.yaml` + `.externalServiceRegistration-meta.xml`
+1. Optionally add `x-sfdc: publishAsAgentAction: true` for auto-creation
+1. Deploy to API Catalog
+1. Add as agent action (category: "AuraEnabled Method (Beta)")
+
+### Apex Citations
+
+Source attribution in agent responses. Two approaches:
+
+| Class | Behavior | Use When |
+|---|---|---|
+| `AiCopilot.GenAiCitationInput` | Supplies sources to reasoning engine; engine auto-places inline numbered citations | Default — let the engine decide placement |
+| `AiCopilot.GenAiCitationOutput` | Direct control over citation placement; bypasses reasoning engine | Predetermined citation logic needed |
+
+Supported sources: knowledge articles, PDF files, external web pages. Requires agent created after May 2025. Action must return both generated response and citation metadata.
+
+### Lightning Types
+
+Custom LWC components for rich conversational UI in agent responses.
+
+```
+lightningTypes/
+  flightResponse/
+    schema.json                    # JSON Schema for validation
+    lightningDesktopGenAi/         # Channel: Employee Agent
+      renderer.json                # Output LWC component
+    enhancedWebChat/               # Channel: Service Agent (Enhanced Chat v2)
+      renderer.json
+  flightFilter/
+    schema.json
+    lightningDesktopGenAi/
+      editor.json                  # Input LWC component
+```
+
+- LWC targets: `lightning__AgentforceInput` (editor), `lightning__AgentforceOutput` (renderer)
+- **Constraint**: Custom Lightning Types only override UI for actions using **Apex classes** as input/output
+- Editor LWC must include `handleInputChange()` dispatching `valuechange` event
+
+### Adaptive Response Formats
+
+Rich responses without custom LWC development (Service Agents on messaging channels):
+
+| Format | UI | Fields |
+|---|---|---|
+| **Rich Choice** | Carousel, buttons, list selector | Title, description, link, image per tile |
+| **Rich Link** | Media card | Link title, URL, image, description |
+
+Determined automatically by returned data structure from Apex or Flow actions.
+
+---
+
+## Flow Actions
+
+Use when logic involves declarative orchestration or non-developer maintenance.
+
+```
+Flow: Update_Account_Segment (Autolaunched)
+Variables: accountId (Input), newSegment (Input), result (Output)
+Steps: Get Record → Decision → Update Record → Assign result
+```
+
+Add to topics in Setup or reference in Agent Script `reasoning.actions`.
 
 ---
 
 ## Prompt Templates
 
-### Creating a Flex Prompt Template
-
 ```
 Template Name: Case Summary for Agent
-Template Type: Flex (general purpose)
+Template Type: Flex
 Grounding: Case record
 
-Template Body:
-You are a helpful customer service assistant.
+Body:
 Summarise the following case for a support representative.
-
-Case Details:
 - Case Number: {!$Input:Case.CaseNumber}
 - Subject: {!$Input:Case.Subject}
 - Status: {!$Input:Case.Status}
-- Priority: {!$Input:Case.Priority}
 - Customer: {!$Input:Case.Account.Name}
-- Description: {!$Input:Case.Description}
 
-Provide:
-1. A 2-sentence summary of the issue
-2. Recommended next action
-3. Estimated complexity: Low/Medium/High
-```
-
-### Using Prompt Templates in Apex
-
-> Note: The ConnectApi surface for Einstein/Agentforce changes rapidly. Verify exact class/method names against the ConnectApi Apex Reference for your target API version (v66.0 Spring '26).
-
-```apex
-public with sharing class PromptTemplateAction {
-
-    @InvocableMethod(
-        label='Generate Case Summary'
-        description='Generates an AI summary using Einstein Prompt Template'
-    )
-    public static List<SummaryResult> generateCaseSummary(
-            List<SummaryRequest> requests) {
-        List<SummaryResult> results = new List<SummaryResult>();
-
-        for (SummaryRequest req : requests) {
-            try {
-                ConnectApi.EinsteinPromptTemplateGenerationsRepresentation
-                    response = ConnectApi.EinsteinLLM
-                        .generateMessagesForPromptTemplate(
-                            'Case_Summary_for_Agent',
-                            new Map<String, String>{
-                                'Input:Case' => req.caseId
-                            },
-                            new Map<String, ConnectApi
-                                .EinsteinPromptTemplateGenerationsInput>()
-                        );
-
-                SummaryResult result = new SummaryResult();
-                result.summary = response.generations[0].text;
-                result.success = true;
-                results.add(result);
-            } catch (Exception e) {
-                SummaryResult result = new SummaryResult();
-                result.success = false;
-                result.errorMessage = e.getMessage();
-                results.add(result);
-            }
-        }
-        return results;
-    }
-
-    public class SummaryRequest {
-        @InvocableVariable(label='Case ID' required=true)
-        public Id caseId;
-    }
-
-    public class SummaryResult {
-        @InvocableVariable(label='Summary')
-        public String summary;
-        @InvocableVariable(label='Success')
-        public Boolean success;
-        @InvocableVariable(label='Error Message')
-        public String errorMessage;
-    }
-}
+Provide: 1) 2-sentence summary  2) Recommended next action  3) Complexity: Low/Medium/High
 ```
 
 ---
 
-## Mixing Deterministic Logic with LLM Actions (Spring '26)
+## Testing
 
-Agentforce supports mixing deterministic actions (Apex, Flow) with LLM-driven prompt actions within a single topic.
+Apex unit tests for `@InvocableMethod` actions are handled by `sf-apex-agent` using `sf-testing-constraints`. This section covers **agent-level testing** — verifying topic routing, action execution, and response quality.
 
-> Configuration is done in the Agentforce Builder UI. The pseudo-code below illustrates the architectural pattern.
+### Agent Test Spec (YAML)
 
-```
-Topic: CaseTriage
+```yaml
+name: Service_Agent_Tests
+description: End-to-end tests for Customer Service Agent
+subjectType: AGENT
+subjectName: Service_Agent
+subjectVersion: v1
+testCases:
+  - utterance: "What's the status of order #12345?"
+    expectedTopic: Order_Management
+    expectedActions:
+      - get_order_details
+    expectedOutcome: "Agent provides order status details including shipping info"
+    contextVariables:
+      - name: EndUserLanguage
+        value: en
+    metrics:
+      - topic_sequence_match
+      - action_sequence_match
+      - bot_response_rating
+      - coherence
+      - completeness
+      - conciseness
+      - latency
 
-Step 1 (Deterministic — Apex):
-    Call: EscalateCaseAction
-    Condition: case.Priority == 'Critical'
+  - utterance: "I need to file a complaint about my delivery"
+    expectedTopic: Case_Management
+    expectedActions:
+      - create_support_case
+    expectedOutcome: "Agent creates a case and provides the case number"
+    metrics:
+      - topic_sequence_match
+      - action_sequence_match
+      - bot_response_rating
+      - instructionAdherence
 
-Step 2 (Deterministic — Apex):
-    Call: GetKnowledgeArticles
-    Input: case.Subject
-    -> Grounds the LLM with relevant articles
-
-Step 3 (LLM — Prompt Template):
-    Template: Case_Resolution_Suggestion
-    Grounding: case record + articles from Step 2
-
-Step 4 (Deterministic — Apex):
-    Call: LogAgentInteraction
-    -> Audit trail logged regardless of LLM output
-```
-
-Use when: compliance rules need deterministic execution, multi-step processes mix AI judgment with guaranteed logic, or audit trails must separate deterministic decisions from AI content.
-
----
-
-## Testing Agentforce
-
-### Unit Testing Apex Actions
-
-```apex
-@IsTest
-public class CaseManagementActionTest {
-
-    @TestSetup
-    static void setup() {
-        Account acc = new Account(Name='Test Account');
-        insert acc;
-        Contact con = new Contact(LastName='Doe', AccountId=acc.Id);
-        insert con;
-    }
-
-    @IsTest
-    static void testCreateCase_validInput_createsCase() {
-        Account acc = [SELECT Id FROM Account LIMIT 1];
-        Contact con = [SELECT Id FROM Contact LIMIT 1];
-
-        CaseManagementAction.CreateCaseRequest req =
-            new CaseManagementAction.CreateCaseRequest();
-        req.accountId = acc.Id;
-        req.contactId = con.Id;
-        req.subject   = 'Cannot access portal';
-        req.priority  = 'High';
-
-        Test.startTest();
-        List<CaseManagementAction.CreateCaseResult> results =
-            CaseManagementAction.createSupportCase(
-                new List<CaseManagementAction.CreateCaseRequest>{req});
-        Test.stopTest();
-
-        System.assert(results[0].success);
-        System.assertNotEquals(null, results[0].caseId);
-
-        Case created = [SELECT Status, Origin, Priority
-            FROM Case WHERE Id = :results[0].caseId];
-        System.assertEquals('Agentforce', created.Origin);
-        System.assertEquals('High', created.Priority);
-    }
-
-    @IsTest
-    static void testCreateCase_bulk_createsMultipleCases() {
-        Account acc = [SELECT Id FROM Account LIMIT 1];
-
-        List<CaseManagementAction.CreateCaseRequest> requests =
-            new List<CaseManagementAction.CreateCaseRequest>();
-        for (Integer i = 0; i < 200; i++) {
-            CaseManagementAction.CreateCaseRequest req =
-                new CaseManagementAction.CreateCaseRequest();
-            req.accountId = acc.Id;
-            req.subject   = 'Bulk test case ' + i;
-            requests.add(req);
-        }
-
-        Test.startTest();
-        List<CaseManagementAction.CreateCaseResult> results =
-            CaseManagementAction.createSupportCase(requests);
-        Test.stopTest();
-
-        Integer successCount = 0;
-        for (CaseManagementAction.CreateCaseResult r : results) {
-            if (r.success) successCount++;
-        }
-        System.assertEquals(200, successCount);
-    }
-}
+  - utterance: "Hola, necesito ayuda con mi pedido"
+    expectedTopic: Order_Management
+    contextVariables:
+      - name: EndUserLanguage
+        value: es
+    metrics:
+      - topic_sequence_match
+      - coherence
 ```
 
----
+### Multi-Turn Conversation Testing
 
-## SF CLI Agent Commands (Spring '26)
+```yaml
+testCases:
+  - utterance: "I want to return my order"
+    expectedTopic: Order_Management
+    conversationHistory:
+      - role: user
+        message: "Hi, I need help"
+      - role: agent
+        message: "Hello! How can I help you today?"
+        topic: topic_selector
+      - role: user
+        message: "I have a problem with order #12345"
+      - role: agent
+        message: "I found order #12345. It was delivered on March 15."
+        topic: Order_Management
+    metrics:
+      - topic_sequence_match
+      - action_sequence_match
+```
+
+### Custom Evaluations
+
+```yaml
+testCases:
+  - utterance: "What's the weather in SF?"
+    customEvaluations:
+      - label: Temperature Check
+        jsonPathExpression: $.actions[0].result.temperature
+        comparisonOperator: greaterThan
+        expectedValue: "0"
+```
+
+### CLI Test Workflow
 
 ```bash
-# Activate an agent
-sf agent activate --name "Sales Assistant" --target-org MySandbox
+# Generate test spec from agent definition
+sf agent generate test-spec --output-file specs/testSpec.yaml
 
-# Run automated agent tests
-sf agent test run --target-org MySandbox --output-dir test-results/
+# Create test in org from YAML spec
+sf agent test create --spec specs/testSpec.yaml --target-org MySandbox
 
-# Resume a paused test job
-sf agent test resume --job-id <jobId> --target-org MySandbox
-
-# Get test results
-sf agent test results --job-id <jobId> --result-format human
-
-# Generate starter agent spec
-sf agent generate agent-spec \
-    --agent-type custom \
-    --output-dir force-app/main/agents \
+# Run tests synchronously with JUnit output (CI-friendly)
+sf agent test run --api-name Service_Agent_Tests --wait 10 \
+    --result-format junit --output-dir ./test-results \
     --target-org MySandbox
+
+# View results
+sf agent test results --test-id <id> --target-org MySandbox
+
+# List all agent tests
+sf agent test list --target-org MySandbox
 ```
+
+### Testing REST API (CI Integration)
+
+```
+# Start test run
+POST /services/data/v63.0/einstein/ai-evaluations/runs
+Body: { "aiEvaluationDefinitionName": "Service_Agent_Tests" }
+Response: { "runId": "0Xx..." }
+
+# Poll status
+GET /services/data/v63.0/einstein/ai-evaluations/runs/{runId}
+Response: { "status": "NEW | IN_PROGRESS | COMPLETED | ERROR" }
+
+# Get results
+GET /services/data/v63.0/einstein/ai-evaluations/runs/{runId}/results
+Response: { "testCases": [...], "testResults": [...] }
+```
+
+Auth: OAuth 2.0 via External Client App (JWT with consumer key/secret).
+
+### Testing Tools Summary
+
+| Tool | Purpose |
+|---|---|
+| **Agent Builder Preview** | Real-time conversational testing (simulated or live mode) |
+| **Agentforce Testing Center** | Bulk test execution; auto-generates test cases from knowledge |
+| **CLI (`sf agent test`)** | Headless testing, JUnit output, CI pipeline integration |
+| **VS Code Agent Panel** | View/run tests + Agent Preview pane + Apex Replay Debugger |
+| **Testing REST API** | Programmatic test execution from external CI systems |
+| **Agent Grid (Beta)** | Spreadsheet-like rapid testing with real CRM data |
 
 ---
 
-## Security: Data Access in AI Context
+## Metadata & Deployment
 
-```apex
-// Enforce sharing in Agentforce Apex actions
-public with sharing class SecureAgentAction {
-
-    @InvocableMethod(label='Get Customer Orders')
-    public static List<OrderResult> getOrders(List<OrderRequest> requests) {
-        // Collect ALL accountIds — runtime may batch multiple requests
-        Set<Id> accountIds = new Set<Id>();
-        for (OrderRequest req : requests) {
-            accountIds.add(req.accountId);
-        }
-
-        // USER_MODE enforces CRUD/FLS and sharing rules
-        List<Order__c> orders = [
-            SELECT Id, Name, Status__c, Amount__c, AccountId
-            FROM Order__c
-            WHERE AccountId IN :accountIds
-            WITH USER_MODE
-            LIMIT 50
-        ];
-
-        // Build results grouped by AccountId...
-    }
-}
+```
+force-app/main/default/
+  aiAuthoringBundles/My_Agent/   # .agent + .bundle-meta.xml
+  bots/My_Agent/                 # .bot-meta.xml
+  botVersions/My_Agent.v1/      # .botVersion-meta.xml
+  genAiPlannerBundles/My_Agent/  # .genAiPlannerBundle-meta.xml
+  genAiPlugins/Topic_Name/       # .genAiPlugin-meta.xml
+  genAiFunctions/Action_Name/    # .genAiFunction-meta.xml + input/output schema.json
+  aiEvaluationDefinitions/       # .aiEvaluationDefinition-meta.xml
 ```
 
-### PII Considerations
+**Deploy order**: Bot/BotVersion → GenAiPromptTemplate → GenAiFunction → GenAiPlugin → GenAiPlannerBundle → AiAuthoringBundle → AiEvaluationDefinition → Activate
 
-- Use field-level security to control what the agent can access
+**Retrieve**: `sf project retrieve start --metadata "AiAuthoringBundle:My_Agent*"`
+
+---
+
+## Security
+
+- Always use `with sharing` and `AccessLevel.USER_MODE` / `WITH USER_MODE`
 - Ground Prompt Templates only with fields the user's profile can read
 - Review agent conversations in Setup > Agent Conversations
 
 ---
 
+## Classic Topics (Pre-Agent Script)
+
+For orgs on API < v65, configure topics in Agentforce Builder UI:
+
+```
+Topic: Case Management
+Description: Handles case creation, updating, and status inquiries.
+Scope WILL: Case creation, status checks, escalation
+Scope WILL NOT: Billing disputes, resolution timeline promises
+Instructions:
+1. Verify customer identity before accessing case details
+2. Create a new case if no existing open case matches
+3. Escalate if customer is frustrated or issue is complex
+```
+
+All instruction guidelines and context engineering principles from the reference apply identically.
+
+---
+
 ## Related
 
-- Agent: `sf-agentforce-agent` -- for interactive, in-depth guidance
+- Agent: `sf-agentforce-agent` — for interactive guidance
 - Constraints: sf-apex-constraints
 - Reference: @../_reference/AGENTFORCE_PATTERNS.md
