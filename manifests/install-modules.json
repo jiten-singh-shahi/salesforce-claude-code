@@ -155,7 +155,8 @@
           "paths": [
             "skills/sf-devops-ci-cd/",
             "skills/sf-deployment/",
-            "skills/sf-deployment-constraints/"
+            "skills/sf-deployment-constraints/",
+            "skills/sf-cli-reference/"
           ],
           "targets": { "claude": ".claude/skills/", "cursor": ".cursor/skills/" }
         }
@@ -173,6 +174,7 @@
         {
           "paths": [
             "skills/sf-security/",
+            "skills/sf-2gp-security-review/",
             "skills/sf-governor-limits/",
             "skills/sf-soql-optimization/",
             "skills/sf-security-constraints/"
