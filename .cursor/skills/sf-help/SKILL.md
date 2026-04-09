@@ -6,7 +6,7 @@ description: >-
 
 # SCC Help — Agent and Skill Discovery
 
-SCC provides **17 agents** for end-to-end Salesforce development and **55 skills** for domain knowledge. Agents are lean workflow orchestrators. Skills carry patterns, examples, and rules.
+SCC provides **17 agents** for end-to-end Salesforce development and **57 skills** for domain knowledge. Agents are lean workflow orchestrators. Skills carry patterns, examples, and rules.
 
 ## When to Use
 

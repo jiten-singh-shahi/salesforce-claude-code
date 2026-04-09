@@ -6,7 +6,7 @@
 
 > The complete AI development system for Salesforce — expert agents, automated quality gates, and institutional knowledge, powered by @salesforce/mcp
 
-SCC (`scc-universal` on npm) is a Claude Code plugin that supercharges your Salesforce development workflow with **17 expert subagents**, **55 domain knowledge skills**, and **29 automated quality gates**. Built for Apex, LWC, SOQL, Flow, Visualforce, Aura, DevOps, and Agentforce — covering every layer of the Salesforce platform.
+SCC (`scc-universal` on npm) is a Claude Code plugin that supercharges your Salesforce development workflow with **17 expert subagents**, **57 domain knowledge skills**, and **29 automated quality gates**. Built for Apex, LWC, SOQL, Flow, Visualforce, Aura, DevOps, and Agentforce — covering every layer of the Salesforce platform.
 
 ---
 
@@ -18,7 +18,7 @@ SCC is a unified system where each layer serves a distinct role:
 |-------|-------------|----------|
 | **@salesforce/mcp** | Platform capabilities — query orgs, deploy metadata, run tests, analyze code | Org management, SOQL queries, Apex test execution |
 | **17 Agents** | Lean full-stack agents that design, build, test, and review | `sf-architect`, `sf-apex-agent`, `sf-lwc-agent`, `sf-review-agent` |
-| **55 Skills** | Institutional knowledge + workflows — 17 user-invocable via `/skill-name`, 38 auto-activating | `/sf-help`, `/sf-quickstart`, `/configure-scc`, `/sessions` |
+| **57 Skills** | Institutional knowledge + workflows — 18 user-invocable via `/skill-name`, 39 auto-activating | `/sf-help`, `/sf-quickstart`, `/configure-scc`, `/sessions` |
 | **7 Constraint Skills** | Always-on governance via auto-activating skills | `sf-apex-constraints`, `sf-soql-constraints`, `sf-security-constraints`, `sf-trigger-constraints` |
 | **29 Hooks** | Automated enforcement — quality gates run on every code change | SOQL-in-loop detection, PMD via sf scanner, privilege escalation checks |
 
@@ -31,7 +31,7 @@ SCC is a unified system where each layer serves a distinct role:
 | Category | Count | Description |
 |---|---|---|
 | Agents | 17 | Specialized Salesforce subagents (11 domain + 6 platform) |
-| Skills | 55 | Domain knowledge + workflow modules (17 user-invocable, 38 auto-activating) |
+| Skills | 57 | Domain knowledge + workflow modules (18 user-invocable, 39 auto-activating) |
 | Hooks | 29 | Automated quality gates (SessionStart, PreToolUse, PostToolUse, PostToolUseFailure, PreCompact, Stop, SessionEnd) |
 | Harnesses | 2 | Claude Code, Cursor |
 
@@ -120,8 +120,8 @@ SCC content is organized into 7 modules. Profiles compose subsets:
 | `apex` | Apex agents, skills, SOQL, constraints | core |
 | `lwc` | LWC agent, skills, constraints | core |
 | `platform` | Cross-domain agents, universal skills, debugging, integration | core |
-| `devops` | CI/CD, deployment, scratch orgs | core |
-| `security` | Security agent, CRUD/FLS, governor limits, SOQL optimization | core |
+| `devops` | CI/CD, deployment, scratch orgs, SF CLI reference | core |
+| `security` | Security agent, CRUD/FLS, governor limits, SOQL optimization, 2GP security review | core |
 | `extended` | Flow, Visualforce, Aura, Agentforce, Admin, Events, API design | core |
 
 | Profile | Modules Included |
@@ -267,6 +267,8 @@ All content is structured for use across multiple AI harnesses:
 | `sf-deployment` | Deployment validation, partial deploys, rollback |
 | `sf-integration` | REST/SOAP callouts, named credentials, auth |
 | `sf-security` | CRUD/FLS, sharing, stripInaccessible patterns |
+| `sf-2gp-security-review` | 2GP managed package AppExchange security review and pass/fail prediction |
+| `sf-cli-reference` | SF CLI command reference and usage patterns |
 | `sf-api-design` | Salesforce API design and best practices |
 | `sf-e2e-testing` | End-to-end testing for Salesforce apps |
 | `sf-tdd-workflow` | Test-driven development for Salesforce |
@@ -309,9 +311,9 @@ All content is structured for use across multiple AI harnesses:
 
 ## Skills
 
-17 skills are user-invocable via `/skill-name`. 38 are auto-activating context skills (28 pattern + 7 constraint + 3 platform).
+18 skills are user-invocable via `/skill-name`. 39 are auto-activating context skills (29 pattern + 7 constraint + 3 platform).
 
-### User-Invocable (17)
+### User-Invocable (18)
 
 Invoke with `/skill-name` in Claude Code or Cursor.
 
@@ -333,9 +335,10 @@ Invoke with `/skill-name` in Claude Code or Cursor.
 | `/update-platform-docs` | Update platform reference docs with latest release features |
 | `/aside` | Quick side investigation without losing context |
 | `/model-route` | Route tasks to optimal model by complexity |
+| `/sf-2gp-security-review` | 2GP managed package AppExchange security review and pass/fail prediction |
 | `/search-first` | Research existing tools and patterns before writing custom code |
 
-### Pattern Skills (28) — Agent-Consulted
+### Pattern Skills (29) — Agent-Consulted
 
 Agents read these on demand for domain knowledge. Not directly invocable via `/`.
 
@@ -369,10 +372,11 @@ Agents read these on demand for domain knowledge. Not directly invocable via `/`
 | `sf-build-fix` | Fix build errors and resolve dependencies |
 | `sf-visualforce-development` | Visualforce review — XSS, ViewState, LWC migration |
 | `sf-aura-development` | Aura component review — Locker Service, LWC migration |
+| `sf-cli-reference` | SF CLI command reference — org management, data, source, package, deploy |
 
 ### Auto-Activating Skills
 
-38 skills activate automatically during development — no `/` invocation needed.
+39 skills activate automatically during development — no `/` invocation needed.
 
 **Constraint Skills (always-on governance):**
 
@@ -394,7 +398,7 @@ Agents read these on demand for domain knowledge. Not directly invocable via `/`
 | `security-scan` | Scanning Claude Code config for vulnerabilities and misconfigurations |
 | `strategic-compact` | Managing context during long development sessions |
 
-Pattern skills (28, listed above) also activate contextually when their domain is relevant.
+Pattern skills (29, listed above) also activate contextually when their domain is relevant.
 
 ---
 
