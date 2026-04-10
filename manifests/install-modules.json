@@ -206,6 +206,7 @@
           "paths": [
             "skills/sf-flow-development/",
             "skills/sf-agentforce-development/",
+            "skills/sf-agentforce-mcp-actions/",
             "skills/sf-api-design/",
             "skills/sf-visualforce-development/",
             "skills/sf-aura-development/",
