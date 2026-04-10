@@ -30,7 +30,7 @@ npx scc-universal install all
 ## What's Included
 
 - **17 agents** for Salesforce development (11 domain + 6 platform)
-- **55 skills** for domain knowledge, workflows, and patterns (17 user-invocable via `/skill-name`, 38 auto-activating)
+- **57 skills** for domain knowledge, workflows, and patterns (18 user-invocable via `/skill-name`, 39 auto-activating)
 - **29 hooks** for quality gates and automation
 - **8 schemas** for configuration validation
 

@@ -6,7 +6,7 @@ description: >-
 
 # SCC Help — Agent and Skill Discovery
 
-SCC provides **17 agents** for end-to-end Salesforce development and **55 skills** for domain knowledge. Agents are lean workflow orchestrators. Skills carry patterns, examples, and rules.
+SCC provides **17 agents** for end-to-end Salesforce development and **57 skills** for domain knowledge. Agents are lean workflow orchestrators. Skills carry patterns, examples, and rules.
 
 ## When to Use
 
@@ -58,7 +58,7 @@ These enforce hard rules. Agents preload them via `skills` frontmatter.
 | `sf-soql-constraints` | Query safety, selectivity |
 | `sf-deployment-constraints` | Deploy safety, test levels, validation |
 
-## Pattern Skills (28) — Read by agents on demand
+## Pattern Skills (29) — Read by agents on demand
 
 Agents read these for domain knowledge when the task matches. Not user-invocable.
 
@@ -120,6 +120,7 @@ Agents read these for domain knowledge when the task matches. Not user-invocable
 | `sf-debugging` | Debug logs, explain plans, common errors |
 | `sf-deployment` | Deploy strategies, validation-only, rollback |
 | `sf-devops-ci-cd` | GitHub Actions, CI/CD, scratch org CI |
+| `sf-cli-reference` | SF CLI commands — org, data, source, package, deploy |
 | `sf-tdd-workflow` | Red-Green-Refactor, TDD methodology |
 | `sf-build-fix` | Compilation errors, metadata conflicts |
 
@@ -138,6 +139,7 @@ Agents read these for domain knowledge when the task matches. Not user-invocable
 | `/sf-quickstart` | Interactive onboarding for new projects |
 | `/sf-docs-lookup` | Look up Salesforce documentation |
 | `/sf-harness-audit` | Audit SCC configuration health |
+| `/sf-2gp-security-review` | 2GP managed package AppExchange security review |
 | `/sessions` | List and manage saved sessions |
 
 ## Quick Start
