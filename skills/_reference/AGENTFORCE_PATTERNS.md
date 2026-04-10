@@ -13,19 +13,38 @@
 
 ```
 AiAuthoringBundle (.agent file)
- +-- config (developer_name, agent_label, description)
+ +-- config (developer_name, agent_label, agent_type, default_agent_user)
  +-- variables (mutable read/write, linked read-only)
+ +-- language (default_locale, additional_locales, all_additional_locales) [optional]
  +-- system (global instructions, welcome/error messages)
  +-- start_agent (entry point — topic routing)
- +-- topics (1..N conversation domains)
+ +-- topics (1..N conversation domains, also called "subagents" since April 2026)
       +-- description (routes user queries here)
+      +-- actions (top-level declarations: target, inputs, outputs)
       +-- reasoning
       |    +-- instructions (-> procedural + | LLM prompts)
-      |    +-- actions (tools exposed to LLM)
+      |    +-- actions (tool references via @actions.<name>)
+      +-- before_reasoning (optional pre-LLM deterministic logic)
       +-- after_reasoning (optional post-LLM deterministic logic)
 ```
 
-Publishes to: `Bot/BotVersion → GenAiPlannerBundle → GenAiPlugin (topics) → GenAiFunction (actions)`
+**What `sf agent publish` generates** (you never create these manually):
+
+```
+.agent file (you write this)
+    │  sf agent publish authoring-bundle
+    ▼
+Bot (.bot-meta.xml)
+ └── BotVersion (.botVersion-meta.xml)
+      └── GenAiPlannerBundle
+           ├── localTopics (from your topic blocks)
+           │    └── localActions (from your actions blocks)
+           ├── localActionLinks (wiring actions → topics)
+           ├── agentGraph/*.json (compiled state machine)
+           └── localActions/*/schema.json (input/output schemas)
+```
+
+`GenAiFunction` is NOT required — the `target:` field resolves directly against the org's invocable action registry.
 
 ### Classic Setup (Pre-Agent Script / API < v65)
 
@@ -90,42 +109,118 @@ Files use `.agent` extension. Stored in `force-app/main/default/aiAuthoringBundl
 | Mutable | `name: mutable string = ""` | Read/write state (string, boolean, number) |
 | Linked | `name: linked string` + `source: "EndUserLanguage"` | Read-only from external context (session, channel) |
 
-### Action Invocation
+### Action Declaration (Top-Level)
 
-**Deterministic (run)** — executes unconditionally in procedural logic:
+Actions are declared in a top-level `actions:` block inside a `topic:`, with `target`, `description`, `inputs` (with attributes), and `outputs` (with attributes):
 
 ```
--> run @actions.get_order with
-     order_id: @variables.order_id
-   set
-     order_details: result
+topic order_management:
+   actions:
+      get_order_details:
+         description: "Retrieve order details by order number"
+         inputs:
+            order_number: string
+               description: "The order number"
+               is_required: True
+         outputs:
+            status: string
+               description: "Current order status"
+               is_displayable: True
+               is_used_by_planner: True
+         target: "apex://GetOrderDetailsAction"
 ```
 
-**LLM-Driven (reasoning.actions)** — LLM decides when to call:
+### Action Invocation (reasoning.actions)
+
+**LLM-Driven** — LLM decides when to call. References declared actions via `@actions.<name>`:
 
 ```
 reasoning:
-  actions:
-    lookup_order:
-      action: @actions.get_order
-      description: "Retrieves order details by ID"
-      inputs:
-        order_id: ...
-      set:
-        order_details: output
+   actions:
+      get_order: @actions.get_order_details
+         with order_number = ...
+         set @variables.order_status = @outputs.status
+```
+
+**With description override:**
+
+```
+      create_report: @actions.generate_report
+         description: "Generate a new report where the user provides all details."
+         with report_type = ...
+```
+
+**With action callbacks (chained post-action execution):**
+
+```
+      make_payment: @actions.process_payment
+         with amount = ...
+         set @variables.transaction_id = @outputs.transaction_id
+         run @actions.send_receipt
+            with transaction_id = @variables.transaction_id
+            set @variables.receipt_sent = @outputs.sent
+```
+
+**Deterministic (run)** — executes unconditionally in `->` procedural logic:
+
+```
+-> run @actions.get_order_details
+      with order_id = @variables.order_id
+      set @variables.order_status = @outputs.status
 ```
 
 ### Conditional Tool Display
 
 ```
-actions:
-  refund_order:
-    action: @actions.process_refund
-    description: "Process a refund"
-    available when: @variables.is_verified == True && @variables.order_total > 0
+reasoning:
+   actions:
+      refund_order: @actions.process_refund
+         available when @variables.is_verified == True && @variables.order_total > 0
+         with order_id = ...
 ```
 
-`available when` hides the action from the LLM until conditions are met. Use for gating sensitive operations behind authentication or state checks.
+`available when` (no colon) hides the action from the LLM until conditions are met. Use for gating sensitive operations behind authentication or state checks.
+
+### Action `target:` Field
+
+The `target:` field resolves an action to its underlying implementation. Required for all custom actions.
+
+| Target Type | Format | Example |
+|---|---|---|
+| Apex | `apex://ClassName` | `target: "apex://GetOrderDetailsAction"` |
+| Apex (namespaced) | `apex://ns__ClassName` | `target: "apex://acme__GetOrderDetailsAction"` |
+| Flow | `flow://FlowApiName` | `target: "flow://GetCurrentWeather"` |
+| Prompt Template | `generatePromptResponse://Name` | `target: "generatePromptResponse://Summarize_Case"` |
+
+In managed-package subscriber orgs, prefix Apex targets with `namespace__`. Check `sfdx-project.json` for the namespace value. The `target:` must match how the action appears in the invocable action registry: `/services/data/v66.0/actions/custom/apex/<ClassName>`.
+
+### Action Field Attributes
+
+**Input attributes:**
+
+| Attribute | Type | Default | Purpose |
+|---|---|---|---|
+| `is_required` | boolean | `False` | Input must be provided before action executes |
+| `is_user_input` | boolean | `False` | Value requires direct user input via custom UI (Lightning Types) |
+| `complex_data_type_name` | string | — | Required for object-type inputs (e.g., `"c__caseInput"`) |
+
+**Output attributes:**
+
+| Attribute | Type | Default | Purpose |
+|---|---|---|---|
+| `is_displayable` | boolean | `True` | Output shown to end user in response |
+| `is_used_by_planner` | boolean | `True` | Output passed to reasoning engine for planning |
+| `filter_from_agent` | boolean | `False` | Excludes output from agent context entirely |
+| `complex_data_type_name` | string | — | Required for object-type outputs (e.g., `"c__caseResult"`) |
+
+**Additional action-level properties:**
+
+| Property | Purpose |
+|---|---|
+| `label` | Display name for the action |
+| `require_user_confirmation` | Prompt user before executing |
+| `include_in_progress_indicator` | Show loading indicator during execution |
+| `progress_indicator_message` | Custom loading message text |
 
 ### Topic Transitions
 
@@ -155,14 +250,14 @@ actions:
 | BotVersion | `BotVersion` | `botVersions/` | v38+ | Agent version config (one active per agent) |
 | GenAiPlannerBundle | `GenAiPlannerBundle` | `genAiPlannerBundles/` | v64+ | Reasoning engine container (replaces GenAiPlanner) |
 | GenAiPlugin | `GenAiPlugin` | `genAiPlugins/` | v60+ | Agent topic (category of related actions) |
-| GenAiFunction | `GenAiFunction` | `genAiFunctions/<Name>/` | v60+ | Agent action (input/output in schema.json) |
+| GenAiFunction | `GenAiFunction` | `genAiFunctions/<Name>/` | v60+ | Agent action wrapper (Classic UI only — Agent Script wires via `target:`) |
 | GenAiPromptTemplate | `GenAiPromptTemplate` | `genAiPromptTemplates/` | v60+ | Prompt template for LLM guidance |
 | AiEvaluationDefinition | `AiEvaluationDefinition` | `aiEvaluationDefinitions/` | v63+ | Agent test definitions |
 | LightningTypeBundle | `LightningTypeBundle` | `lightningTypes/<Name>/` | v64+ | Rich UI type for agent responses |
 | ConversationContextVariable | — | — | v60+ | Context variables (session, channel) |
 | ConversationVariable | — | — | v60+ | Customer data collected during conversation |
 
-**Deployment order** (strict): Bot/BotVersion → GenAiPromptTemplate → GenAiFunction → GenAiPlugin → GenAiPlannerBundle → Activate BotVersion
+**Deployment order (Classic UI)**: Bot/BotVersion → GenAiPromptTemplate → GenAiFunction → GenAiPlugin → GenAiPlannerBundle → Activate BotVersion. **Agent Script**: `sf agent publish authoring-bundle` handles this automatically.
 
 **Legacy**: GenAiPlanner (v60-63) replaced by GenAiPlannerBundle in v64+.
 
@@ -427,6 +522,42 @@ Standard Apex governor limits apply per action (each executes in its own transac
 | **MCP Server Registry** | Admin-controlled whitelist for external MCP servers. Rate-limiting, access control |
 | **Audit** | Agent conversations reviewable in Setup > Agent Conversations |
 
+## Prerequisites
+
+Before Agent Script actions work:
+
+1. **Einstein/Agentforce enabled** — Setup → Einstein → Turn on Einstein + Einstein Generative AI
+2. **Apex classes deployed** with `@InvocableMethod` annotation (the `target:` resolves against these)
+3. **Permission set assigned** with FLS on all custom objects/fields the agent accesses
+4. **`default_agent_user`** in config block — required for `AgentforceServiceAgent`. Find from existing bot: `<botUser>` element in `.bot-meta.xml`
+
+### Setup Order
+
+```
+1. Deploy Apex @InvocableMethod classes
+   └── sf project deploy start --source-dir force-app/main/default/classes
+
+2. Publish Agent Script (builds Bot + BotVersion + GenAiPlannerBundle — everything)
+   └── sf agent publish authoring-bundle --api-name My_Agent
+```
+
+Two steps. No GenAiFunction, no GenAiPlugin, no manual GenAiPlannerBundle editing.
+
+## Common Mistakes
+
+| Mistake | Error | Fix |
+|---|---|---|
+| Missing `target:` field | "Action target is None" | Add `target: "apex://ClassName"` to action declaration |
+| No namespace in target | "Invocable action 'X' does not exist" | Use `"apex://ns__ClassName"` — check `sfdx-project.json` |
+| `action: @actions.X` nested syntax | "Invalid syntax" | Use `action_name: @actions.action_name` directly |
+| `source:` or `type:` instead of `target:` | "Missing required element" | Use `target:` — the only valid field |
+| `context` as input param name | "Unexpected 'context'" | Rename — `context` is a reserved word |
+| Missing `default_agent_user` | "default agent user is required" | Add to config block (required for ServiceAgent) |
+| `label` in GenAiFunction XML | "Element label invalid" | Use `masterLabel` instead |
+| `functionName` in GenAiFunction XML | "Element functionName invalid" | Remove — name comes from filename |
+| Prettier breaking Apex annotations | Deploy fails with "Unexpected token" | Add `// prettier-ignore` before `@InvocableMethod` / `@InvocableVariable` |
+| Commas in Apex annotation params | Compile error | Apex uses space-separated params: `@InvocableVariable(required=true label='X')` not `required=true, label='X'` |
+
 ## Classic Setup (Pre-Agent Script)
 
 For orgs on API v63 or earlier, or without Agent Script enabled, agents are configured entirely through the Setup UI. Topics and actions are managed in Agentforce Builder without `.agent` files. Use `GenAiPlanner` (v60-63) instead of `GenAiPlannerBundle`. All instruction guidelines, action patterns, context engineering principles, and testing approaches above still apply — only the development surface differs.
@@ -456,12 +587,15 @@ Agentforce evolves rapidly across releases. When this reference does not cover a
 | InvocableMethod Actions | <https://developer.salesforce.com/docs/ai/agentforce/guide/agent-invocablemethod.html> |
 | Agent Script Recipes | <https://developer.salesforce.com/sample-apps/agent-script-recipes/getting-started/overview> |
 | Agentforce Considerations | <https://help.salesforce.com/s/articleView?id=ai.copilot_considerations.htm> |
+| Before/After Reasoning | <https://developer.salesforce.com/docs/ai/agentforce/guide/ascript-ref-before-after-reasoning.html> |
+| Variables Reference | <https://developer.salesforce.com/docs/ai/agentforce/guide/ascript-ref-variables.html> |
 
 ### Developer Blogs
 
 | Topic | URL |
 |---|---|
 | Agent Script Decoded (Feb 2026) | <https://developer.salesforce.com/blogs/2026/02/agent-script-decoded-intro-to-agent-script-language-fundamentals> |
+| Agent Script Debug (Mar 2026) | <https://developer.salesforce.com/blogs/2026/03/agent-script-decoded-how-to-debug-agent-script> |
 | Spring '26 Developer Guide | <https://developer.salesforce.com/blogs/2026/01/developers-guide-to-the-spring-26-release> |
 | TDX 2026 Developer Guide | <https://developer.salesforce.com/blogs/2026/03/the-salesforce-developers-guide-to-tdx-2026> |
 | Agentforce Builder (Admin Blog) | <https://admin.salesforce.com/blog/2026/build-with-confidence-inside-the-new-agentforce-builder> |
